@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:clup/model/store_list_data.dart';
 import 'package:clup/store_list_view.dart';
+import 'package:clup/utils/values.dart' as Values;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -22,15 +23,15 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
-      'Index 0: Espolora',
+      Values.Strings.index0,
       style: optionStyle,
     ),
     Text(
-      'Index 1: Prenotazioni',
+      Values.Strings.index1,
       style: optionStyle,
     ),
     Text(
-      'Index 2: Impostazioni',
+      Values.Strings.index2,
       style: optionStyle,
     ),
   ];
@@ -145,22 +146,22 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
-                label: 'Esplora',
+                label: Values.Strings.exploreLabel,
                 backgroundColor: Colors.lightGreen,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite),
-                label: 'Preferiti',
+                label: Values.Strings.preferedLabel,
                 backgroundColor: Colors.lightGreen,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark),
-                label: 'Prenotazioni',
+                label: Values.Strings.bookingsLabel,
                 backgroundColor: Colors.lightGreen,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
-                label: 'Impostazioni',
+                label: Values.Strings.settingsLabel,
                 backgroundColor: Colors.lightGreen,
               ),
             ],
@@ -473,7 +474,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             Expanded(
               child: Center(
                 child: Text(
-                  'Customer Line Up',
+                  Values.Strings.title,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 22,
