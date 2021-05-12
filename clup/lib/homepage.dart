@@ -5,7 +5,6 @@ import 'package:clup/store_list_view.dart';
 import 'package:clup/utils/values.dart' as Values;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 
 import 'homepage_theme.dart';
 
@@ -93,8 +92,8 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                   (BuildContext context, int index) {
                                 return Column(
                                   children: <Widget>[
-                                    // getSearchBarUI(),
-                                    // getTimeDateUI(),
+                                    getSearchBarUI(),
+                                    getIconsBar(),
                                   ],
                                 );
                               }, childCount: 1),
@@ -174,192 +173,6 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget getFilterBarUI() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: 24,
-            decoration: BoxDecoration(
-              color: HomepageTheme.buildLightTheme().backgroundColor,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    offset: const Offset(0, -2),
-                    blurRadius: 8.0),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          color: HomepageTheme.buildLightTheme().backgroundColor,
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
-            child: Row(
-              children: <Widget>[
-                ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Container(
-                      width: 100.0,
-                      color: Colors.blue,
-                      child: Icon(Icons.bookmark),
-                    ),
-                    Container(
-                      width: 30.0,
-                      color: Colors.blue,
-                      child: Icon(Icons.bookmark),
-                    ),
-                    Container(
-                      width: 30.0,
-                      color: Colors.blue,
-                      child: Icon(Icons.bookmark),
-                    ),
-                    Container(
-                      width: 30.0,
-                      color: Colors.blue,
-                      child: Icon(Icons.bookmark),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Divider(
-            height: 1,
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget getTimeDateUI() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 18, bottom: 16),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      // setState(() {
-                      //   isDatePopupOpen = true;
-                      // });
-                      // showDemoDialog(context: context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 4, bottom: 4),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Choose date',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                fontSize: 16,
-                                color: Colors.grey.withOpacity(0.8)),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            '${DateFormat("dd, MMM").format(startDate)} - ${DateFormat("dd, MMM").format(endDate)}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Container(
-              width: 1,
-              height: 42,
-              color: Colors.grey.withOpacity(0.8),
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.grey.withOpacity(0.2),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 4, bottom: 4),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Number of Rooms',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                fontSize: 16,
-                                color: Colors.grey.withOpacity(0.8)),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            '1 Room - 2 Adults',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w100,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget getSearchBarUI() {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -392,7 +205,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                     cursorColor: HomepageTheme.buildLightTheme().primaryColor,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'London...',
+                      hintText: 'Piacenza...',
                     ),
                   ),
                 ),
@@ -432,6 +245,106 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
           ),
         ],
       ),
+    );
+  }
+
+  Widget getIconsBar() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5.0),
+      height: 50.0,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          Container(
+            child: new IconButton(
+              padding: new EdgeInsets.all(10.0),
+              color: Colors.black,
+              icon: new Icon(Icons.business_outlined, size: 40.0),
+            ),
+            width: 120.0,
+            color: Colors.white,
+          ),
+          Container(
+            child: new IconButton(
+              padding: new EdgeInsets.all(10.0),
+              color: Colors.black,
+              icon: new Icon(Icons.account_balance_sharp, size: 40.0),
+            ),
+            width: 120.0,
+            color: Colors.white,
+          ),
+          Container(
+            child: new IconButton(
+              padding: new EdgeInsets.all(10.0),
+              color: Colors.black,
+              icon: new Icon(Icons.account_circle, size: 40.0),
+            ),
+            width: 120.0,
+            color: Colors.white,
+          ),
+          Container(
+            child: new IconButton(
+              padding: new EdgeInsets.all(10.0),
+              color: Colors.black,
+              icon: new Icon(Icons.where_to_vote, size: 40.0),
+            ),
+            width: 120.0,
+            color: Colors.white,
+          ),
+          Container(
+            child: new IconButton(
+              padding: new EdgeInsets.all(10.0),
+              color: Colors.black,
+              icon: new Icon(Icons.archive, size: 40.0),
+            ),
+            width: 120.0,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getFilterBarUI() {
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 24,
+            decoration: BoxDecoration(
+              color: HomepageTheme.buildLightTheme().backgroundColor,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    offset: const Offset(0, -2),
+                    blurRadius: 8.0),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          color: HomepageTheme.buildLightTheme().backgroundColor,
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
+            child: Row(
+              children: <Widget>[
+              ],
+            ),
+          ),
+        ),
+        const Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: Divider(
+            height: 1,
+          ),
+        )
+      ],
     );
   }
 
