@@ -1,5 +1,4 @@
 import 'package:clup/homepage_theme.dart';
-import 'package:clup/homepage_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -113,7 +112,7 @@ class StoreListView extends StatelessWidget {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    '${hotelData.dist.toStringAsFixed(1)} km to city',
+                                                    '${hotelData.dist.toStringAsFixed(1)} km',
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
@@ -142,7 +141,8 @@ class StoreListView extends StatelessWidget {
                                                         .primaryColor,
                                                   ),
                                                   Text(
-                                                    ' ${hotelData.reviews} Reviews',
+                                                    ' ${hotelData
+                                                        .reviews} Recensioni',
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.grey
@@ -166,19 +166,12 @@ class StoreListView extends StatelessWidget {
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          '\$${hotelData.perNight}',
+                                          '${hotelData.availability} ticket',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 22,
                                           ),
-                                        ),
-                                        Text(
-                                          '/per night',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color:
-                                                  Colors.grey.withOpacity(0.8)),
                                         ),
                                       ],
                                     ),

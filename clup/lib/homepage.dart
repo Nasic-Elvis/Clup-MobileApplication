@@ -272,6 +272,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             ),
             width: 120.0,
             color: Colors.white,
+
           ),
           Container(
             child: new IconButton(
