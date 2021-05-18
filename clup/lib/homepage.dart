@@ -1,12 +1,15 @@
 import 'dart:ui';
 
+import 'package:clup/controller/storeController.dart';
 import 'package:clup/model/store_list_data.dart';
+import 'package:clup/repository/storeRepository.dart';
 import 'package:clup/store_list_view.dart';
 import 'package:clup/utils/values.dart' as Values;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'homepage_theme.dart';
+import 'model/store.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> with TickerProviderStateMixin {
+  StoreRepository _storeRepository = StoreRepository();
+  List<Store> storeList = [];
   AnimationController animationController;
   List<StoreListData> hotelList = StoreListData.hotelList;
   final ScrollController _scrollController = ScrollController();
@@ -48,7 +53,12 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
+    fillStore();
     super.initState();
+  }
+
+  void fillStore() async {
+    storeList = await _storeRepository.getStore();
   }
 
   Future<bool> getData() async {
@@ -110,27 +120,40 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                         body: Container(
                           color:
                               HomepageTheme.buildLightTheme().backgroundColor,
-                          child: ListView.builder(
-                            itemCount: hotelList.length,
-                            padding: const EdgeInsets.only(top: 8),
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              final int count =
-                                  hotelList.length > 10 ? 10 : hotelList.length;
-                              final Animation<double> animation =
-                                  Tween<double>(begin: 0.0, end: 1.0).animate(
-                                      CurvedAnimation(
-                                          parent: animationController,
-                                          curve: Interval(
-                                              (1 / count) * index, 1.0,
-                                              curve: Curves.fastOutSlowIn)));
-                              animationController.forward();
-                              return StoreListView(
-                                callback: () {},
-                                hotelData: hotelList[index],
-                                animation: animation,
-                                animationController: animationController,
-                              );
+                          child: FutureBuilder(
+                            future: _storeRepository.getStore(),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              } else {
+                                return ListView.builder(
+                                  itemCount: snapshot.data.length,
+                                  padding: const EdgeInsets.only(top: 8),
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final int count = snapshot.data.length > 10
+                                        ? 10
+                                        : storeList.length;
+                                    final Animation<double> animation =
+                                        Tween<double>(begin: 0.0, end: 1.0)
+                                            .animate(CurvedAnimation(
+                                                parent: animationController,
+                                                curve: Interval(
+                                                    (1 / count) * index, 1.0,
+                                                    curve:
+                                                        Curves.fastOutSlowIn)));
+                                    animationController.forward();
+                                    return StoreListView(
+                                      callback: () {},
+                                      store: snapshot.data.elementAt(index),
+                                      animation: animation,
+                                      animationController: animationController,
+                                    );
+                                  },
+                                );
+                              }
                             },
                           ),
                         ),
@@ -272,7 +295,6 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             ),
             width: 120.0,
             color: Colors.white,
-
           ),
           Container(
             child: new IconButton(
@@ -332,8 +354,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             padding:
                 const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
             child: Row(
-              children: <Widget>[
-              ],
+              children: <Widget>[],
             ),
           ),
         ),

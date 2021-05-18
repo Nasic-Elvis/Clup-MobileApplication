@@ -1,4 +1,5 @@
 import 'package:clup/homepage_theme.dart';
+import 'package:clup/model/store.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -8,14 +9,14 @@ import 'model/store_list_data.dart';
 class StoreListView extends StatelessWidget {
   const StoreListView(
       {Key key,
-      this.hotelData,
+      this.store,
       this.animationController,
       this.animation,
       this.callback})
       : super(key: key);
 
   final VoidCallback callback;
-  final StoreListData hotelData;
+  final Store store;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
@@ -57,7 +58,7 @@ class StoreListView extends StatelessWidget {
                             AspectRatio(
                               aspectRatio: 2,
                               child: Image.asset(
-                                hotelData.imagePath,
+                                store.imageUrl,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -80,7 +81,7 @@ class StoreListView extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              hotelData.titleTxt,
+                                              store.name,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -94,7 +95,7 @@ class StoreListView extends StatelessWidget {
                                                   MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  hotelData.subTxt,
+                                                  store.address,
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey
@@ -110,9 +111,9 @@ class StoreListView extends StatelessWidget {
                                                           .buildLightTheme()
                                                       .primaryColor,
                                                 ),
-                                                Expanded(
+                                                /*Expanded(
                                                   child: Text(
-                                                    '${hotelData.dist.toStringAsFixed(1)} km',
+                                                    '${store.dist.toStringAsFixed(1)} km',
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
@@ -120,7 +121,7 @@ class StoreListView extends StatelessWidget {
                                                         color: Colors.grey
                                                             .withOpacity(0.8)),
                                                   ),
-                                                ),
+                                                ),*/
                                               ],
                                             ),
                                             Padding(
@@ -131,7 +132,7 @@ class StoreListView extends StatelessWidget {
                                                   SmoothStarRating(
                                                     allowHalfRating: true,
                                                     starCount: 5,
-                                                    rating: hotelData.rating,
+                                                    rating: store.rating,
                                                     size: 20,
                                                     color: HomepageTheme
                                                             .buildLightTheme()
@@ -140,14 +141,13 @@ class StoreListView extends StatelessWidget {
                                                             .buildLightTheme()
                                                         .primaryColor,
                                                   ),
-                                                  Text(
-                                                    ' ${hotelData
-                                                        .reviews} Recensioni',
+                                                  /*Text(
+                                                    ' ${store.reviews} Recensioni',
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.grey
                                                             .withOpacity(0.8)),
-                                                  ),
+                                                  ),*/
                                                 ],
                                               ),
                                             ),
@@ -166,7 +166,7 @@ class StoreListView extends StatelessWidget {
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          '${hotelData.availability} ticket',
+                                          '${store.capacity} ticket',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
