@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:clup/controller/storeController.dart';
 import 'package:clup/model/store_list_data.dart';
 import 'package:clup/repository/storeRepository.dart';
 import 'package:clup/store_list_view.dart';
@@ -169,22 +168,22 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: Values.Strings.exploreLabel,
-                backgroundColor: Colors.lightGreen,
+                backgroundColor: Colors.greenAccent,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite),
                 label: Values.Strings.preferedLabel,
-                backgroundColor: Colors.lightGreen,
+                backgroundColor: Colors.greenAccent,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark),
                 label: Values.Strings.bookingsLabel,
-                backgroundColor: Colors.lightGreen,
+                backgroundColor: Colors.greenAccent,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
                 label: Values.Strings.settingsLabel,
-                backgroundColor: Colors.lightGreen,
+                backgroundColor: Colors.greenAccent,
               ),
             ],
             currentIndex: _selectedIndex,
