@@ -8,7 +8,7 @@ const app = express();
 var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    password : '@Gug4ueik.nasic',
+    password : 'password',
     database : 'clup_engsw2020',
     timezone : "+00:00",
     multipleStatements: true
