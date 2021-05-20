@@ -32,6 +32,7 @@ dependencies:
   smooth_star_rating: ^1.1.1
   intl: ^0.16.0
   http: ^0.13.3
+  geolocator: ^7.0.3
 
 dev_dependencies:
   flutter_test:

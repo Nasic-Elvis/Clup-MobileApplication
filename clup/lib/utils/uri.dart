@@ -1,5 +1,5 @@
 class Address {
-  String _uriConnection = "10.0.2.2:3000";
+  String _uriConnection = "192.168.1.6:3000";
   String _uriProtocol = "http://";
   static String getStore;
 

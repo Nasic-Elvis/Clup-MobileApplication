@@ -52,12 +52,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
-    fillStore();
     super.initState();
-  }
-
-  void fillStore() async {
-    storeList = await _storeRepository.getStore();
   }
 
   Future<bool> getData() async {
