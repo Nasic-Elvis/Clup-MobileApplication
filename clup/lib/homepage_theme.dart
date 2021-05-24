@@ -38,7 +38,7 @@ class HomepageTheme {
       splashFactory: InkRipple.splashFactory,
       accentColor: secondaryColor,
       canvasColor: Colors.white,
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xFFFFFFFF),
       errorColor: const Color(0xFFB00020),
       buttonTheme: ButtonThemeData(

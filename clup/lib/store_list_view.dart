@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+bool isPressed = true;
+
 class StoreListView extends StatelessWidget {
   const StoreListView(
       {Key key,
@@ -18,8 +20,10 @@ class StoreListView extends StatelessWidget {
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
+
   @override
   Widget build(BuildContext context) {
+
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
@@ -32,7 +36,7 @@ class StoreListView extends StatelessWidget {
               padding: const EdgeInsets.only(
                   left: 24, right: 24, top: 8, bottom: 16),
               child: InkWell(
-                splashColor: Colors.transparent,
+                splashColor: Colors.white,
                 onTap: () {
                   callback();
                 },
@@ -57,7 +61,7 @@ class StoreListView extends StatelessWidget {
                               aspectRatio: 2,
                               child: Image.network(
                                 store.imageUrl,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
                             Container(
@@ -164,7 +168,7 @@ class StoreListView extends StatelessWidget {
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          '${store.capacity} ticket',
+                                          '${store.capacity} posti',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -191,15 +195,17 @@ class StoreListView extends StatelessWidget {
                               onTap: () {},
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.favorite_border,
-                                  color: HomepageTheme.buildLightTheme()
-                                      .primaryColor,
+
+                                child: IconButton(
+                                  icon: new Icon(Icons.favorite_border,
+                                    color: Colors.green,),
+                                  highlightColor: Colors.green,
+                                  onPressed: () {},
+
                                 ),
                               ),
                             ),
-                          ),
-                        )
+                          ),),
                       ],
                     ),
                   ),
