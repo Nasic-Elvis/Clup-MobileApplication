@@ -21,9 +21,11 @@ class StoreRepository {
           s['rating'].toDouble(),
           s['latitude'].toDouble(),
           s['longitude'].toDouble());
-      if (await checkPosition(store.latitude, store.longitude)) {
-        storeList.add(store);
-      }
+      storeList.add(store);
+
+      //if (await checkPosition(store.latitude, store.longitude)) {
+      //  storeList.add(store);
+      // }
     }
     return storeList;
   }

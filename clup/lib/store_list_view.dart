@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-import 'model/store_list_data.dart';
-
 class StoreListView extends StatelessWidget {
   const StoreListView(
       {Key key,
@@ -57,7 +55,7 @@ class StoreListView extends StatelessWidget {
                           children: <Widget>[
                             AspectRatio(
                               aspectRatio: 2,
-                              child: Image.asset(
+                              child: Image.network(
                                 store.imageUrl,
                                 fit: BoxFit.cover,
                               ),
