@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:clup/app_theme.dart';
+import 'package:clup/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'homepage.dart';
+import 'view/home/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
         textTheme: AppTheme.textTheme,
         platform: TargetPlatform.iOS,
       ),
-      home: HomePage(),
+      initialRoute: HomePage.routeName,
+      routes: routes,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
+import 'package:clup/view/details/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -57,7 +58,7 @@ class StoreListView extends StatelessWidget {
                       children: <Widget>[
                         InkWell(
                           onTap: () {
-                            print("CIAO");
+                            Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(store: store),);
                           },
                           child: new Column(children: <Widget>[
                             AspectRatio(

@@ -2,15 +2,17 @@ import 'dart:ui';
 
 import 'package:clup/model/store_list_data.dart';
 import 'package:clup/repository/storeRepository.dart';
-import 'package:clup/store_list_view.dart';
+import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/home/components/store_list_view.dart';
 import 'package:clup/utils/values.dart' as Values;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'homepage_theme.dart';
-import 'model/store.dart';
+import '../../homepage_theme.dart';
+import '../../model/store.dart';
 
 class HomePage extends StatefulWidget {
+  static String routeName = "/home";
+
   @override
   _HomePage createState() => _HomePage();
 }

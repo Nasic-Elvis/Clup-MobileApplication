@@ -20,7 +20,8 @@ class StoreRepository {
           s['address'],
           s['rating'].toDouble(),
           s['latitude'].toDouble(),
-          s['longitude'].toDouble());
+          s['longitude'].toDouble(), true);
+
       storeList.add(store);
 
       //if (await checkPosition(store.latitude, store.longitude)) {
