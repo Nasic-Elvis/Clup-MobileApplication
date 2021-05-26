@@ -55,8 +55,11 @@ class StoreListView extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                     child: Stack(
                       children: <Widget>[
-                        Column(
-                          children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            print("CIAO");
+                          },
+                          child: new Column(children: <Widget>[
                             AspectRatio(
                               aspectRatio: 2,
                               child: Image.network(
@@ -113,17 +116,6 @@ class StoreListView extends StatelessWidget {
                                                           .buildLightTheme()
                                                       .primaryColor,
                                                 ),
-                                                /*Expanded(
-                                                  child: Text(
-                                                    '${store.dist.toStringAsFixed(1)} km',
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey
-                                                            .withOpacity(0.8)),
-                                                  ),
-                                                ),*/
                                               ],
                                             ),
                                             Padding(
@@ -143,13 +135,6 @@ class StoreListView extends StatelessWidget {
                                                             .buildLightTheme()
                                                         .primaryColor,
                                                   ),
-                                                  /*Text(
-                                                    ' ${store.reviews} Recensioni',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey
-                                                            .withOpacity(0.8)),
-                                                  ),*/
                                                 ],
                                               ),
                                             ),
@@ -181,7 +166,8 @@ class StoreListView extends StatelessWidget {
                                 ],
                               ),
                             ),
-                          ],
+                          ]),
+
                         ),
                         Positioned(
                           top: 8,
@@ -201,7 +187,6 @@ class StoreListView extends StatelessWidget {
                                     color: Colors.green,),
                                   highlightColor: Colors.green,
                                   onPressed: () {},
-
                                 ),
                               ),
                             ),
