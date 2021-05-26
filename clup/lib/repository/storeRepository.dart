@@ -15,6 +15,8 @@ class StoreRepository {
       Store store = new Store(
           s['idstore'],
           s['name'],
+          s['city'],
+          s['bookableCapacity'],
           s['capacity'],
           s['imgUrl'],
           s['address'],

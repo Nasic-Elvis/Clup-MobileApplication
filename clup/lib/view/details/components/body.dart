@@ -1,3 +1,4 @@
+import 'package:clup/maps.dart';
 import 'package:clup/view/details/components/top_rounded_container.dart';
 import 'package:flutter/material.dart';
 import 'package:clup/model/store.dart';
@@ -17,38 +18,29 @@ class Body extends StatelessWidget{
           color: Colors.transparent,
           child: Column(
             children: [
-              Text(
-                "Dettagli negozio",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-              ),
               TopRoundedContainer(
                 color: Colors.transparent,
                 child: Column(
                   children: [
                    Image.network(store.imageUrl),
-                    Text(
-                      "\n" + store.address + "\n",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    Divider(height: 20,color: Colors.transparent,),
+                    MapScreen(lat: store.latitude, long: store.longitude, address: store.address, city: store.name),
+
+                    ListTile(
+                      leading: Icon(Icons.phone),
+                      title: Text(store.address),
                     ),
-                    Text(
-                      "Valutazione utenti",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ListTile(
+                      leading: Icon(Icons.location_city),
+                      title: Text(store.city),
                     ),
-                    SmoothStarRating(
-                      allowHalfRating: true,
-                      starCount: 5,
-                      rating: store.rating,
-                      size: 20,
-                      color: HomepageTheme
-                          .buildLightTheme()
-                          .primaryColor,
-                      borderColor: HomepageTheme
-                          .buildLightTheme()
-                          .primaryColor,
+                    ListTile(
+                      leading: Icon(Icons.location_on),
+                      title: Text(store.address),
                     ),
-                    Text(
-                      "\nPosti disponibili:\t" + store.capacity.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ListTile(
+                      leading: Icon(Icons.reduce_capacity),
+                      title: Text(store.capacity.toString() + " ticket disponibili"),
                     ),
                     TopRoundedContainer(
                       color: Colors.transparent,
@@ -58,7 +50,7 @@ class Body extends StatelessWidget{
                           right:  MediaQuery.of(context).size.width * 0.15,
                           bottom: (20/ 375.0)* MediaQuery.of(context).size.width,
 
-                          top: (100/ 375.0)* MediaQuery.of(context).size.width
+                          top: (10/ 375.0)* MediaQuery.of(context).size.width
                         ),
                         child: DefaultButton(
                           text: "Prenotati",

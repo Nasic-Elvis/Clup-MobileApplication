@@ -5,6 +5,7 @@ import 'package:clup/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'maps.dart';
 import 'view/home/homepage.dart';
 
 void main() async {
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: HomePage.routeName,
       routes: routes,
+      //home: MapScreen(lat: 9.84738992, long: -13.48293, address: "CIAO", city: "CONAD", ),
     );
   }
 }

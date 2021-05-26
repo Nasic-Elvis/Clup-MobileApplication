@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.unimib.clup">
+
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -7,6 +8,8 @@
         android:label="clup"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyCkoKF4syAM0bupYewSaalaje-Q0lUoPk0"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
