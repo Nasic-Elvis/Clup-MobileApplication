@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/view/details/components/body.dart';
 
+import 'components/app_bar.dart';
+
 class DetailsScreen extends StatelessWidget {
   static String routeName = "/details";
 
@@ -10,8 +12,8 @@ class DetailsScreen extends StatelessWidget {
     final ProductDetailsArguments agrs =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      backgroundColor: Color(0xFFF5F6F9),
-      //appBar: CustomAppBar(rating: agrs.product.rating),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar(rating: agrs.store.rating),
       body: Body(store: agrs.store),
     );
   }

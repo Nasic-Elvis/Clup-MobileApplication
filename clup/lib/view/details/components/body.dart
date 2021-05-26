@@ -14,7 +14,7 @@ class Body extends StatelessWidget{
     return ListView(
       children: [
         TopRoundedContainer(
-          color: Colors.lightGreen,
+          color: Colors.transparent,
           child: Column(
             children: [
               Text(
@@ -22,7 +22,7 @@ class Body extends StatelessWidget{
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
               ),
               TopRoundedContainer(
-                color: Color(0xFFF6F7F9),
+                color: Colors.transparent,
                 child: Column(
                   children: [
                    Image.network(store.imageUrl),
