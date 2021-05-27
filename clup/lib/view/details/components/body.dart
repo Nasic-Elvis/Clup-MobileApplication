@@ -24,7 +24,7 @@ class Body extends StatelessWidget{
           color: Colors.greenAccent,
           child: Column(
             children: [
-              Image.network(store.imageUrl),
+          Container(child:Image.network(store.imageUrl, scale: 0.7,)),
               Center(
                 child: Text(
                   "\n" + store.city + ", " + store.address + "\n",
