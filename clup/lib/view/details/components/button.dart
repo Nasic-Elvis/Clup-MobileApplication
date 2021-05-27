@@ -16,7 +16,7 @@ class DefaultButton extends StatelessWidget {
       height: (28/ 375.0)* MediaQuery.of(context).size.height,
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: Colors.lightGreen,
+        color: Colors.greenAccent,
         onPressed: press,
         child: Text(
           text,

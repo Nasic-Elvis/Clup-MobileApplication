@@ -22,7 +22,7 @@ class StoreRepository {
           s['address'],
           s['rating'].toDouble(),
           s['latitude'].toDouble(),
-          s['longitude'].toDouble(), true);
+          s['longitude'].toDouble(), true, s['telephoneNumber']);
 
       storeList.add(store);
 

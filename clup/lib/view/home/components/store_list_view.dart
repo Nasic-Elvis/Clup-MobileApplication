@@ -154,7 +154,7 @@ class StoreListView extends StatelessWidget {
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          '${store.capacity} posti',
+                                          '${store.booktableCapacity} posti',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
