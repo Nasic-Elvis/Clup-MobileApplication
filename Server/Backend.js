@@ -8,7 +8,7 @@ const app = express();
 var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    password : 'password',
+    password : 'admin',
     database : 'clup_engsw2020',
     timezone : "+00:00",
     multipleStatements: true
@@ -60,7 +60,7 @@ app.post('/login', function(request, response) {
             console.log(results);
             
             if (results.length > 0) {
-                response.json({result:"OK", name:results[0].Name, id:results[0].idUser, cognome : results[0].Surname, Email: results[0].Email, BirthdayDate : results[0].BirthdayDate, TelephoneNumber : results[0].TelephoneNumber});
+                response.json({result:"OK", name:results[0].Name, id:results[0].idUser, surname : results[0].Surname, email: results[0].Email, birthdayDate : results[0].BirthdayDate, telephoneNumber : results[0].TelephoneNumber});
             } else {
                 response.json({result:"KO"});
             }
@@ -106,14 +106,19 @@ app.post('/signUp', function(request, response){
     var telephoneNumber = request.body.telephoneNumber;
     var email = request.body.email;
     var password = request.body.password;
+    console.log(name);
+    console.log(surname);
+    console.log(telephoneNumber);
+    console.log(email);
+    console.log(password);
     //var t = encrypt(password);
     //console.log("Passoord crypted: " + encrypt(password));
     //console.log("Passoord decrypted: " + decrypt(t));
-    if(name && surname && birthdayDate && telephoneNumber 
+    if(name && surname  && telephoneNumber 
         && email && password)
         {
-            connection.query("INSERT INTO user(Name, Surname, BirthdayDate, TelephoneNumber, Email, Username, Password) VALUES(?, ?, ?, ?, ?, ?, ?)",
-            [name, surname, birthdayDate, telephoneNumber, email, email, password], function(error, results, fields){
+            connection.query("INSERT INTO user(Name, Surname, TelephoneNumber, Email, Username, Password) VALUES(?, ?, ?, ?, ?, ?)",
+            [name, surname, telephoneNumber, email, email, password], function(error, results, fields){
                 if(error){
                     throw error;
                 }

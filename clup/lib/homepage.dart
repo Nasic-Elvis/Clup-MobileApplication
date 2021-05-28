@@ -4,18 +4,26 @@ import 'package:clup/model/store_list_data.dart';
 import 'package:clup/repository/storeRepository.dart';
 import 'package:clup/store_list_view.dart';
 import 'package:clup/utils/values.dart' as Values;
+import 'package:clup/view/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'homepage_theme.dart';
 import 'model/store.dart';
+import 'model/user.dart';
 
 class HomePage extends StatefulWidget {
+  final User user;
+
+  HomePage({this.user});
+
   @override
-  _HomePage createState() => _HomePage();
+  _HomePage createState() => _HomePage(this.user);
 }
 
 class _HomePage extends State<HomePage> with TickerProviderStateMixin {
+  User user;
+  _HomePage(this.user);
   StoreRepository _storeRepository = StoreRepository();
   List<Store> storeList = [];
   AnimationController animationController;
@@ -159,7 +167,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
+            items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: Values.Strings.exploreLabel,
@@ -176,7 +184,14 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                 backgroundColor: Colors.greenAccent,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
+                icon: IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => SettingScreen(),
+                    ));
+                  },
+                ),
                 label: Values.Strings.settingsLabel,
                 backgroundColor: Colors.greenAccent,
               ),
@@ -403,7 +418,9 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             Expanded(
               child: Center(
                 child: Text(
-                  Values.Strings.title,
+                  user != null
+                      ? '${Values.Strings.title}, ${user.name}'
+                      : 'Customer Line Up',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 22,
