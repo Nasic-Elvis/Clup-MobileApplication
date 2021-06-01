@@ -122,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Row(
         children: <Widget>[
           Text(
-            "Welcome",
+            "Benvenuto",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: _large ? 60 : (_medium ? 50 : 40),
@@ -139,7 +139,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Row(
         children: <Widget>[
           Text(
-            "Sign in to your account",
+            "Effettua subito il login",
             style: TextStyle(
               fontWeight: FontWeight.w200,
               fontSize: _large ? 20 : (_medium ? 17.5 : 15),
@@ -172,7 +172,7 @@ class _SignInScreenState extends State<SignInScreen> {
       keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email,
-      hint: "Email ID",
+      hint: "Email",
     );
   }
 
@@ -193,7 +193,7 @@ class _SignInScreenState extends State<SignInScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Forgot your password?",
+            "Password dimenticata?",
             style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: _large ? 14 : (_medium ? 12 : 10)),
@@ -206,7 +206,7 @@ class _SignInScreenState extends State<SignInScreen> {
               print("Routing");
             },
             child: Text(
-              "Recover",
+              "Recupera",
               style: TextStyle(
                   fontWeight: FontWeight.w600, color: Colors.orange[200]),
             ),
@@ -238,7 +238,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ),
           padding: const EdgeInsets.all(12.0),
-          child: Text('SIGN IN',
+          child: Text('LOG IN',
               style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
         ),
         onTap: () async {
@@ -269,7 +269,7 @@ class _SignInScreenState extends State<SignInScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Don't have an account?",
+            "Non sei ancora registrato?",
             style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: _large ? 14 : (_medium ? 12 : 10)),
@@ -285,7 +285,7 @@ class _SignInScreenState extends State<SignInScreen> {
               print("Routing to Sign up screen");
             },
             child: Text(
-              "Sign up",
+              "Registrati",
               style: TextStyle(
                   fontWeight: FontWeight.w800,
                   color: Colors.orange[200],

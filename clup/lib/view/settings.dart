@@ -24,7 +24,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 onPressed: (context) {},
               ),
               SettingsTile(
-                title: 'Sign In',
+                title: 'Account personale',
                 subtitle: '',
                 leading: Icon(Icons.account_circle),
                 onPressed: (context) {
