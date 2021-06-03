@@ -1,13 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:flutter/material.dart';
+
+import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/widget/maps.dart';
+
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
 
-class StoreTime extends PreferredSize {
+class ContactTime extends PreferredSize {
   final String title;
   final String subtitle;
-  final String description;
-  StoreTime({@required this.title, this.subtitle, this.description});
+  final MapScreen map;
+
+  ContactTime({@required this.title, this.subtitle, this.map});
 
   @override
   // AppBar().preferredSize.height provide us the height that appy on our app bar
@@ -26,11 +29,12 @@ class StoreTime extends PreferredSize {
           key: cardA,
           //leading: CircleAvatar(
           //   child:),
-          title: Text("ORA APERTO", style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 18, color: Colors.green),),
-          subtitle: ListTile(
-            leading: Icon(Icons.access_time, color: Colors.grey,),
-            title: Text(this.subtitle.toString(), style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 16, color: Colors.black),),
+          title: Text(this.title, style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 18, color: Colors.black),),
+          subtitle:  ListTile(
+            leading: Icon(Icons.phone, color: Colors.grey,),
+            title: Text(this.subtitle.toString(), style: TextStyle(fontWeight:  FontWeight.normal, fontSize: 16, color: Colors.black),),
           ),
+          //Text(this.subtitle, style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 16, color: Colors.black),),
           children: <Widget>[
             Divider(
               thickness: 1.0,
@@ -45,13 +49,8 @@ class StoreTime extends PreferredSize {
                   ),
                   child: Column(
                     children: [
-                      Text(
-                        "Orari di apertura del negozio",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2
-                            .copyWith(fontSize: 16),
-                      ),
+                      Text("Indicazioni stradali.",style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 15, color: Colors.black),),
+                      this.map,
                     ],
                   )
 

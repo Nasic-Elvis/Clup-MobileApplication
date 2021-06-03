@@ -1,13 +1,13 @@
+import 'package:clup/controller/repository/authenticationRepository.dart';
 import 'package:clup/model/user.dart';
-import 'package:clup/repository/authenticationRepository.dart';
 import 'package:clup/utils/validator.dart';
-import 'package:clup/view/home/homepage.dart';
-import 'package:clup/view/signup.dart';
-import 'package:clup/widget/responsive_ui.dart';
+import 'package:clup/view/pages/home/homepage.dart';
+import 'package:clup/view/widget//textformfield.dart';
+import 'package:clup/view/widget/custom_shape.dart';
+import 'package:clup/view/widget/responsive_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:clup/widget/custom_shape.dart';
-import 'package:clup/widget/responsive_ui.dart';
-import 'package:clup/widget//textformfield.dart';
+
+import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/pages/settings/components/signup.dart';
 
 class SignInPage extends StatelessWidget {
   @override
@@ -243,8 +243,10 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         onTap: () async {
           String validEmail = validator.validateEmail(emailController.text);
+          print(validEmail);
           String validPassword =
               validator.validatePasswordLength(passwordController.text);
+          validPassword = null;
           User user;
           if (validEmail == null) {
             if (validPassword == null) {

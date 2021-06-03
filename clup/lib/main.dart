@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:clup/app_theme.dart';
-import 'package:clup/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'maps.dart';
-import 'view/home/homepage.dart';
+import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/utils/routes.dart';
+
+import 'view/pages/home/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

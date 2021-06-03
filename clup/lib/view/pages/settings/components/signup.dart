@@ -1,13 +1,13 @@
-import 'package:clup/repository/authenticationRepository.dart';
-import 'package:clup/view/signin.dart';
+import 'package:clup/controller/repository/authenticationRepository.dart';
+import 'package:clup/view/widget/custom_shape.dart';
+import 'package:clup/view/widget/customappbar.dart';
+import 'package:clup/view/widget/responsive_ui.dart';
+import 'package:clup/view/widget/textformfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:clup/widget/custom_shape.dart';
-import 'package:clup/widget/customappbar.dart';
-import 'package:clup/widget/responsive_ui.dart';
-import 'package:clup/widget/textformfield.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/pages/settings/components/signin.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -48,7 +48,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Opacity(opacity: 0.88, child: CustomAppBar()),
                 clipShape(),
                 form(),
-                acceptTermsTextRow(),
                 SizedBox(
                   height: _height / 35,
                 ),
@@ -99,48 +98,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ),
-        Container(
-          height: _height / 5.5,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  spreadRadius: 0.0,
-                  color: Colors.black26,
-                  offset: Offset(1.0, 10.0),
-                  blurRadius: 20.0),
-            ],
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-          child: GestureDetector(
-              onTap: () {
-                print('Adding photo');
-              },
-              child: Icon(
-                Icons.add_a_photo,
-                size: _large ? 40 : (_medium ? 33 : 31),
-                color: Colors.orange[200],
-              )),
-        ),
-//        Positioned(
-//          top: _height/8,
-//          left: _width/1.75,
-//          child: Container(
-//            alignment: Alignment.center,
-//            height: _height/23,
-//            padding: EdgeInsets.all(5),
-//            decoration: BoxDecoration(
-//              shape: BoxShape.circle,
-//              color:  Colors.orange[100],
-//            ),
-//            child: GestureDetector(
-//                onTap: (){
-//                  print('Adding photo');
-//                },
-//                child: Icon(Icons.add_a_photo, size: _large? 22: (_medium? 15: 13),)),
-//          ),
-//        ),
       ],
     );
   }
@@ -172,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       textEditingController: nameController,
       icon: Icons.person,
-      hint: "First Name",
+      hint: "Nome",
     );
   }
 
@@ -181,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       textEditingController: surnameController,
       icon: Icons.person,
-      hint: "Last Name",
+      hint: "Cognome",
     );
   }
 
@@ -190,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email,
-      hint: "Email ID",
+      hint: "Email",
     );
   }
 
@@ -199,7 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.number,
       textEditingController: numberController,
       icon: Icons.phone,
-      hint: "Mobile Number",
+      hint: "Numero di telefono",
     );
   }
 
@@ -210,31 +167,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       obscureText: true,
       icon: Icons.lock,
       hint: "Password",
-    );
-  }
-
-  Widget acceptTermsTextRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 100.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Checkbox(
-              activeColor: Colors.orange[200],
-              value: checkBoxValue,
-              onChanged: (bool newValue) {
-                setState(() {
-                  checkBoxValue = newValue;
-                });
-              }),
-          Text(
-            "I accept all terms and conditions",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: _large ? 12 : (_medium ? 11 : 10)),
-          ),
-        ],
-      ),
     );
   }
 
@@ -260,7 +192,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           padding: const EdgeInsets.all(12.0),
           child: Text(
-            'SIGN UP',
+            'REGISTRATI',
             style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
           ),
         ),
@@ -276,6 +208,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (_) => SignInScreen()));
           }
+          //TODO: Gestione errore di registrazione.
         },
       ),
     );
@@ -288,7 +221,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Or create using social media",
+            "Accedi con un social media",
             style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: _large ? 12 : (_medium ? 11 : 10)),
@@ -334,7 +267,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Already have an account?",
+            "Sei già registrato?",
             style: TextStyle(fontWeight: FontWeight.w400),
           ),
           SizedBox(
@@ -348,7 +281,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               print("Routing to Sign up screen");
             },
             child: Text(
-              "Sign in",
+              "Log In",
               style: TextStyle(
                   fontWeight: FontWeight.w800,
                   color: Colors.orange[200],

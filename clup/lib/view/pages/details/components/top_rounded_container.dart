@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:clup/view/details/components/button.dart';
-
-import '../../../model/store.dart';
 
 class TopRoundedContainer extends StatelessWidget {
   const TopRoundedContainer({

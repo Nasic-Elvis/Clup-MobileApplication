@@ -1,4 +1,4 @@
-import 'package:clup/widget/responsive_ui.dart';
+import 'package:clup/view/widget/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {

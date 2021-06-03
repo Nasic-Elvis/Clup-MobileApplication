@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:clup/controller/authenticationController.dart';
 import 'package:clup/model/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
   static Future<User> signIn(String username, String pwd) async {
@@ -18,6 +19,8 @@ class AuthRepository {
           userJson['email'].toString(),
           userJson['username'].toString(),
           userJson['password'].toString());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', user.email.toString());
     }
 
     return user;

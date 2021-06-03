@@ -1,15 +1,14 @@
 import 'dart:ui';
 
-import 'package:clup/model/store_list_data.dart';
-import 'package:clup/repository/storeRepository.dart';
+import 'package:clup/controller/repository/storeRepository.dart';
+import 'package:clup/homepage_theme.dart';
+import 'package:clup/model/store.dart';
+import 'package:clup/model/user.dart';
 import 'package:clup/utils/values.dart' as Values;
-import 'package:clup/view/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:clup/model/store_list_data.dart';
-import 'package:clup/homepage_theme.dart';
-import 'package:clup/model/user.dart';
-import 'package:clup/model/store.dart';
+
+import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/pages/settings/settings.dart';
 
 import 'components/store_list_view.dart';
 
@@ -29,7 +28,6 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   StoreRepository _storeRepository = StoreRepository();
   List<Store> storeList = [];
   AnimationController animationController;
-  List<StoreListData> hotelList = StoreListData.hotelList;
   final ScrollController _scrollController = ScrollController();
   int _selectedIndex = 0;
   static const TextStyle optionStyle =

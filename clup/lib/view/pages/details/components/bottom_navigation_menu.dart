@@ -1,10 +1,7 @@
 import 'dart:ui';
 
-import 'package:clup/model/store_list_data.dart';
-import 'package:clup/repository/storeRepository.dart';
 import 'package:clup/utils/values.dart' as Values;
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomNavigation extends StatefulWidget {
   static String routeName = "/home";

@@ -1,16 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:clup/model/store.dart';
-import 'package:clup/view/details/components/body.dart';
-import 'package:clup/utils/values.dart' as Values;
+import 'package:clup/view/pages/details/components/body.dart';
+import 'package:flutter/material.dart';
 
 import 'components/app_bar.dart';
 
 class DetailsScreen extends StatefulWidget {
   static String routeName = "/details";
+
   @override
   _DetailsScreen createState() => _DetailsScreen();
 }
-class _DetailsScreen extends State<DetailsScreen> with TickerProviderStateMixin {
+
+class _DetailsScreen extends State<DetailsScreen>
+    with TickerProviderStateMixin {
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
