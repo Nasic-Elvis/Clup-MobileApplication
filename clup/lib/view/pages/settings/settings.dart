@@ -2,7 +2,7 @@ import 'package:clup/utils/values.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/pages/settings/components/signin.dart';
+import 'components/signin.dart';
 
 class SettingScreen extends StatefulWidget {
   @override

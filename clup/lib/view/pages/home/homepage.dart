@@ -1,15 +1,22 @@
 import 'dart:ui';
 
+import 'package:clup/bloc/internet/internet_cubit.dart';
+import 'package:clup/bloc/internet/internet_state.dart';
 import 'package:clup/controller/repository/storeRepository.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/model/user.dart';
 import 'package:clup/utils/values.dart' as Values;
+import 'package:clup/view/pages/home/components/categories.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/pages/settings/settings.dart';
+import 'package:settings_ui/settings_ui.dart';
 
+import '../settings/settings.dart';
+import 'components/bottom_bar.dart';
 import 'components/store_list_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +30,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> with TickerProviderStateMixin {
+  Connectivity connectivity;
   User user;
   _HomePage(this.user);
   StoreRepository _storeRepository = StoreRepository();
@@ -58,6 +66,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    connectivity = Connectivity();
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     super.initState();
@@ -76,133 +85,244 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: HomepageTheme.buildLightTheme(),
-      child: Container(
-        child: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              InkWell(
-                splashColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                child: Column(
-                  children: <Widget>[
-                    getAppBarUI(),
-                    Expanded(
-                      child: NestedScrollView(
-                        controller: _scrollController,
-                        headerSliverBuilder:
-                            (BuildContext context, bool innerBoxIsScrolled) {
-                          return <Widget>[
-                            SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                  (BuildContext context, int index) {
-                                return Column(
-                                  children: <Widget>[
-                                    getSearchBarUI(),
-                                    getIconsBar(),
-                                  ],
-                                );
-                              }, childCount: 1),
-                            ),
-                            SliverPersistentHeader(
-                              pinned: true,
-                              floating: true,
-                              delegate: ContestTabHeader(
-                                getFilterBarUI(),
-                              ),
-                            ),
-                          ];
-                        },
-                        body: Container(
-                          color:
-                              HomepageTheme.buildLightTheme().backgroundColor,
-                          child: FutureBuilder(
-                            future: _storeRepository.getStore(),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                return ListView.builder(
-                                  itemCount: snapshot.data.length,
-                                  padding: const EdgeInsets.only(top: 8),
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder:
+    return BlocProvider<InternetCubit>(
+        create: (context) => InternetCubit(connectivity: connectivity),
+        child: Theme(
+          data: HomepageTheme.buildLightTheme(),
+          child: Container(
+            child: Scaffold(
+              body: Stack(
+                children: <Widget>[
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    child: Column(
+                      children: <Widget>[
+                        getAppBarUI(),
+                        Expanded(
+                          child: NestedScrollView(
+                            controller: _scrollController,
+                            headerSliverBuilder: (BuildContext context,
+                                bool innerBoxIsScrolled) {
+                              return <Widget>[
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
                                       (BuildContext context, int index) {
-                                    final int count = snapshot.data.length > 10
-                                        ? 10
-                                        : storeList.length;
-                                    final Animation<double> animation =
-                                        Tween<double>(begin: 0.0, end: 1.0)
-                                            .animate(CurvedAnimation(
-                                                parent: animationController,
-                                                curve: Interval(
-                                                    (1 / count) * index, 1.0,
-                                                    curve:
-                                                        Curves.fastOutSlowIn)));
-                                    animationController.forward();
-                                    return StoreListView(
-                                      callback: () {},
-                                      store: snapshot.data.elementAt(index),
-                                      animation: animation,
-                                      animationController: animationController,
+                                    return Column(
+                                      children: <Widget>[
+                                        getSearchBarUI(),
+                                        Categories(),
+                                      ],
                                     );
-                                  },
-                                );
-                              }
+                                  }, childCount: 1),
+                                ),
+                                SliverPersistentHeader(
+                                  pinned: true,
+                                  floating: true,
+                                  delegate: ContestTabHeader(
+                                    getFilterBarUI(),
+                                  ),
+                                ),
+                              ];
                             },
+                            body: BlocConsumer<InternetCubit, InternetState>(
+                              listener: (context, state) {
+                                if (state is InternetDisconnected) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.redAccent,
+                                    content:
+                                        Text('Connessione Internet assente'),
+                                    duration: Duration(milliseconds: 500),
+                                  ));
+                                }
+                                if (state is InternetConnected) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.greenAccent,
+                                    content: Text('Online'),
+                                    duration: Duration(milliseconds: 500),
+                                  ));
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state is InternetConnected) {
+                                  return Container(
+                                    color: HomepageTheme.buildLightTheme()
+                                        .backgroundColor,
+                                    child: FutureBuilder(
+                                      future: _storeRepository.getStore(),
+                                      builder:
+                                          (context, AsyncSnapshot snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        } else {
+                                          return ListView.builder(
+                                            itemCount: snapshot.data.length,
+                                            padding:
+                                                const EdgeInsets.only(top: 8),
+                                            scrollDirection: Axis.vertical,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              final int count =
+                                                  snapshot.data.length > 10
+                                                      ? 10
+                                                      : storeList.length;
+                                              final Animation<
+                                                  double> animation = Tween<
+                                                          double>(
+                                                      begin: 0.0, end: 1.0)
+                                                  .animate(CurvedAnimation(
+                                                      parent:
+                                                          animationController,
+                                                      curve: Interval(
+                                                          (1 / count) * index,
+                                                          1.0,
+                                                          curve: Curves
+                                                              .fastOutSlowIn)));
+                                              animationController.forward();
+                                              return StoreListView(
+                                                callback: () {},
+                                                store: snapshot.data
+                                                    .elementAt(index),
+                                                animation: animation,
+                                                animationController:
+                                                    animationController,
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  );
+                                }
+                                if (state is InternetDisconnected) {
+                                  return Column(
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          'Connessione Internet Assente',
+                                          style: TextStyle(
+                                              fontSize: 16, letterSpacing: 1.2),
+                                        ),
+                                      ),
+                                      Container(
+                                          child: Image.asset(
+                                        'assets/images/noConnection.png',
+                                        fit: BoxFit.scaleDown,
+                                      )),
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
                           ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              bottomNavigationBar: Container(
+                height: (MediaQuery.of(context).size.height * 0.10).toDouble(),
+                child: Stack(children: <Widget>[
+                  Positioned(
+                    bottom: 0,
+                    child: CustomPaint(
+                      size: Size(
+                          MediaQuery.of(context).size.width,
+                          (MediaQuery.of(context).size.height * 0.10)
+                              .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                      painter: RPSCustomPainter(),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    left: 12,
+                    right: 12,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Icon(Icons.search),
+                            Text(Values.Strings.exploreLabel)
+                          ],
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        Column(
+                          children: [
+                            Icon(Icons.favorite),
+                            Text(Values.Strings.preferedLabel)
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        Column(
+                          children: [
+                            Icon(Icons.bookmark),
+                            Text(Values.Strings.bookingsLabel)
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        Column(
+                          children: [
+                            Icon(Icons.settings),
+                            Text(Values.Strings.settingSection)
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                ]),
+              ), /*BottomNavigationBar(
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.search),
+                    label: Values.Strings.exploreLabel,
+                    backgroundColor: Color(0xFF337CA0),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.favorite),
+                    label: Values.Strings.preferedLabel,
+                    backgroundColor: Color(0xFF337CA0),
+                  ),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.bookmark),
+                      label: Values.Strings.bookingsLabel,
+                      backgroundColor: Color(0xFF337CA0)),
+                  BottomNavigationBarItem(
+                    icon: IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => SettingScreen(),
+                        ));
+                      },
+                    ),
+                    label: Values.Strings.settingsLabel,
+                    backgroundColor: Colors.greenAccent,
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                selectedItemColor: Colors.black,
+                onTap: _onItemTapped,
+              ),*/
+            ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: Values.Strings.exploreLabel,
-                backgroundColor: Colors.greenAccent,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: Values.Strings.preferedLabel,
-                backgroundColor: Colors.greenAccent,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark),
-                label: Values.Strings.bookingsLabel,
-                backgroundColor: Colors.greenAccent,
-              ),
-              BottomNavigationBarItem(
-                icon: IconButton(
-                  icon: Icon(Icons.settings),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => SettingScreen(),
-                    ));
-                  },
-                ),
-                label: Values.Strings.settingsLabel,
-                backgroundColor: Colors.greenAccent,
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.black,
-            onTap: _onItemTapped,
-          ),
-        ),
-      ),
-    );
+        ));
   }
 
   Widget getSearchBarUI() {

@@ -7,7 +7,7 @@ import 'package:clup/view/widget/custom_shape.dart';
 import 'package:clup/view/widget/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
-import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/pages/settings/components/signup.dart';
+import 'signup.dart';
 
 class SignInPage extends StatelessWidget {
   @override

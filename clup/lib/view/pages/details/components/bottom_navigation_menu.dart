@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:clup/homepage_theme.dart';
+import 'package:clup/main.dart';
 import 'package:clup/utils/values.dart' as Values;
 import 'package:flutter/material.dart';
 
@@ -36,6 +38,8 @@ class _BottomNavigation extends State<BottomNavigation>
     });
   }
 
+  ThemeData _themeData = HomepageTheme.buildLightTheme();
+  Color _hexColor = HexColor('#337CA0');
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(const Duration(days: 5));
 
@@ -54,23 +58,20 @@ class _BottomNavigation extends State<BottomNavigation>
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: Values.Strings.exploreLabel,
-                backgroundColor: Colors.greenAccent,
+                backgroundColor: Color(0xFF54D3C2),
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: Values.Strings.preferedLabel,
-                backgroundColor: Colors.greenAccent,
-              ),
+                  icon: Icon(Icons.favorite),
+                  label: Values.Strings.preferedLabel,
+                  backgroundColor: Color(0xFF54D3C2)),
               BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark),
-                label: Values.Strings.bookingsLabel,
-                backgroundColor: Colors.greenAccent,
-              ),
+                  icon: Icon(Icons.bookmark),
+                  label: Values.Strings.bookingsLabel,
+                  backgroundColor: Color(0xFF54D3C2)),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: Values.Strings.settingsLabel,
-                backgroundColor: Colors.greenAccent,
-              ),
+                  icon: Icon(Icons.settings),
+                  label: Values.Strings.settingsLabel,
+                  backgroundColor: Color(0x54D3C2)),
             ],
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.black,

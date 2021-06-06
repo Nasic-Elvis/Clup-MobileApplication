@@ -1,7 +1,7 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 
-import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/widget/maps.dart';
+import '../../../widget/maps.dart';
 
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
 
@@ -19,20 +19,31 @@ class ContactTime extends PreferredSize {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:
-
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
         child: ExpansionTileCard(
           baseColor: Colors.grey[50],
           expandedColor: Colors.grey[50],
           key: cardA,
           //leading: CircleAvatar(
           //   child:),
-          title: Text(this.title, style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 18, color: Colors.black),),
-          subtitle:  ListTile(
-            leading: Icon(Icons.phone, color: Colors.grey,),
-            title: Text(this.subtitle.toString(), style: TextStyle(fontWeight:  FontWeight.normal, fontSize: 16, color: Colors.black),),
+          title: Text(
+            this.title,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+          ),
+          subtitle: ListTile(
+            leading: Icon(
+              Icons.phone,
+              color: Colors.grey,
+            ),
+            title: Text(
+              this.subtitle.toString(),
+              style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 16,
+                  color: Colors.black),
+            ),
           ),
           //Text(this.subtitle, style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 16, color: Colors.black),),
           children: <Widget>[
@@ -49,12 +60,16 @@ class ContactTime extends PreferredSize {
                   ),
                   child: Column(
                     children: [
-                      Text("Indicazioni stradali.",style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 15, color: Colors.black),),
+                      Text(
+                        "Indicazioni stradali.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.black),
+                      ),
                       this.map,
                     ],
-                  )
-
-              ),
+                  )),
             ),
           ],
         ),

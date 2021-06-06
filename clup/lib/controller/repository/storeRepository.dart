@@ -19,10 +19,13 @@ class StoreRepository {
           s['bookableCapacity'],
           s['capacity'],
           s['imgUrl'],
+          s['iconUrl'],
           s['address'],
           s['rating'].toDouble(),
           s['latitude'].toDouble(),
-          s['longitude'].toDouble(), true, s['telephoneNumber']);
+          s['longitude'].toDouble(),
+          true,
+          s['telephoneNumber']);
 
       storeList.add(store);
 

@@ -6,8 +6,7 @@ import 'package:clup/view/widget/textformfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/pages/settings/components/signin.dart';
+import 'signin.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override

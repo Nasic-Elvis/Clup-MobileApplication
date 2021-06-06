@@ -6,8 +6,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
-import 'file:///C:/Users/elvis/Desktop/PDM_ProgettoEsame/clup/lib/view/widget/maps.dart';
-
+import '../../../widget/maps.dart';
 import 'contact_card.dart';
 
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
@@ -25,12 +24,15 @@ class Body extends StatelessWidget {
           color: Colors.greenAccent,
           child: Column(
             children: [
-          Container(child:Image.network(store.imageUrl, scale: 0.7,)),
+              Container(
+                  child: Image.network(
+                store.imageUrl,
+                scale: 0.7,
+              )),
               Center(
-                child: Text(
-                  "\n" + store.city + ", " + store.address + "\n",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)
-                ),
+                child: Text("\n" + store.city + ", " + store.address + "\n",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               ),
               TopRoundedContainer(
                 color: Colors.white,

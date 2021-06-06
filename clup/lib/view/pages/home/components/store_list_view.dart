@@ -21,10 +21,8 @@ class StoreListView extends StatelessWidget {
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
-
   @override
   Widget build(BuildContext context) {
-
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
@@ -58,7 +56,11 @@ class StoreListView extends StatelessWidget {
                       children: <Widget>[
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, DetailsScreen.routeName, arguments: ProductDetailsArguments(store: store),);
+                            Navigator.pushNamed(
+                              context,
+                              DetailsScreen.routeName,
+                              arguments: ProductDetailsArguments(store: store),
+                            );
                           },
                           child: new Column(children: <Widget>[
                             AspectRatio(
@@ -66,6 +68,7 @@ class StoreListView extends StatelessWidget {
                               child: Image.network(
                                 store.imageUrl,
                                 fit: BoxFit.fitWidth,
+                                colorBlendMode: BlendMode.color,
                               ),
                             ),
                             Container(
@@ -168,7 +171,6 @@ class StoreListView extends StatelessWidget {
                               ),
                             ),
                           ]),
-
                         ),
                         Positioned(
                           top: 8,
@@ -182,16 +184,36 @@ class StoreListView extends StatelessWidget {
                               onTap: () {},
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-
                                 child: IconButton(
-                                  icon: new Icon(Icons.favorite_border,
-                                    color: Colors.green,),
+                                  icon: new Icon(
+                                    Icons.favorite_border,
+                                    color: Colors.green,
+                                  ),
                                   highlightColor: Colors.green,
                                   onPressed: () {},
                                 ),
                               ),
                             ),
-                          ),),
+                          ),
+                        ),
+                        Positioned(
+                            bottom: 132,
+                            left: 32,
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(40.0),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40.0),
+                                child: Image.network(
+                                  store.iconUrl,
+                                  fit: BoxFit.scaleDown,
+                                ),
+                              ),
+                            )),
                       ],
                     ),
                   ),
