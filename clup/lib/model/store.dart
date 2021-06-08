@@ -12,6 +12,7 @@ class Store {
   final double longitude;
   final bool isFavourite;
   final String telephoneNumber;
+  final String category;
   Store(
       this.idStore,
       this.name,
@@ -25,5 +26,6 @@ class Store {
       this.latitude,
       this.longitude,
       this.isFavourite,
-      this.telephoneNumber);
+      this.telephoneNumber,
+      this.category);
 }

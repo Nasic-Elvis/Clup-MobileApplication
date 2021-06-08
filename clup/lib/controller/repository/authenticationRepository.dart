@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:clup/controller/authenticationController.dart';
+import 'package:clup/controller/api/authenticationController.dart';
 import 'package:clup/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

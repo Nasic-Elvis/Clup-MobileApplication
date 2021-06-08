@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:clup/bloc/category/category_bloc.dart';
+import 'package:clup/bloc/category/category_event.dart';
+import 'package:clup/bloc/category/category_state.dart';
 import 'package:clup/bloc/internet/internet_cubit.dart';
 import 'package:clup/bloc/internet/internet_state.dart';
 import 'package:clup/controller/repository/storeRepository.dart';
@@ -8,6 +11,7 @@ import 'package:clup/model/store.dart';
 import 'package:clup/model/user.dart';
 import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/view/pages/home/components/categories.dart';
+import 'package:clup/view/pages/home/components/store_list.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +34,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> with TickerProviderStateMixin {
+  CategoryBloc _categoryBloc;
   Connectivity connectivity;
   User user;
   _HomePage(this.user);
@@ -85,8 +90,12 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<InternetCubit>(
-        create: (context) => InternetCubit(connectivity: connectivity),
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (context) => InternetCubit(connectivity: connectivity)),
+          BlocProvider(create: (context) => CategoryBloc(InitialState())),
+        ],
         child: Theme(
           data: HomepageTheme.buildLightTheme(),
           child: Container(
@@ -150,8 +159,67 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                   ));
                                 }
                               },
-                              builder: (context, state) {
-                                if (state is InternetConnected) {
+                              builder: (context, internetState) {
+                                return BlocBuilder<CategoryBloc, CategoryState>(
+                                    builder: (context, state) {
+                                  if (internetState is InternetConnected) {
+                                    if (state is InitialState) {
+                                      BlocProvider.of<CategoryBloc>(context)
+                                          .add(NoSelected());
+                                    }
+                                    if (state is NoCategoryState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is SupermarketState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is ServicesState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is HealtCareState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is OtherActivityState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                  }
+                                  if (internetState is InternetDisconnected) {
+                                    return Column(
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            'Connessione Internet Assente',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                letterSpacing: 1.2),
+                                          ),
+                                        ),
+                                        Container(
+                                            child: Image.asset(
+                                          'assets/images/noConnection.png',
+                                          fit: BoxFit.scaleDown,
+                                        )),
+                                      ],
+                                    );
+                                  }
+                                });
+
+                                /*if (state is InternetConnected) {
                                   return Container(
                                     color: HomepageTheme.buildLightTheme()
                                         .backgroundColor,
@@ -201,26 +269,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                         }
                                       },
                                     ),
-                                  );
-                                }
-                                if (state is InternetDisconnected) {
-                                  return Column(
-                                    children: [
-                                      Center(
-                                        child: Text(
-                                          'Connessione Internet Assente',
-                                          style: TextStyle(
-                                              fontSize: 16, letterSpacing: 1.2),
-                                        ),
-                                      ),
-                                      Container(
-                                          child: Image.asset(
-                                        'assets/images/noConnection.png',
-                                        fit: BoxFit.scaleDown,
-                                      )),
-                                    ],
-                                  );
-                                }
+                                  );*/
                               },
                             ),
                           ),

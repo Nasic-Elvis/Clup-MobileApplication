@@ -14,6 +14,13 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
+        },
+        {
+            "name": "Debug Unit Test",
+            "type": "dart",
+            "request": "launch",
+            "justMyCode": true,
         }
+
     ]
 }

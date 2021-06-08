@@ -151,6 +151,25 @@ app.post('/storeCapacity', (req,res) => {
     }
 })
 
+app.post('/storeByCategory', (req,res) => {
+    var category = req.body.category;
+    console.log(category);
+    if(category){
+        connection.query('SELECT * FROM store WHERE category = ?', [category], function(error,results,fields){
+            if(error){
+                throw error;
+            }
+            console.log(results);
+            if(results.length>0){
+                res.json(results);
+            }
+            else {
+                res.json({result:'KO'});
+            }
+        })
+    }
+})
+
 app.get('/index', (req,res) => {
     res.send('Hello World');
 })

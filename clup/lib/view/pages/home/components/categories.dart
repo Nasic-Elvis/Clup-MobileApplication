@@ -1,6 +1,9 @@
+import 'package:clup/bloc/category/category_bloc.dart';
+import 'package:clup/bloc/category/category_event.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/utils/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,9 +14,9 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
       {"icon": FontAwesomeIcons.building, "text": "Attività"},
-      {"icon": FontAwesomeIcons.shoppingCart, "text": "Supermercati"},
+      {"icon": FontAwesomeIcons.shoppingCart, "text": "Supermercato"},
       {"icon": FontAwesomeIcons.heartbeat, "text": "Sanità"},
-      {"icon": FontAwesomeIcons.wpforms, "text": "Uffici Pubblici"}
+      {"icon": FontAwesomeIcons.wpforms, "text": "Servizi"}
       /*{"icon": "assets/icons/Game Icon.svg", "text": "Game"},
       {"icon": "assets/icons/Gift Icon.svg", "text": "Daily Gift"},
       {"icon": "assets/icons/Discover.svg", "text": "More"},*/
@@ -28,7 +31,24 @@ class Categories extends StatelessWidget {
           (index) => CategoryCard(
             icon: categories[index]["icon"],
             text: categories[index]["text"],
-            press: () {},
+            press: () {
+              switch (categories[index]["text"]) {
+                case 'Attività':
+                  BlocProvider.of<CategoryBloc>(context)
+                      .add(SelectOtherActivity());
+                  break;
+                case 'Supermercato':
+                  BlocProvider.of<CategoryBloc>(context)
+                      .add(SelectSupermarket());
+                  break;
+                case 'Sanità':
+                  BlocProvider.of<CategoryBloc>(context).add(SelectHealtCare());
+                  break;
+                case 'Servizi':
+                  BlocProvider.of<CategoryBloc>(context).add(SelectServices());
+                  break;
+              }
+            },
           ),
         ),
       ),
