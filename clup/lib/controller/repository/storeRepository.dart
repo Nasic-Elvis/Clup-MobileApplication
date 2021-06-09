@@ -41,7 +41,7 @@ class StoreRepository {
     List<Store> storeList = [];
     String rawStore = await api.getStoreByCategory(category);
     var storeJson = jsonDecode(rawStore);
-    if (storeJson != null) {
+    if (storeJson is List) {
       for (var s in storeJson) {
         Store store = new Store(
             s['idstore'],

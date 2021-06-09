@@ -1,5 +1,6 @@
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/category/category_event.dart';
+import 'package:clup/bloc/category/category_state.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/utils/size_config.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,11 @@ class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
+      {"icon": FontAwesomeIcons.home, "text": "Tutti"},
       {"icon": FontAwesomeIcons.building, "text": "Attività"},
       {"icon": FontAwesomeIcons.shoppingCart, "text": "Supermercato"},
       {"icon": FontAwesomeIcons.heartbeat, "text": "Sanità"},
-      {"icon": FontAwesomeIcons.wpforms, "text": "Servizi"}
+      {"icon": FontAwesomeIcons.wpforms, "text": "Servizi"},
       /*{"icon": "assets/icons/Game Icon.svg", "text": "Game"},
       {"icon": "assets/icons/Gift Icon.svg", "text": "Daily Gift"},
       {"icon": "assets/icons/Discover.svg", "text": "More"},*/
@@ -33,6 +35,9 @@ class Categories extends StatelessWidget {
             text: categories[index]["text"],
             press: () {
               switch (categories[index]["text"]) {
+                case 'Tutti':
+                  BlocProvider.of<CategoryBloc>(context).add(NoSelected());
+                  break;
                 case 'Attività':
                   BlocProvider.of<CategoryBloc>(context)
                       .add(SelectOtherActivity());
@@ -56,7 +61,7 @@ class Categories extends StatelessWidget {
   }
 }
 
-class CategoryCard extends StatelessWidget {
+class CategoryCard extends StatefulWidget {
   const CategoryCard({
     Key key,
     @required this.icon,
@@ -69,11 +74,16 @@ class CategoryCard extends StatelessWidget {
   final GestureTapCallback press;
 
   @override
+  _CategoryCardState createState() => _CategoryCardState();
+}
+
+class _CategoryCardState extends State<CategoryCard> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: press,
+      onTap: widget.press,
       child: SizedBox(
-        width: getProportionateScreenWidth(55, context),
+        width: getProportionateScreenWidth(65, context),
         child: Column(
           children: [
             Container(
@@ -85,10 +95,10 @@ class CategoryCard extends StatelessWidget {
                   color: HomepageTheme.buildLightTheme().primaryColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon)),
+                child: Icon(widget.icon)),
             SizedBox(height: 5),
             Text(
-              text,
+              widget.text,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 12.0),
             )
