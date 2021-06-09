@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:clup/app_theme.dart';
+import 'package:clup/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:clup/utils/routes.dart';
 
 import 'view/pages/home/homepage.dart';
+
+AppTheme _appTheme = AppTheme();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,11 +32,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Clup',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: AppTheme.textTheme,
-        platform: TargetPlatform.iOS,
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: _appTheme.currentTheme(),
       initialRoute: HomePage.routeName,
       routes: routes,
       //home: MapScreen(lat: 9.84738992, long: -13.48293, address: "CIAO", city: "CONAD", ),

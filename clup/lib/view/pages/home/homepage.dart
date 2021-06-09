@@ -293,7 +293,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                     ),
                   ),
                   Positioned(
-                    bottom: 20,
+                    bottom: 10,
                     left: 12,
                     right: 12,
                     child: Row(
@@ -328,7 +328,15 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                         ),
                         Column(
                           children: [
-                            Icon(Icons.settings),
+                            new IconButton(
+                              icon: Icon(Icons.settings),
+                              highlightColor: Colors.pink,
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => SettingScreen(),
+                                ));
+                              },
+                            ),
                             Text(Values.Strings.settingSection)
                           ],
                         )
@@ -356,9 +364,9 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                     icon: IconButton(
                       icon: Icon(Icons.settings),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => SettingScreen(),
-                        ));
+
+
+
                       },
                     ),
                     label: Values.Strings.settingsLabel,

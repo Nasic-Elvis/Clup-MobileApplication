@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 
-class AppTheme {
-  AppTheme._();
+class AppTheme with ChangeNotifier {
+  static bool _isDark = false;
+
+  ThemeMode currentTheme() {
+    return _isDark ? ThemeMode.dark : ThemeMode.light;
+  }
+
+  void switchTheme() {
+    _isDark = !_isDark;
+    print(_isDark);
+    notifyListeners();
+  }
 
   static const Color notWhite = Color(0xFFEDF0F2);
   static const Color nearlyWhite = Color(0xFFFEFEFE);
