@@ -5,6 +5,8 @@ class Address {
   static String getStore;
   static String signIn;
   static String signUp;
+  static String getTime;
+
   static String getStoreByCategory;
 
   Address() {
@@ -12,5 +14,6 @@ class Address {
     signIn = _uriProtocol + _uriConnection + '/login';
     signUp = _uriProtocol + _uriConnection + '/signUp';
     getStoreByCategory = _uriProtocol + _uriConnection + '/storeByCategory';
+    getTime = _uriProtocol + _uriConnection + '/getTime';
   }
 }

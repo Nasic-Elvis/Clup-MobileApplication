@@ -2,10 +2,24 @@ import 'dart:convert';
 
 import 'package:clup/controller/api/storeController.dart';
 import 'package:clup/model/store.dart';
+import 'package:clup/model/time.dart';
 import 'package:geolocator/geolocator.dart';
 
 class StoreRepository {
   final StoreApi api = new StoreApi();
+
+  Future<List<Time>> getTime(int value) async {
+    List<Time> timeList = [];
+    String rawStore = await api.getTime(value);
+    var storeJson = jsonDecode(rawStore);
+    for (var s in storeJson) {
+      Time time =
+          new Time(s['idStore'], s['from'], s['to'], s['idDay'], s['day']);
+      timeList.add(time);
+    }
+
+    return timeList;
+  }
 
   Future<List<Store>> getStore() async {
     List<Store> storeList = [];
@@ -27,7 +41,6 @@ class StoreRepository {
           true,
           s['telephoneNumber'],
           s['category']);
-
       storeList.add(store);
 
       //if (await checkPosition(store.latitude, store.longitude)) {

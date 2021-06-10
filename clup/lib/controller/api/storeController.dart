@@ -16,6 +16,23 @@ class StoreApi {
     }
   }
 
+
+  Future<String> getTime(int value) async {
+    var uri = Uri.parse(Address.getTime);
+    print(uri);
+    print(value);
+    print(uri.toString());
+    var client = http.Client();
+    try {
+      var uriResponse = await client.post(
+        uri, body: {'idStore': value.toString()},);
+      print(uriResponse.body);
+      return uriResponse.body;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future<String> getStoreByCategory(String category) async {
     var uri = Uri.parse(Address.getStoreByCategory);
     print(uri.toString());

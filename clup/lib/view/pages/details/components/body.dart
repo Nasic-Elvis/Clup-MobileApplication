@@ -1,15 +1,28 @@
+import 'package:clup/controller/repository/storeRepository.dart';
 import 'package:clup/model/store.dart';
+import 'package:clup/model/time.dart';
 import 'package:clup/view/pages/details/components/realtime_situation.dart';
 import 'package:clup/view/pages/details/components/store_time.dart';
 import 'package:clup/view/pages/details/components/top_rounded_container.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 import '../../../widget/maps.dart';
 import 'contact_card.dart';
 
+StoreRepository _storeRepository = StoreRepository();
+String from;
+String to;
+String timeOfStore;
+String status;
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
+
+Future<List<Time>> getTime(int value) async {
+  List<Time> time = await _storeRepository.getTime(value);
+  return time;
+}
 
 class Body extends StatelessWidget {
   final Store store;
@@ -18,6 +31,15 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<List<Time>> storeTime = getTime(store.idStore);
+    storeTime.whenComplete(() => print("OK"));
+
+    storeTime.then((value) {
+      from = value[0].from;
+      to = value[0].to;
+      timeOfStore = from.toString() + " - " + to.toString();
+      //TODO: Implementare controllo data apertura con quella attuale per messaggio APERTO o CHIUSO.
+    });
     return ListView(
       children: [
         TopRoundedContainer(
@@ -32,7 +54,7 @@ class Body extends StatelessWidget {
               Center(
                 child: Text("\n" + store.city + ", " + store.address + "\n",
                     style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               ),
               TopRoundedContainer(
                 color: Colors.white,
@@ -44,8 +66,10 @@ class Body extends StatelessWidget {
                     ),
                     StoreTime(
                         title: "ORA APERTO",
-                        subtitle: "9:00 - 13:30",
-                        description: "Orari apertura del negozio"),
+
+                        subtitle: timeOfStore,
+                        description: "Orari apertura del negozio",
+                        time: storeTime),
                     ContactTime(
                         title: "Informazioni",
                         subtitle: store.telephoneNumber,
