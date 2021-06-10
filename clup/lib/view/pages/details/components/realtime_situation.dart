@@ -1,3 +1,6 @@
+import 'package:clup/model/booking.dart';
+import 'package:clup/model/store.dart';
+import 'package:clup/view/pages/booking/booking.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,8 +13,9 @@ final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
 class RealTime extends PreferredSize {
   final String title;
   final String subtitle;
+  final Store store;
 
-  RealTime({@required this.title, this.subtitle});
+  RealTime({@required this.title, this.subtitle, this.store});
 
   @override
   // AppBar().preferredSize.height provide us the height that appy on our app bar
@@ -20,9 +24,7 @@ class RealTime extends PreferredSize {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:
-
-      Padding(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5),
         child: ExpansionTileCard(
           baseColor: Colors.grey[50],
@@ -63,16 +65,26 @@ class RealTime extends PreferredSize {
                   child: Column(
                     children: [
                       DefaultButton(
-                        text: "Prenotati",
+                        text: "Prenota",
                         press: () async {
                           SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          if (prefs.containsKey('email')) {
-                            print("PRENOTAZIONE OK");
-                          } else {
+                          await SharedPreferences.getInstance();
+                          bool ok = prefs.getBool('login');
+                          if (prefs.getBool('login') == null ||
+                              !prefs.getBool('login')) {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => SignInScreen(),
                             ));
+                          } else {
+                            Booking booking = new Booking(
+                                "10:20", "Lunedì", store);
+                            Navigator.pushNamed(
+                              context,
+                              BookingPage.routeName,
+                              arguments: BookingDetailsArguments(
+                                  booking: booking, store: store),
+                            );
+                            print("OK");
                           }
                         },
                       ),

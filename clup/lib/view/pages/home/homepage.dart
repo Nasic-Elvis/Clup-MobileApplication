@@ -17,11 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:settings_ui/settings_ui.dart';
-
 import '../settings/settings.dart';
 import 'components/bottom_bar.dart';
-import 'components/store_list_view.dart';
 
 class HomePage extends StatefulWidget {
   static String routeName = "/home";
@@ -141,6 +138,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                             },
                             body: BlocConsumer<InternetCubit, InternetState>(
                               listener: (context, state) {
+                                print(state);
                                 if (state is InternetDisconnected) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(

@@ -22,6 +22,7 @@ class AuthRepository {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('email', user.email.toString());
       prefs.setString('name', user.name.toString());
+      prefs.setBool('login', true);
     }
 
     return user;
