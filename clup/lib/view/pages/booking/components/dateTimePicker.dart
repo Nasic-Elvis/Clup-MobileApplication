@@ -1,7 +1,9 @@
+import 'package:clup/controller/api/storeController.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/details/components/button.dart';
 import 'package:clup/view/pages/details/components/top_rounded_container.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,9 +16,10 @@ class DateTimePicker extends StatefulWidget {
   _DateTimePickerState createState() => _DateTimePickerState(this.store);
 }
 
-//TODO: Create metodo formatDate per formattare la data nel formato dd-mm-yyyy
 class _DateTimePickerState extends State<DateTimePicker> {
   final Store store;
+  StoreApi storeApi = new StoreApi();
+  int statusCode;
 
   _DateTimePickerState(this.store);
 
@@ -46,7 +49,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        _dateController.text = DateFormat.yMd().format(selectedDate);
+        final df = new DateFormat('dd-MM-yyyy');
+        final df_sql = new DateFormat('yyyy-MM-dd');
+
+        // _setDate = df_sql.format(selectedDate);
+        _dateController.text = df.format(selectedDate);
       });
   }
 
@@ -93,13 +100,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
             children: <Widget>[
               Container(
                   child: Image.network(
-                store.imageUrl,
-                scale: 0.7,
-              )),
+                    store.imageUrl,
+                    scale: 0.7,
+                  )),
               Center(
                 child: Text("\n" + store.city + ", " + store.address + "\n",
                     style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               ),
               TopRoundedContainer(
                 color: Colors.white,
@@ -180,13 +187,65 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         text: "Prenota",
                         press: () async {
                           SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                          await SharedPreferences.getInstance();
                           bool ok = prefs.getBool('login');
                           if (prefs.getBool('login') == null ||
                               !prefs.getBool('login')) {
                             print("NO");
                           } else {
-                            print("OK");
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Conferma di prenotazione'),
+                                content: const Text(
+                                    'Sei sicuro di voler prenotare per il giorno selezionato?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () async {
+                                      DateFormat df =
+                                          new DateFormat('yyyy-mm-dd');
+                                      statusCode = await storeApi.booking(
+                                          "2020-05-04",
+                                          _timeController.text,
+                                          430,
+                                          store.idStore);
+                                      if (statusCode == 200) {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "Prenotazione effettuata con successo",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.SNACKBAR,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.black,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "Errore durante la prenotazione. Riprovare",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.SNACKBAR,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.black,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      }
+                                      Navigator.pop(context, 'SI');
+                                    },
+                                    child: const Text('SI',
+                                        style: TextStyle(color: Colors.green)),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'NO'),
+                                    child: const Text(
+                                      'NO',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
                           }
                         },
                       ),

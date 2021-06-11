@@ -16,6 +16,28 @@ class StoreApi {
     }
   }
 
+  Future<int> booking(String date, String time, int idUser, int idStore) async {
+    var uri = Uri.parse(Address.booking);
+    print(uri.toString());
+    print(date.toString());
+    print(time.toString());
+    print(idStore.toString());
+    print(idUser.toString());
+
+    var client = http.Client();
+    try {
+      var uriResponse = await client.post(uri, body: {
+        'idStore': idStore.toString(),
+        'idUser': idUser.toString(),
+        'date': date.toString(),
+        'time': time.toString()
+      });
+      print(uriResponse.statusCode);
+      return uriResponse.statusCode;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future<String> getTime(int value) async {
     var uri = Uri.parse(Address.getTime);
@@ -32,6 +54,7 @@ class StoreApi {
       print(e.toString());
     }
   }
+
 
   Future<String> getStoreByCategory(String category) async {
     var uri = Uri.parse(Address.getStoreByCategory);
