@@ -7,6 +7,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+String _setDate = "";
+String idUser = "";
+
 class DateTimePicker extends StatefulWidget {
   final Store store;
 
@@ -26,7 +29,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   double _height;
   double _width;
 
-  String _setTime, _setDate;
+  String _setTime;
 
   String _hour, _minute, _time;
 
@@ -50,9 +53,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
       setState(() {
         selectedDate = picked;
         final df = new DateFormat('dd-MM-yyyy');
-        final df_sql = new DateFormat('yyyy-MM-dd');
-
-        // _setDate = df_sql.format(selectedDate);
+        final dfSql = new DateFormat('yyyy-MM-dd');
+        _setDate = dfSql.format(selectedDate);
+        print(_setDate);
         _dateController.text = df.format(selectedDate);
       });
   }
@@ -77,7 +80,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
   @override
   void initState() {
-    _dateController.text = DateFormat.yMd().format(DateTime.now());
+    _dateController.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    _setDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     String formatted = DateFormat.Hm().format(
         DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute));
 
@@ -177,7 +181,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                       ),
                     ),
                     Divider(
-                      height: 50,
+                      height: 30,
                       color: Colors.transparent,
                     ),
                     Container(
@@ -189,25 +193,27 @@ class _DateTimePickerState extends State<DateTimePicker> {
                           SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                           bool ok = prefs.getBool('login');
+                          idUser = prefs.getString("idUser");
+                          print(idUser);
                           if (prefs.getBool('login') == null ||
                               !prefs.getBool('login')) {
                             print("NO");
                           } else {
                             showDialog<String>(
                               context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Conferma di prenotazione'),
-                                content: const Text(
-                                    'Sei sicuro di voler prenotare per il giorno selezionato?'),
+                              builder: (BuildContext context) =>
+                                  AlertDialog(
+                                    title: const Text(
+                                        'Conferma di prenotazione'),
+                                    content: const Text(
+                                        'Sei sicuro di voler prenotare per il giorno selezionato?'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () async {
-                                      DateFormat df =
-                                          new DateFormat('yyyy-mm-dd');
                                       statusCode = await storeApi.booking(
-                                          "2020-05-04",
+                                          _setDate,
                                           _timeController.text,
-                                          430,
+                                          idUser.toString(),
                                           store.idStore);
                                       if (statusCode == 200) {
                                         Fluttertoast.showToast(
@@ -244,12 +250,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
                                     ),
                                   ),
                                 ],
-                              ),
+                                  ),
                             );
                           }
                         },
                       ),
-                    )
+                    ),
+                    Divider(height: 30, color: Colors.transparent,)
                   ],
                 ),
               ),

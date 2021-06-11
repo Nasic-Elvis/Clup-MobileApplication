@@ -16,7 +16,8 @@ class StoreApi {
     }
   }
 
-  Future<int> booking(String date, String time, int idUser, int idStore) async {
+  Future<int> booking(
+      String date, String time, String idUser, int idStore) async {
     var uri = Uri.parse(Address.booking);
     print(uri.toString());
     print(date.toString());

@@ -68,10 +68,10 @@ class RealTime extends PreferredSize {
                         text: "Prenota",
                         press: () async {
                           SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                          bool ok = prefs.getBool('login');
-                          if (prefs.getBool('login') == null ||
-                              !prefs.getBool('login')) {
+                              await SharedPreferences.getInstance();
+                          String idUser = prefs.getString("idUser");
+                          print(idUser);
+                          if (idUser.isEmpty) {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => SignInScreen(),
                             ));
