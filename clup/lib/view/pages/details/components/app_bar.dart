@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomAppBar extends PreferredSize {
   final double rating;
@@ -24,7 +23,7 @@ class CustomAppBar extends PreferredSize {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(60),
                   ),
-                  color: Colors.transparent,
+                  color: Colors.white,
                   padding: EdgeInsets.zero,
                   onPressed: () => Navigator.pop(context),
                   child:
@@ -38,7 +37,7 @@ class CustomAppBar extends PreferredSize {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
               decoration: BoxDecoration(
-                color: Colors.transparent,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Row(
