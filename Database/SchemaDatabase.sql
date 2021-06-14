@@ -29,11 +29,15 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`store` (
   `city` VARCHAR(45) NULL DEFAULT NULL,
   `capacity` INT NULL DEFAULT NULL,
   `bookableCapacity` INT NULL DEFAULT NULL,
-  `imgUrl` VARCHAR(100) NULL DEFAULT NULL,
+  `imgUrl` VARCHAR(1200) NULL DEFAULT NULL,
   `rating` DOUBLE NULL DEFAULT NULL,
+  `latitude` DOUBLE NULL DEFAULT NULL,
+  `longitude` DOUBLE NULL DEFAULT NULL,
+  `iconUrl` VARCHAR(200) NULL DEFAULT NULL,
+  `category` VARCHAR(90) NULL DEFAULT NULL,
   PRIMARY KEY (`idstore`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 136
+AUTO_INCREMENT = 140
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
@@ -59,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`user` (
     FOREIGN KEY (`idStore`)
     REFERENCES `clup_engsw2020`.`store` (`idstore`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 424
+AUTO_INCREMENT = 431
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
@@ -84,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`booking` (
     FOREIGN KEY (`idUser`)
     REFERENCES `clup_engsw2020`.`user` (`idUser`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 105
+AUTO_INCREMENT = 129
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
@@ -98,7 +102,44 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`category` (
   `Description` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idCategory`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 51
+AUTO_INCREMENT = 52
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
+
+-- -----------------------------------------------------
+-- Table `clup_engsw2020`.`days`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`days` (
+  `iddays` INT NOT NULL AUTO_INCREMENT,
+  `day` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`iddays`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
+
+-- -----------------------------------------------------
+-- Table `clup_engsw2020`.`storeindays`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`storeindays` (
+  `idstoreInDays` INT NOT NULL AUTO_INCREMENT,
+  `idStore` INT NULL DEFAULT NULL,
+  `idDay` INT NULL DEFAULT NULL,
+  `from` VARCHAR(45) NULL DEFAULT NULL,
+  `to` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idstoreInDays`),
+  INDEX `fk_idStore_idx` (`idStore` ASC) VISIBLE,
+  INDEX `fk_day_idx` (`idDay` ASC) VISIBLE,
+  CONSTRAINT `fk_day`
+    FOREIGN KEY (`idDay`)
+    REFERENCES `clup_engsw2020`.`days` (`iddays`),
+  CONSTRAINT `fk_idStore`
+    FOREIGN KEY (`idStore`)
+    REFERENCES `clup_engsw2020`.`store` (`idstore`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 14
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
