@@ -1,4 +1,5 @@
 import 'package:clup/controller/repository/storeRepository.dart';
+import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/model/time.dart';
 import 'package:clup/view/pages/details/components/realtime_situation.dart';
@@ -42,18 +43,25 @@ class Body extends StatelessWidget {
     return ListView(
       children: [
         TopRoundedContainer(
-          color: Colors.greenAccent,
+          color: HomepageTheme.buildLightTheme().primaryColor,
           child: Column(
             children: [
-              Container(
+              Padding(
+                padding: EdgeInsets.only(right: 12.0, left: 12.0),
+                child: Container(
+                    child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
                   child: Image.network(
-                store.imageUrl,
-                scale: 0.7,
-              )),
+                    store.imageUrl,
+                    scale: 0.7,
+                    fit: BoxFit.scaleDown,
+                  ),
+                )),
+              ),
               Center(
                 child: Text("\n" + store.city + ", " + store.address + "\n",
                     style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               ),
               TopRoundedContainer(
                 color: Colors.white,
@@ -65,7 +73,6 @@ class Body extends StatelessWidget {
                     ),
                     StoreTime(
                         title: "ORA APERTO",
-
                         subtitle: timeOfStore,
                         description: "Orari apertura del negozio",
                         time: storeTime),

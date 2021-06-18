@@ -1,4 +1,8 @@
+import 'package:clup/bloc/category/category_bloc.dart';
+import 'package:clup/bloc/favorites/favoriteBloc.dart';
+import 'package:clup/bloc/favorites/favoritesEvents.dart';
 import 'package:clup/controller/repository/authenticationRepository.dart';
+import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/user.dart';
 import 'package:clup/utils/validator.dart';
 import 'package:clup/view/pages/home/homepage.dart';
@@ -6,6 +10,7 @@ import 'package:clup/view/widget//textformfield.dart';
 import 'package:clup/view/widget/custom_shape.dart';
 import 'package:clup/view/widget/responsive_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'signup.dart';
 
@@ -78,7 +83,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   : (_medium ? _height / 3.75 : _height / 3.5),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.orange[200], Colors.pinkAccent],
+                  colors: [
+                    HomepageTheme.buildLightTheme().primaryColor,
+                    HomepageTheme.buildLightTheme().accentColor
+                  ],
                 ),
               ),
             ),
@@ -94,7 +102,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   : (_medium ? _height / 4.25 : _height / 4),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.orange[200], Colors.pinkAccent],
+                  colors: [
+                    HomepageTheme.buildLightTheme().primaryColor,
+                    HomepageTheme.buildLightTheme().accentColor
+                  ],
                 ),
               ),
             ),
@@ -208,7 +219,8 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Text(
               "Recupera",
               style: TextStyle(
-                  fontWeight: FontWeight.w600, color: Colors.orange[200]),
+                  fontWeight: FontWeight.w600,
+                  color: HomepageTheme.buildLightTheme().primaryColor),
             ),
           )
         ],
@@ -234,7 +246,10 @@ class _SignInScreenState extends State<SignInScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
             gradient: LinearGradient(
-              colors: <Color>[Colors.orange[200], Colors.pinkAccent],
+              colors: <Color>[
+                HomepageTheme.buildLightTheme().primaryColor,
+                HomepageTheme.buildLightTheme().accentColor
+              ],
             ),
           ),
           padding: const EdgeInsets.all(12.0),
@@ -255,6 +270,7 @@ class _SignInScreenState extends State<SignInScreen> {
             }
           }
           if (user != null) {
+            BlocProvider.of<FavoriteBloc>(context).add(GetFavorites());
             Navigator.of(context).push(MaterialPageRoute(
               builder: (_) => HomePage(user: user),
             ));
@@ -290,7 +306,7 @@ class _SignInScreenState extends State<SignInScreen> {
               "Registrati",
               style: TextStyle(
                   fontWeight: FontWeight.w800,
-                  color: Colors.orange[200],
+                  color: HomepageTheme.buildLightTheme().primaryColor,
                   fontSize: _large ? 19 : (_medium ? 17 : 15)),
             ),
           )

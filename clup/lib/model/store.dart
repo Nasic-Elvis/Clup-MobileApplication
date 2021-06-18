@@ -13,6 +13,7 @@ class Store {
   final bool isFavourite;
   final String telephoneNumber;
   final String category;
+  bool pref;
   Store(
       this.idStore,
       this.name,
@@ -27,5 +28,6 @@ class Store {
       this.longitude,
       this.isFavourite,
       this.telephoneNumber,
-      this.category);
+      this.category,
+      this.pref);
 }

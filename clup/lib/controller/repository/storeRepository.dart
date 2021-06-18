@@ -4,6 +4,7 @@ import 'package:clup/controller/api/storeController.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/model/time.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoreRepository {
   final StoreApi api = new StoreApi();
@@ -40,7 +41,8 @@ class StoreRepository {
           s['longitude'].toDouble(),
           true,
           s['telephoneNumber'],
-          s['category']);
+          s['category'],
+          false);
       storeList.add(store);
 
       //if (await checkPosition(store.latitude, store.longitude)) {
@@ -70,11 +72,62 @@ class StoreRepository {
             s['longitude'].toDouble(),
             true,
             s['telephoneNumber'],
-            s['category']);
+            s['category'],
+            false);
+
         storeList.add(store);
       }
     }
     return storeList;
+  }
+
+  Future<bool> insertFavorites(idUser, idStore) async {
+    String rawResult = await api.addFavorites(idUser, idStore);
+    var resultJson = jsonDecode(rawResult);
+    if (resultJson.values.elementAt(0) == "OK") {
+      return true;
+    } else
+      return false;
+  }
+
+  Future<List<Store>> getFavorites() async {
+    List<Store> storeList = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String idUser = prefs.getString("idUser");
+    String rawStore = await api.getFavorites(idUser);
+    var storeJson = jsonDecode(rawStore);
+    if (storeJson is List) {
+      for (var s in storeJson) {
+        Store store = new Store(
+            s['idstore'],
+            s['name'],
+            s['city'],
+            s['bookableCapacity'],
+            s['capacity'],
+            s['imgUrl'],
+            s['iconUrl'],
+            s['address'],
+            s['rating'].toDouble(),
+            s['latitude'].toDouble(),
+            s['longitude'].toDouble(),
+            true,
+            s['telephoneNumber'],
+            s['category'],
+            false);
+
+        storeList.add(store);
+      }
+    }
+    return storeList;
+  }
+
+  Future<bool> deleteFavorite(idUser, idStore) async {
+    String rawResult = await api.deleteFavorite(idUser, idStore);
+    var resultJson = jsonDecode(rawResult);
+    if (resultJson.values.elementAt(0) == "OK") {
+      return true;
+    } else
+      return false;
   }
 
   static Future<bool> checkPosition(

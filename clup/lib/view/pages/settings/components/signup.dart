@@ -1,4 +1,5 @@
 import 'package:clup/controller/repository/authenticationRepository.dart';
+import 'package:clup/homepage_theme.dart';
 import 'package:clup/view/widget/custom_shape.dart';
 import 'package:clup/view/widget/customappbar.dart';
 import 'package:clup/view/widget/responsive_ui.dart';
@@ -51,8 +52,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: _height / 35,
                 ),
                 button(),
-                infoTextRow(),
-                socialIconsRow(),
+                //infoTextRow(),
+                //socialIconsRow(),
                 //signInTextRow(),
               ],
             ),
@@ -75,7 +76,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   : (_medium ? _height / 7 : _height / 6.5),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.orange[200], Colors.pinkAccent],
+                  colors: [
+                    HomepageTheme.buildLightTheme().primaryColor,
+                    HomepageTheme.buildLightTheme().accentColor
+                  ],
                 ),
               ),
             ),
@@ -91,7 +95,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   : (_medium ? _height / 11 : _height / 10),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.orange[200], Colors.pinkAccent],
+                  colors: [
+                    HomepageTheme.buildLightTheme().primaryColor,
+                    HomepageTheme.buildLightTheme().accentColor
+                  ],
                 ),
               ),
             ),
@@ -186,7 +193,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
             gradient: LinearGradient(
-              colors: <Color>[Colors.orange[200], Colors.pinkAccent],
+              colors: <Color>[
+                HomepageTheme.buildLightTheme().primaryColor,
+                HomepageTheme.buildLightTheme().accentColor
+              ],
             ),
           ),
           padding: const EdgeInsets.all(12.0),
@@ -283,7 +293,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               "Log In",
               style: TextStyle(
                   fontWeight: FontWeight.w800,
-                  color: Colors.orange[200],
+                  color: HomepageTheme.buildLightTheme().primaryColor,
                   fontSize: 19),
             ),
           )

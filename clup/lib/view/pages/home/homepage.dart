@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/category/category_event.dart';
 import 'package:clup/bloc/category/category_state.dart';
+import 'package:clup/bloc/favorites/favoritesStates.dart';
 import 'package:clup/bloc/internet/internet_cubit.dart';
 import 'package:clup/bloc/internet/internet_state.dart';
 import 'package:clup/controller/repository/storeRepository.dart';
@@ -12,6 +13,7 @@ import 'package:clup/model/user.dart';
 import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/view/pages/home/components/categories.dart';
 import 'package:clup/view/pages/home/components/store_list.dart';
+import 'package:clup/view/pages/preferences/preferences.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,17 +89,19 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return /* MultiBlocProvider(
         providers: [
           BlocProvider(
               create: (context) => InternetCubit(connectivity: connectivity)),
           BlocProvider(create: (context) => CategoryBloc(InitialState())),
         ],
-        child: Theme(
-          data: HomepageTheme.buildLightTheme(),
-          child: Container(
-            child: Scaffold(
-              body: Stack(
+        child: */
+        Theme(
+      data: HomepageTheme.buildLightTheme(),
+      child: Container(
+        child: Scaffold(
+            body: SafeArea(
+              child: Stack(
                 children: <Widget>[
                   InkWell(
                     splashColor: Colors.transparent,
@@ -109,7 +113,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                     },
                     child: Column(
                       children: <Widget>[
-                        getAppBarUI(),
+                        //getAppBarUI(),
                         Expanded(
                           child: NestedScrollView(
                             controller: _scrollController,
@@ -218,56 +222,56 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                 });
 
                                 /*if (state is InternetConnected) {
-                                  return Container(
-                                    color: HomepageTheme.buildLightTheme()
-                                        .backgroundColor,
-                                    child: FutureBuilder(
-                                      future: _storeRepository.getStore(),
-                                      builder:
-                                          (context, AsyncSnapshot snapshot) {
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        } else {
-                                          return ListView.builder(
-                                            itemCount: snapshot.data.length,
-                                            padding:
-                                                const EdgeInsets.only(top: 8),
-                                            scrollDirection: Axis.vertical,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              final int count =
-                                                  snapshot.data.length > 10
-                                                      ? 10
-                                                      : storeList.length;
-                                              final Animation<
-                                                  double> animation = Tween<
-                                                          double>(
-                                                      begin: 0.0, end: 1.0)
-                                                  .animate(CurvedAnimation(
-                                                      parent:
-                                                          animationController,
-                                                      curve: Interval(
-                                                          (1 / count) * index,
-                                                          1.0,
-                                                          curve: Curves
-                                                              .fastOutSlowIn)));
-                                              animationController.forward();
-                                              return StoreListView(
-                                                callback: () {},
-                                                store: snapshot.data
-                                                    .elementAt(index),
-                                                animation: animation,
-                                                animationController:
-                                                    animationController,
-                                              );
-                                            },
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  );*/
+                                    return Container(
+                                      color: HomepageTheme.buildLightTheme()
+                                          .backgroundColor,
+                                      child: FutureBuilder(
+                                        future: _storeRepository.getStore(),
+                                        builder:
+                                            (context, AsyncSnapshot snapshot) {
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          } else {
+                                            return ListView.builder(
+                                              itemCount: snapshot.data.length,
+                                              padding:
+                                                  const EdgeInsets.only(top: 8),
+                                              scrollDirection: Axis.vertical,
+                                              itemBuilder: (BuildContext context,
+                                                  int index) {
+                                                final int count =
+                                                    snapshot.data.length > 10
+                                                        ? 10
+                                                        : storeList.length;
+                                                final Animation<
+                                                    double> animation = Tween<
+                                                            double>(
+                                                        begin: 0.0, end: 1.0)
+                                                    .animate(CurvedAnimation(
+                                                        parent:
+                                                            animationController,
+                                                        curve: Interval(
+                                                            (1 / count) * index,
+                                                            1.0,
+                                                            curve: Curves
+                                                                .fastOutSlowIn)));
+                                                animationController.forward();
+                                                return StoreListView(
+                                                  callback: () {},
+                                                  store: snapshot.data
+                                                      .elementAt(index),
+                                                  animation: animation,
+                                                  animationController:
+                                                      animationController,
+                                                );
+                                              },
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    );*/
                               },
                             ),
                           ),
@@ -277,72 +281,9 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-              bottomNavigationBar: Container(
-                height: (MediaQuery.of(context).size.height * 0.10).toDouble(),
-                child: Stack(children: <Widget>[
-                  Positioned(
-                    bottom: 0,
-                    child: CustomPaint(
-                      size: Size(
-                          MediaQuery.of(context).size.width,
-                          (MediaQuery.of(context).size.height * 0.10)
-                              .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                      painter: RPSCustomPainter(),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    left: 12,
-                    right: 12,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Icon(Icons.search),
-                            Text(Values.Strings.exploreLabel)
-                          ],
-                        ),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Column(
-                          children: [
-                            Icon(Icons.favorite),
-                            Text(Values.Strings.preferedLabel)
-                          ],
-                        ),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Column(
-                          children: [
-                            Icon(Icons.bookmark),
-                            Text(Values.Strings.bookingsLabel)
-                          ],
-                        ),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Column(
-                          children: [
-                            new IconButton(
-                              icon: Icon(Icons.settings),
-                              highlightColor: Colors.pink,
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => SettingScreen(),
-                                ));
-                              },
-                            ),
-                            Text(Values.Strings.settingSection)
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ]),
-              ), /*BottomNavigationBar(
+            ),
+            bottomNavigationBar:
+                BottomBar() /*BottomNavigationBar(
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     icon: Icon(Icons.search),
@@ -376,8 +317,8 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                 onTap: _onItemTapped,
               ),*/
             ),
-          ),
-        ));
+      ),
+    );
   }
 
   Widget getSearchBarUI() {

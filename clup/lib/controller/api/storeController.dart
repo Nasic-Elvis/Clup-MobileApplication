@@ -48,7 +48,9 @@ class StoreApi {
     var client = http.Client();
     try {
       var uriResponse = await client.post(
-        uri, body: {'idStore': value.toString()},);
+        uri,
+        body: {'idStore': value.toString()},
+      );
       print(uriResponse.body);
       return uriResponse.body;
     } catch (e) {
@@ -56,13 +58,53 @@ class StoreApi {
     }
   }
 
-
   Future<String> getStoreByCategory(String category) async {
     var uri = Uri.parse(Address.getStoreByCategory);
     print(uri.toString());
     var client = http.Client();
     try {
       var uriResponse = await client.post(uri, body: {"category": category});
+      print(uriResponse.body);
+      return uriResponse.body;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<String> addFavorites(int idUser, int idStore) async {
+    var uri = Uri.parse(Address.insertFavorites);
+    print(uri.toString());
+    var client = http.Client();
+    try {
+      var uriResponse = await client.post(uri,
+          body: {"idUser": idUser.toString(), "idStore": idStore.toString()});
+      print(uriResponse.body);
+      return uriResponse.body;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<String> getFavorites(String idUser) async {
+    var uri = Uri.parse(Address.getFavorites);
+    print(uri.toString());
+    var client = http.Client();
+    try {
+      var uriResponse = await client.post(uri, body: {"idUser": idUser});
+      print(uriResponse.body);
+      return uriResponse.body;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<String> deleteFavorite(String idUser, String idStore) async {
+    var uri = Uri.parse(Address.deleteFavorite);
+    print(uri.toString());
+    var client = http.Client();
+    try {
+      var uriResponse = await client
+          .delete(uri, body: {"idUser": idUser, "idStore": idStore});
       print(uriResponse.body);
       return uriResponse.body;
     } catch (e) {

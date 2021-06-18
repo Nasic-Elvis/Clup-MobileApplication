@@ -1,20 +1,14 @@
-import 'package:clup/bloc/favorites/favoriteBloc.dart';
-import 'package:clup/bloc/favorites/favoritesEvents.dart';
-import 'package:clup/bloc/favorites/favoritesStates.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
-import 'package:clup/singletonPreferences.dart';
 import 'package:clup/view/pages/details/details_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 bool isPressed = true;
 
-class StoreListView extends StatefulWidget {
-  const StoreListView(
+class StoreFavoriteView extends StatelessWidget {
+  const StoreFavoriteView(
       {Key key,
       this.store,
       this.animationController,
@@ -28,48 +22,22 @@ class StoreListView extends StatefulWidget {
   final Animation<dynamic> animation;
 
   @override
-  _StoreListViewState createState() => _StoreListViewState(this.store);
-}
-
-class _StoreListViewState extends State<StoreListView> {
-  Store store;
-  SharedPreferences prefs;
-  Singleton _singleton;
-
-  _StoreListViewState(this.store);
-  @override
-  void initState() {
-    getSharedPreferences();
-    if (prefs != null) {
-      if (prefs.getString("idUser") != null) {
-        BlocProvider.of<FavoriteBloc>(context).add(GetFavorites());
-      }
-    }
-    _singleton = Singleton();
-  }
-
-  Future<void> getSharedPreferences() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.toString();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: widget.animationController,
+      animation: animationController,
       builder: (BuildContext context, Widget child) {
         return FadeTransition(
-          opacity: widget.animation,
+          opacity: animation,
           child: Transform(
             transform: Matrix4.translationValues(
-                0.0, 50 * (1.0 - widget.animation.value), 0.0),
+                0.0, 50 * (1.0 - animation.value), 0.0),
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 24, right: 24, top: 8, bottom: 16),
               child: InkWell(
                 splashColor: Colors.white,
                 onTap: () {
-                  widget.callback();
+                  callback();
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -91,15 +59,14 @@ class _StoreListViewState extends State<StoreListView> {
                             Navigator.pushNamed(
                               context,
                               DetailsScreen.routeName,
-                              arguments:
-                                  ProductDetailsArguments(store: widget.store),
+                              arguments: ProductDetailsArguments(store: store),
                             );
                           },
                           child: new Column(children: <Widget>[
                             AspectRatio(
                               aspectRatio: 2,
                               child: Image.network(
-                                widget.store.imageUrl,
+                                store.imageUrl,
                                 fit: BoxFit.fitWidth,
                                 colorBlendMode: BlendMode.color,
                               ),
@@ -123,7 +90,7 @@ class _StoreListViewState extends State<StoreListView> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              widget.store.name,
+                                              store.name,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -137,7 +104,7 @@ class _StoreListViewState extends State<StoreListView> {
                                                   MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  widget.store.address,
+                                                  store.address,
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey
@@ -163,7 +130,7 @@ class _StoreListViewState extends State<StoreListView> {
                                                   SmoothStarRating(
                                                     allowHalfRating: true,
                                                     starCount: 5,
-                                                    rating: widget.store.rating,
+                                                    rating: store.rating,
                                                     size: 20,
                                                     color: HomepageTheme
                                                             .buildLightTheme()
@@ -190,7 +157,7 @@ class _StoreListViewState extends State<StoreListView> {
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          '${widget.store.booktableCapacity} posti',
+                                          '${store.booktableCapacity} posti',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -206,126 +173,6 @@ class _StoreListViewState extends State<StoreListView> {
                           ]),
                         ),
                         Positioned(
-                          top: 8,
-                          right: 8,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(32.0),
-                              ),
-                              onTap: () {},
-                              child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child:
-                                      BlocBuilder<FavoriteBloc, FavoriteState>(
-                                          builder: (context, state) {
-                                    if (state is InitFavorites &&
-                                        !_singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite_border,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(AddFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    }
-                                    if (state is InitFavorites &&
-                                        _singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(RemoveFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    }
-                                    if (state is Favorite &&
-                                        !_singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite_border,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(AddFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    } else if (state is Favorite &&
-                                        _singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(RemoveFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    } else if (state is NoFavorite &&
-                                        !_singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite_border,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          widget.store.pref = true;
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(AddFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    } else if (state is NoFavorite &&
-                                        _singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          widget.store.pref = true;
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(RemoveFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    }
-                                  })),
-                            ),
-                          ),
-                        ),
-                        Positioned(
                             bottom: 132,
                             left: 32,
                             child: Container(
@@ -338,7 +185,7 @@ class _StoreListViewState extends State<StoreListView> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(40.0),
                                 child: Image.network(
-                                  widget.store.iconUrl,
+                                  store.iconUrl,
                                   fit: BoxFit.scaleDown,
                                 ),
                               ),
