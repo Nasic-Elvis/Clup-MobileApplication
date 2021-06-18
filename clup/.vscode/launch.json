@@ -19,7 +19,6 @@
             "name": "Debug Unit Test",
             "type": "dart",
             "request": "launch",
-            "justMyCode": true,
         }
 
     ]

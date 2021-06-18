@@ -16,7 +16,7 @@ class Categories extends StatelessWidget {
     List<Map<String, dynamic>> categories = [
       {"icon": FontAwesomeIcons.home, "text": "Tutti"},
       {"icon": FontAwesomeIcons.building, "text": "Attività"},
-      {"icon": FontAwesomeIcons.shoppingCart, "text": "Supermercato"},
+      {"icon": FontAwesomeIcons.shoppingCart, "text": "Supermercati"},
       {"icon": FontAwesomeIcons.heartbeat, "text": "Sanità"},
       {"icon": FontAwesomeIcons.wpforms, "text": "Servizi"},
       /*{"icon": "assets/icons/Game Icon.svg", "text": "Game"},
@@ -42,7 +42,7 @@ class Categories extends StatelessWidget {
                   BlocProvider.of<CategoryBloc>(context)
                       .add(SelectOtherActivity());
                   break;
-                case 'Supermercato':
+                case 'Supermercati':
                   BlocProvider.of<CategoryBloc>(context)
                       .add(SelectSupermarket());
                   break;
@@ -100,7 +100,7 @@ class _CategoryCardState extends State<CategoryCard> {
             Text(
               widget.text,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12.0),
+              style: TextStyle(fontSize: 9.0),
             )
           ],
         ),

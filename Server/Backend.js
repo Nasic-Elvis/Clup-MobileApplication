@@ -41,6 +41,27 @@ app.get('/getStores', function(request, response){
     });
 });
 
+
+app.post('/getFavorites', function(request, response){
+    var idUser = request.body.idUser;
+    console.log(idUser);
+    if(idUser)
+{    connection.query('SELECT * FROM store INNER JOIN favorites ON store.idStore = favorites.idStore WHERE idUser=?', [idUser], function(error, results, fields){
+        if(error){
+            throw error;
+        }
+        
+        console.log(results);
+        if(results.length > 0){
+            response.json(results);
+        }
+        else{
+            response.json({result:'KO'});
+        }
+        response.end();
+    });}
+});
+
 app.post('/login', function(request, response) {
     var username = request.body.username;
     var password = request.body.password;
@@ -99,6 +120,26 @@ app.post('/storeInCity', function(req,res)
     }
 });
 
+app.delete('/deleteFavorite', function(request, response){
+    var idStore = request.body.idStore;
+    var idUser = request.body.idUser;
+    console.log(idStore);
+    if(idStore){
+        connection.query('DELETE FROM favorites WHERE idUser = ? AND  idStore=?', [idUser, idStore], function(error, results, fields){
+            if(error){
+                throw error;
+            }
+            console.log(results);
+            response.json({result: "OK"});
+            response.end();
+        })
+    }
+    else{
+        response.json({result: "KO"});
+        response.end();
+    }
+})
+
 app.post('/signUp', function(request, response){
     var name = request.body.name;
     var surname = request.body.surname;
@@ -119,6 +160,29 @@ app.post('/signUp', function(request, response){
         {
             connection.query("INSERT INTO user(Name, Surname, TelephoneNumber, Email, Username, Password) VALUES(?, ?, ?, ?, ?, ?)",
             [name, surname, telephoneNumber, email, email, password], function(error, results, fields){
+                if(error){
+                    throw error;
+                }
+                console.log(results);
+                response.json({result: "OK"});
+                response.end();
+            })
+        }
+        else{
+            response.json({result: "KO"});
+            response.end();
+        }
+});
+
+app.post('/insertFavorites', function(request, response){
+    var idUser = request.body.idUser;
+    var idStore = request.body.idStore;
+    console.log(idUser);
+    console.log(idStore);
+    if(idUser && idStore)
+        {
+            connection.query("INSERT INTO favorites(idStore,idUser) VALUES(?,?)",
+            [idStore,idUser], function(error, results, fields){
                 if(error){
                     throw error;
                 }
@@ -164,6 +228,56 @@ app.post('/storeByCategory', (req,res) => {
                 res.json(results);
             }
             else {
+                res.json({result:'KO'});
+            }
+        })
+    }
+})
+
+
+ app.post('/getTime', (req, res) =>{
+     var idStore = req.body.idStore;
+     console.log(req.body);
+     console.log(idStore);
+     if(idStore){
+        connection.query('select * from days INNER JOIN storeindays on iddays = idDay WHERE idStore = ?;', [idStore], function(error,results,fields){
+            if(error){
+                throw error;
+            }
+            console.log(results);
+            if(results.length>0){
+                res.json(results);
+            }
+            else {
+                res.json({result:'KO'});
+            }
+        })
+    }
+ })
+
+ 
+
+
+ app.post('/booking', (req,res) => {
+    var idStore = req.body.idStore;
+    var idUSer = req.body.idUser;
+    var date = req.body.date;
+    var time = req.body.time;
+    console.log(idStore);
+    console.log(idUSer);
+    console.log(date);
+    console.log(console);
+
+    if(idStore && idUSer && date && time){
+        connection.query('INSERT INTO booking(bookingDate, ArrivalTime, idUSer, idStore) VALUES(?, ?, ?, ?)', 
+        [date, time, idUSer, idStore], function(error,results,fields){
+            if(error){
+                throw error;
+            }
+            if(results.affectedRows>0){
+            res.json({result:'OK'});
+            }
+            else{
                 res.json({result:'KO'});
             }
         })

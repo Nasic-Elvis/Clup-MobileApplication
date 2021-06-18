@@ -1,10 +1,17 @@
 import 'dart:io';
 
 import 'package:clup/app_theme.dart';
+import 'package:clup/bloc/favorites/favoritesStates.dart';
 import 'package:clup/utils/routes.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/category/category_bloc.dart';
+import 'bloc/category/category_state.dart';
+import 'bloc/favorites/favoriteBloc.dart';
+import 'bloc/internet/internet_cubit.dart';
 import 'view/pages/home/homepage.dart';
 
 AppTheme _appTheme = AppTheme();
@@ -18,6 +25,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  Connectivity connectivity = Connectivity();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -29,16 +37,23 @@ class MyApp extends StatelessWidget {
       systemNavigationBarDividerColor: Colors.grey,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
-    return MaterialApp(
-      title: 'Clup',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: _appTheme.currentTheme(),
-      initialRoute: HomePage.routeName,
-      routes: routes,
-      //home: MapScreen(lat: 9.84738992, long: -13.48293, address: "CIAO", city: "CONAD", ),
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (context) => InternetCubit(connectivity: connectivity)),
+          BlocProvider(create: (context) => CategoryBloc(InitialState())),
+          BlocProvider(create: (context) => FavoriteBloc(InitFavorites()))
+        ],
+        child: MaterialApp(
+          title: 'Clup',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: _appTheme.currentTheme(),
+          initialRoute: HomePage.routeName,
+          routes: routes,
+          //home: MapScreen(lat: 9.84738992, long: -13.48293, address: "CIAO", city: "CONAD", ),
+        ));
   }
 }
 
