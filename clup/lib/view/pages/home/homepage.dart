@@ -9,7 +9,6 @@ import 'package:clup/bloc/internet/internet_state.dart';
 import 'package:clup/controller/repository/storeRepository.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
-import 'package:clup/model/user.dart';
 import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/view/pages/home/components/categories.dart';
 import 'package:clup/view/pages/home/components/store_list.dart';
@@ -24,19 +23,17 @@ import 'components/bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
   static String routeName = "/home";
-  final User user;
 
-  HomePage({this.user});
+  HomePage();
 
   @override
-  _HomePage createState() => _HomePage(this.user);
+  _HomePage createState() => _HomePage();
 }
 
 class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   CategoryBloc _categoryBloc;
   Connectivity connectivity;
-  User user;
-  _HomePage(this.user);
+  _HomePage();
   StoreRepository _storeRepository = StoreRepository();
   List<Store> storeList = [];
   AnimationController animationController;
@@ -533,15 +530,14 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             ),
             Expanded(
               child: Center(
-                child: Text(
-                  user != null
+                child: Text(""
+                    /*user != null
                       ? '${Values.Strings.title}, ${user.name}'
                       : 'Customer Line Up',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 22,
-                  ),
-                ),
+                    fontSize: 22,*/
+                    ),
               ),
             ),
             Container(

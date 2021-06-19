@@ -1,3 +1,6 @@
+import 'package:clup/bloc/authentication/authentication_bloc.dart';
+import 'package:clup/bloc/authentication/authentication_event.dart';
+import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/favorites/favoriteBloc.dart';
 import 'package:clup/bloc/favorites/favoritesEvents.dart';
@@ -240,23 +243,33 @@ class _SignInScreenState extends State<SignInScreen> {
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: GestureDetector(
-        child: Container(
-          alignment: Alignment.center,
-          width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            gradient: LinearGradient(
-              colors: <Color>[
-                HomepageTheme.buildLightTheme().primaryColor,
-                HomepageTheme.buildLightTheme().accentColor
-              ],
+        child: BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (context, state) {
+            if (state is Logged) {
+              BlocProvider.of<FavoriteBloc>(context).add(GetFavorites());
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => HomePage()));
+            }
+          },
+          child: Container(
+            alignment: Alignment.center,
+            width:
+                _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              gradient: LinearGradient(
+                colors: <Color>[
+                  HomepageTheme.buildLightTheme().primaryColor,
+                  HomepageTheme.buildLightTheme().accentColor
+                ],
+              ),
             ),
+            padding: const EdgeInsets.all(12.0),
+            child: Text('LOG IN',
+                style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
           ),
-          padding: const EdgeInsets.all(12.0),
-          child: Text('LOG IN',
-              style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
         ),
-        onTap: () async {
+        onTap: () {
           String validEmail = validator.validateEmail(emailController.text);
           print(validEmail);
           String validPassword =
@@ -265,16 +278,18 @@ class _SignInScreenState extends State<SignInScreen> {
           User user;
           if (validEmail == null) {
             if (validPassword == null) {
-              user = await AuthRepository.signIn(
-                  emailController.text, passwordController.text);
+              BlocProvider.of<AuthenticationBloc>(context)
+                  .add(Login(emailController.text, passwordController.text));
+              //user = await AuthRepository.signIn(
+              //emailController.text, passwordController.text);
             }
           }
-          if (user != null) {
+          /*if (user != null) {
             BlocProvider.of<FavoriteBloc>(context).add(GetFavorites());
             Navigator.of(context).push(MaterialPageRoute(
               builder: (_) => HomePage(user: user),
             ));
-          }
+          }*/
         },
       ),
     );

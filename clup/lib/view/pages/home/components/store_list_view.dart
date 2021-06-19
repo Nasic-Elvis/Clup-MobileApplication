@@ -1,3 +1,5 @@
+import 'package:clup/bloc/authentication/authentication_bloc.dart';
+import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/bloc/favorites/favoriteBloc.dart';
 import 'package:clup/bloc/favorites/favoritesEvents.dart';
 import 'package:clup/bloc/favorites/favoritesStates.dart';
@@ -217,111 +219,127 @@ class _StoreListViewState extends State<StoreListView> {
                               onTap: () {},
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child:
-                                      BlocBuilder<FavoriteBloc, FavoriteState>(
+                                  child: BlocBuilder<AuthenticationBloc,
+                                      AuthenticationState>(
+                                    builder: (context, authenticationState) {
+                                      return BlocBuilder<FavoriteBloc,
+                                              FavoriteState>(
                                           builder: (context, state) {
-                                    if (state is InitFavorites &&
-                                        !_singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite_border,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(AddFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    }
-                                    if (state is InitFavorites &&
-                                        _singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(RemoveFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    }
-                                    if (state is Favorite &&
-                                        !_singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite_border,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(AddFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    } else if (state is Favorite &&
-                                        _singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(RemoveFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    } else if (state is NoFavorite &&
-                                        !_singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite_border,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          widget.store.pref = true;
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(AddFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    } else if (state is NoFavorite &&
-                                        _singleton.preferences
-                                            .contains(widget.store.idStore)) {
-                                      return IconButton(
-                                        icon: new Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        ),
-                                        highlightColor: Colors.green,
-                                        onPressed: () {
-                                          widget.store.pref = true;
-                                          BlocProvider.of<FavoriteBloc>(context)
-                                              .add(RemoveFavorites(
-                                                  widget.store.idStore,
-                                                  widget.store.name));
-                                        },
-                                      );
-                                    }
-                                  })),
+                                        if (authenticationState is Logged) {
+                                          if (state is InitFavorites &&
+                                              !_singleton.preferences.contains(
+                                                  widget.store.idStore)) {
+                                            return IconButton(
+                                              icon: new Icon(
+                                                Icons.favorite_border,
+                                                color: Colors.red,
+                                              ),
+                                              highlightColor: Colors.green,
+                                              onPressed: () {
+                                                BlocProvider.of<FavoriteBloc>(
+                                                        context)
+                                                    .add(AddFavorites(
+                                                        widget.store.idStore,
+                                                        widget.store.name));
+                                              },
+                                            );
+                                          }
+                                          if (state is InitFavorites &&
+                                              _singleton.preferences.contains(
+                                                  widget.store.idStore)) {
+                                            return IconButton(
+                                              icon: new Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              ),
+                                              highlightColor: Colors.green,
+                                              onPressed: () {
+                                                BlocProvider.of<FavoriteBloc>(
+                                                        context)
+                                                    .add(RemoveFavorites(
+                                                        widget.store.idStore,
+                                                        widget.store.name));
+                                              },
+                                            );
+                                          }
+                                          if (state is Favorite &&
+                                              !_singleton.preferences.contains(
+                                                  widget.store.idStore)) {
+                                            return IconButton(
+                                              icon: new Icon(
+                                                Icons.favorite_border,
+                                                color: Colors.red,
+                                              ),
+                                              highlightColor: Colors.green,
+                                              onPressed: () {
+                                                BlocProvider.of<FavoriteBloc>(
+                                                        context)
+                                                    .add(AddFavorites(
+                                                        widget.store.idStore,
+                                                        widget.store.name));
+                                              },
+                                            );
+                                          } else if (state is Favorite &&
+                                              _singleton.preferences.contains(
+                                                  widget.store.idStore)) {
+                                            return IconButton(
+                                              icon: new Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              ),
+                                              highlightColor: Colors.green,
+                                              onPressed: () {
+                                                BlocProvider.of<FavoriteBloc>(
+                                                        context)
+                                                    .add(RemoveFavorites(
+                                                        widget.store.idStore,
+                                                        widget.store.name));
+                                              },
+                                            );
+                                          } else if (state is NoFavorite &&
+                                              !_singleton.preferences.contains(
+                                                  widget.store.idStore)) {
+                                            return IconButton(
+                                              icon: new Icon(
+                                                Icons.favorite_border,
+                                                color: Colors.red,
+                                              ),
+                                              highlightColor: Colors.green,
+                                              onPressed: () {
+                                                widget.store.pref = true;
+                                                BlocProvider.of<FavoriteBloc>(
+                                                        context)
+                                                    .add(AddFavorites(
+                                                        widget.store.idStore,
+                                                        widget.store.name));
+                                              },
+                                            );
+                                          } else if (state is NoFavorite &&
+                                              _singleton.preferences.contains(
+                                                  widget.store.idStore)) {
+                                            return IconButton(
+                                              icon: new Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              ),
+                                              highlightColor: Colors.green,
+                                              onPressed: () {
+                                                widget.store.pref = true;
+                                                BlocProvider.of<FavoriteBloc>(
+                                                        context)
+                                                    .add(RemoveFavorites(
+                                                        widget.store.idStore,
+                                                        widget.store.name));
+                                              },
+                                            );
+                                          }
+                                        }
+                                        if (authenticationState is Unlogged) {
+                                          return SizedBox();
+                                        }
+                                      });
+                                    },
+                                  )),
                             ),
                           ),
                         ),
