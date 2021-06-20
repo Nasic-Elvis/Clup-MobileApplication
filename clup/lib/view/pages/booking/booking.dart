@@ -2,7 +2,6 @@ import 'package:clup/model/booking.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/booking/components/dateTimePicker.dart';
 import 'package:clup/view/pages/details/components/app_bar.dart';
-import 'package:clup/view/pages/details/components/body.dart';
 import 'package:flutter/material.dart';
 
 
@@ -28,7 +27,7 @@ class _BookingPage extends State<BookingPage>
     print(agrs.booking.day);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(rating: agrs.store.rating),
+      appBar: CustomAppBar(name: "Prenotazione"),
       body: DateTimePicker(agrs.store),
     );
   }

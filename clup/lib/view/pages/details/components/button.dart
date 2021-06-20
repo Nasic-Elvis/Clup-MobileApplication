@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../homepage_theme.dart';
+
 class DefaultButton extends StatelessWidget {
   const DefaultButton({
     Key key,
@@ -16,12 +18,12 @@ class DefaultButton extends StatelessWidget {
       height: (28/ 375.0)* MediaQuery.of(context).size.height,
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: Colors.greenAccent,
+        color: HomepageTheme.buildLightTheme().primaryColor,
         onPressed: press,
         child: Text(
           text,
           style: TextStyle(
-            fontSize: (20/ 375.0)* MediaQuery.of(context).size.width,
+            fontSize: (20 / 375.0) * MediaQuery.of(context).size.width,
             color: Colors.black,
           ),
         ),

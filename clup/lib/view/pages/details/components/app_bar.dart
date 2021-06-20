@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CustomAppBar extends PreferredSize {
-  final double rating;
-  CustomAppBar({@required this.rating});
+  final String name;
+
+  CustomAppBar({@required this.name});
 
   @override
-  // AppBar().preferredSize.height provide us the height that appy on our app bar
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
 
   @override
@@ -20,17 +21,17 @@ class CustomAppBar extends PreferredSize {
               height: MediaQuery.of(context).size.width * 0.30,
               width: MediaQuery.of(context).size.width * 0.1,
               child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60),
-                  ),
-                  color: Colors.white,
-                  padding: EdgeInsets.zero,
-                  onPressed: () => Navigator.pop(context),
-                  child:
-                      SizedBox() /*SvgPicture.asset(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60),
+                ),
+                color: Colors.white,
+                padding: EdgeInsets.zero,
+                onPressed: () => Navigator.pop(context),
+                child:
+                SvgPicture.asset(
                   "assets/icons/Back ICon.svg",
                   height: 20,
-                ),*/
+                ),
                   ),
             ),
             Spacer(),
@@ -43,7 +44,7 @@ class CustomAppBar extends PreferredSize {
               child: Row(
                 children: [
                   Text(
-                    "$rating",
+                    "$name",
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,

@@ -25,7 +25,7 @@ class _DetailsScreen extends State<DetailsScreen>
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(rating: agrs.store.rating),
+      appBar: CustomAppBar(name: "Dettagli negozio"),
       body: Body(store: agrs.store),
     );
   }

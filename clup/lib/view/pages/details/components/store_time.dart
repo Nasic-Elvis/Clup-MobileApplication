@@ -73,6 +73,7 @@ class StoreTime extends PreferredSize {
                     Divider(
                       thickness: 1.0,
                       height: 2.0,
+                      color: Colors.transparent,
                     ),
                   ]),
                 ),

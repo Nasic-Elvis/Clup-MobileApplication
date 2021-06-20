@@ -1,11 +1,14 @@
 import 'package:clup/controller/api/storeController.dart';
 import 'package:clup/model/store.dart';
+import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/view/pages/details/components/button.dart';
 import 'package:clup/view/pages/details/components/top_rounded_container.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../homepage_theme.dart';
 
 String _setDate = "";
 int idUser = 0;
@@ -97,16 +100,16 @@ class _DateTimePickerState extends State<DateTimePicker> {
     return ListView(
       children: [
         TopRoundedContainer(
-          color: Colors.greenAccent,
+          color: HomepageTheme.buildLightTheme().primaryColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Container(
                   child: Image.network(
-                    store.imageUrl,
-                    scale: 0.7,
-                  )),
+                store.imageUrl,
+                scale: 0.7,
+              )),
               Center(
                 child: Text("\n" + store.city + ", " + store.address + "\n",
                     style:
@@ -199,34 +202,51 @@ class _DateTimePickerState extends State<DateTimePicker> {
                               !prefs.getBool('login')) {
                             print("NO");
                           } else {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Conferma di prenotazione'),
-                                    content: const Text(
-                                        'Sei sicuro di voler prenotare per il giorno selezionato?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () async {
-                                      statusCode = await storeApi.booking(
-                                          _setDate,
+                            bool okCheck = checkDateTime(
+                                _setDate, _timeController.text);
+                            if (!okCheck) {
+                              Fluttertoast.showToast(
+                                  msg:
+                                  "Errore durante l'inserimento della data.",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.SNACKBAR,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.black,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                            else
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    AlertDialog(
+                                      title: const Text(
+                                          'Conferma di prenotazione'),
+                                      content: const Text(
+                                          'Sei sicuro di voler prenotare per il giorno selezionato?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () async {
+                                            statusCode = await storeApi.booking(
+                                                _setDate,
                                           _timeController.text,
                                           idUser.toString(),
                                           store.idStore);
                                       if (statusCode == 200) {
                                         Fluttertoast.showToast(
                                             msg:
-                                                "Prenotazione effettuata con successo",
+                                            "Prenotazione effettuata con successo",
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.SNACKBAR,
                                             timeInSecForIosWeb: 1,
                                             backgroundColor: Colors.black,
                                             textColor: Colors.white,
                                             fontSize: 16.0);
+
                                       } else {
                                         Fluttertoast.showToast(
                                             msg:
-                                                "Errore durante la prenotazione. Riprovare",
+                                            "Errore durante la prenotazione. Riprovare",
                                             toastLength: Toast.LENGTH_SHORT,
                                             gravity: ToastGravity.SNACKBAR,
                                             timeInSecForIosWeb: 1,
@@ -234,7 +254,12 @@ class _DateTimePickerState extends State<DateTimePicker> {
                                             textColor: Colors.white,
                                             fontSize: 16.0);
                                       }
-                                      Navigator.pop(context, 'SI');
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BookingList()), (
+                                                Route<dynamic> route) => false);
                                     },
                                     child: const Text('SI',
                                         style: TextStyle(color: Colors.green)),
@@ -264,4 +289,16 @@ class _DateTimePickerState extends State<DateTimePicker> {
       ],
     );
   }
+}
+
+bool checkDateTime(String date, String time) {
+  //TODO: Manca controllo sul minuto dell'orario.
+  DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(date);
+  int hour = int.parse(time.substring(0, 2));
+  DateTime t = new DateTime(
+      tempDate.year, tempDate.month, tempDate.day, hour, 30);
+  if (t.isBefore(DateTime.now()))
+    return false;
+  else
+    return true;
 }
