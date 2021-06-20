@@ -36,8 +36,10 @@ class Body extends StatelessWidget {
     storeTime.whenComplete(() => print("OK"));
 
     storeTime.then((value) {
-      from = value[0].from;
-      to = value[0].to;
+      var elements = value.asMap();
+      int day = DateTime.now().weekday;
+      from = elements[day - 1].from;
+      to = elements[day - 1].to;
       timeOfStore = from.toString() + " - " + to.toString();
     });
     return ListView(

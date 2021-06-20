@@ -29,6 +29,7 @@ class RealTime extends PreferredSize {
         child: ExpansionTileCard(
           baseColor: Colors.grey[50],
           expandedColor: Colors.grey[50],
+          initiallyExpanded: true,
           key: cardA,
           //leading: CircleAvatar(
           //   child:),

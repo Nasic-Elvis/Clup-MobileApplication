@@ -1,5 +1,6 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../widget/maps.dart';
 
@@ -44,6 +45,7 @@ class ContactTime extends PreferredSize {
                   fontSize: 16,
                   color: Colors.black),
             ),
+            onLongPress: () => launch("tel://" + this.subtitle.toString()),
           ),
           //Text(this.subtitle, style: TextStyle(fontWeight:  FontWeight.bold, fontSize: 16, color: Colors.black),),
           children: <Widget>[

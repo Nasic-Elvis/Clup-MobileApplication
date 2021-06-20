@@ -44,7 +44,8 @@ dependencies:
   flutter_datetime_picker: ^1.5.1
   fluttertoast: ^8.0.7
   toast: ^0.1.5
-
+  googleapis: ^3.0.0
+  googleapis_auth: ^1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -28,7 +28,7 @@ class FavoriteBloc extends Bloc<FavoritesEvent, FavoriteState> {
 
     if (event is RemoveFavorites) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String idUser = prefs.getString("idUser");
+      int idUser = prefs.getInt("idUser");
 
       bool result = await _storeRepository.deleteFavorite(
           idUser, event.idStore.toString());

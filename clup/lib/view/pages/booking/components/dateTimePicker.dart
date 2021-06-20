@@ -292,12 +292,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
 }
 
 bool checkDateTime(String date, String time) {
-  //TODO: Manca controllo sul minuto dell'orario.
   DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(date);
-  int hour = int.parse(time.substring(0, 2));
-  DateTime t = new DateTime(
-      tempDate.year, tempDate.month, tempDate.day, hour, 30);
-  if (t.isBefore(DateTime.now()))
+  var timeSplitter = time.split(":");
+  DateTime finalDate = new DateTime(tempDate.year, tempDate.month, tempDate.day,
+      int.parse(timeSplitter[0]), int.parse(timeSplitter[1]));
+  if (finalDate.isBefore(DateTime.now()))
     return false;
   else
     return true;

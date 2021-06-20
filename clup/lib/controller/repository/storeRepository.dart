@@ -93,8 +93,8 @@ class StoreRepository {
   Future<List<Store>> getFavorites() async {
     List<Store> storeList = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String idUser = prefs.getString("idUser");
-    String rawStore = await api.getFavorites(idUser);
+    int idUser = prefs.getInt("idUser");
+    String rawStore = await api.getFavorites(idUser.toString());
     var storeJson = jsonDecode(rawStore);
     if (storeJson is List) {
       for (var s in storeJson) {
@@ -122,7 +122,7 @@ class StoreRepository {
   }
 
   Future<bool> deleteFavorite(idUser, idStore) async {
-    String rawResult = await api.deleteFavorite(idUser, idStore);
+    String rawResult = await api.deleteFavorite(idUser.toString(), idStore);
     var resultJson = jsonDecode(rawResult);
     if (resultJson.values.elementAt(0) == "OK") {
       return true;
