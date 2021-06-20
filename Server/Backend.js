@@ -8,7 +8,7 @@ const app = express();
 var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    password : 'admin',
+    password : '',
     database : 'clup_engsw2020',
     timezone : "+00:00",
     multipleStatements: true
@@ -39,6 +39,44 @@ app.get('/getStores', function(request, response){
         }
         response.end();
     });
+});
+
+app.post('/deleteBookings', function(request, response){
+    var idBooking = request.body.idBooking;
+    console.log(idBooking);
+    if(idBooking)
+{    connection.query('UPDATE booking SET deleted = 1  where idBooking =?', [idBooking], function(error, results, fields){
+        if(error){
+            throw error;
+        }
+        
+        console.log(results);
+        if(results.changedRows  > 0){
+            response.json({result:'OK'});
+        }
+        else{
+            response.json({result:'KO'});
+        }
+        response.end();
+    });}
+});
+
+app.post('/getBookings', function(request, response){
+    var idUser = request.body.idUser;
+    console.log(idUser);
+    if(idUser)
+{    connection.query('SELECT * FROM clup_engsw2020.store INNER JOIN booking ON store.idStore = booking.idStore WHERE idUser = ? AND deleted = 0', [idUser], function(error, results, fields){
+        if(error){
+            throw error;
+        }
+        
+        console.log(results);
+     
+            response.json(results);
+        
+        
+        response.end();
+    });}
 });
 
 

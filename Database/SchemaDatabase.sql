@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`store` (
   `city` VARCHAR(45) NULL DEFAULT NULL,
   `capacity` INT NULL DEFAULT NULL,
   `bookableCapacity` INT NULL DEFAULT NULL,
-  `imgUrl` VARCHAR(1200) NULL DEFAULT NULL,
+  `imgUrl` VARCHAR(550) NULL DEFAULT NULL,
   `rating` DOUBLE NULL DEFAULT NULL,
   `latitude` DOUBLE NULL DEFAULT NULL,
   `longitude` DOUBLE NULL DEFAULT NULL,
@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`booking` (
   `FinishTime` TIME NULL DEFAULT NULL,
   `idUser` INT NULL DEFAULT NULL,
   `idStore` INT NULL DEFAULT NULL,
+  `deleted` INT NULL DEFAULT '0',
   PRIMARY KEY (`idBooking`),
   INDEX `idUser_idx` (`idUser` ASC) VISIBLE,
   INDEX `idStore_idx` (`idStore` ASC) VISIBLE,
@@ -88,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`booking` (
     FOREIGN KEY (`idUser`)
     REFERENCES `clup_engsw2020`.`user` (`idUser`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 129
+AUTO_INCREMENT = 113
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
@@ -115,7 +116,31 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`days` (
   `day` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`iddays`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 22
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
+
+-- -----------------------------------------------------
+-- Table `clup_engsw2020`.`favorites`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`favorites` (
+  `idfavorites` INT NOT NULL AUTO_INCREMENT,
+  `idStore` INT NOT NULL,
+  `idUser` INT NOT NULL,
+  PRIMARY KEY (`idfavorites`),
+  INDEX `idStoreinFavorites_idx` (`idStore` ASC) VISIBLE,
+  INDEX `idUserInFavorites_idx` (`idUser` ASC) VISIBLE,
+  CONSTRAINT `idStoreinFavorites`
+    FOREIGN KEY (`idStore`)
+    REFERENCES `clup_engsw2020`.`store` (`idstore`)
+    ON DELETE CASCADE,
+  CONSTRAINT `idUserInFavorites`
+    FOREIGN KEY (`idUser`)
+    REFERENCES `clup_engsw2020`.`user` (`idUser`)
+    ON DELETE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 87
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
@@ -139,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `clup_engsw2020`.`storeindays` (
     FOREIGN KEY (`idStore`)
     REFERENCES `clup_engsw2020`.`store` (`idstore`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 14
+AUTO_INCREMENT = 38
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
