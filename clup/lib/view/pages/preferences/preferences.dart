@@ -3,12 +3,14 @@ import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/controller/repository/storeRepository.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/utils/values.dart';
-import 'package:clup/utils/values.dart';
+import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/view/pages/home/components/bottom_bar.dart';
 import 'package:clup/view/pages/preferences/storePref.dart';
 import 'package:clup/view/pages/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../home/homepage.dart';
 
 class Preferences extends StatefulWidget {
   const Preferences({Key key}) : super(key: key);
@@ -131,7 +133,7 @@ class BottomBar extends StatelessWidget {
                     highlightColor: Colors.pink,
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => SettingScreen(),
+                        builder: (_) => HomePage(),
                       ));
                     },
                   ),
@@ -165,7 +167,7 @@ class BottomBar extends StatelessWidget {
                     highlightColor: Colors.pink,
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => SettingScreen(),
+                        builder: (_) => BookingList(),
                       ));
                     },
                   ),

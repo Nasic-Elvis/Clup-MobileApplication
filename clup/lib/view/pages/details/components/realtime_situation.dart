@@ -76,8 +76,8 @@ class RealTime extends PreferredSize {
                               builder: (_) => SignInScreen(),
                             ));
                           } else {
-                            Booking booking =
-                                new Booking("10:20", "Lunedì", store, null);
+                            Booking booking = new Booking(
+                                139, null, "10:20", "Lunedì", store, null);
                             Navigator.pushNamed(
                               context,
                               BookingPage.routeName,
