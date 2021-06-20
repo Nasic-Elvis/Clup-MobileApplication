@@ -26,7 +26,9 @@ class StoreRepository {
     List<Store> storeList = [];
     String rawStore = await api.getStore();
     var storeJson = jsonDecode(rawStore);
+    print(storeJson);
     for (var s in storeJson) {
+      print(s);
       Store store = new Store(
           s['idstore'],
           s['name'],

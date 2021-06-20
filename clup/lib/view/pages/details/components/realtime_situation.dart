@@ -3,6 +3,7 @@ import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/booking/booking.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../settings/components/signin.dart';
@@ -14,8 +15,17 @@ class RealTime extends PreferredSize {
   final String title;
   final String subtitle;
   final Store store;
+  final TextStyle style;
+  final bool bookable;
 
-  RealTime({@required this.title, this.subtitle, this.store});
+  RealTime(
+      {@required this.title,
+      this.subtitle,
+      this.store,
+      this.style,
+      this.bookable});
+
+  String message;
 
   @override
   // AppBar().preferredSize.height provide us the height that appy on our app bar
@@ -25,7 +35,7 @@ class RealTime extends PreferredSize {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
         child: ExpansionTileCard(
           baseColor: Colors.grey[50],
           expandedColor: Colors.grey[50],
@@ -45,10 +55,7 @@ class RealTime extends PreferredSize {
             ),
             title: Text(
               this.subtitle.toString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 16,
-                  color: Colors.black),
+              style: this.style,
             ),
           ),
           children: <Widget>[
@@ -68,24 +75,37 @@ class RealTime extends PreferredSize {
                       DefaultButton(
                         text: "Prenota",
                         press: () async {
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          int idUser = prefs.getInt("idUser");
-                          print(idUser);
-                          if (idUser == null || idUser <= 0) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => SignInScreen(),
-                            ));
-                          } else {
-                            Booking booking = new Booking(
-                                139, null, "10:20", "Lunedì", store, null);
-                            Navigator.pushNamed(
-                              context,
-                              BookingPage.routeName,
-                              arguments: BookingDetailsArguments(
-                                  booking: booking, store: store),
-                            );
-                            print("OK");
+                          if (bookable) {
+                            SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                            int idUser = prefs.getInt("idUser");
+                            print(idUser);
+                            if (idUser == null || idUser <= 0) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => SignInScreen(),
+                              ));
+                            } else {
+                              Booking booking = new Booking(
+                                  139, null, "10:20", "Lunedì", store, null);
+                              Navigator.pushNamed(
+                                context,
+                                BookingPage.routeName,
+                                arguments: BookingDetailsArguments(
+                                    booking: booking, store: store),
+                              );
+                              print("OK");
+                            }
+                          }
+                          else {
+                            Fluttertoast.showToast(
+                                msg:
+                                "Non ci sono posti disponibili. Ci dispiace!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.SNACKBAR,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.black,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
                           }
                         },
                       ),

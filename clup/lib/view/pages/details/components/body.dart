@@ -18,12 +18,16 @@ String from;
 String to;
 String timeOfStore;
 String status;
+bool bookable;
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
 
 Future<List<Time>> getTime(int value) async {
   List<Time> time = await _storeRepository.getTime(value);
   return time;
 }
+
+String message;
+TextStyle textStyle;
 
 class Body extends StatelessWidget {
   final Store store;
@@ -41,6 +45,17 @@ class Body extends StatelessWidget {
       from = elements[day - 1].from;
       to = elements[day - 1].to;
       timeOfStore = from.toString() + " - " + to.toString();
+      if (store.booktableCapacity > 0) {
+        message = store.booktableCapacity.toString() + " posti disponibili";
+        textStyle =
+            new TextStyle(color: Colors.green, fontWeight: FontWeight.bold);
+        bookable = true;
+      } else {
+        message = "Non ci sono posti disponibili.";
+        textStyle =
+            new TextStyle(color: Colors.green, fontWeight: FontWeight.bold);
+        bookable = false;
+      }
     });
     return ListView(
       children: [
@@ -88,19 +103,32 @@ class Body extends StatelessWidget {
                             city: store.name)),
                     RealTime(
                         title: "Ingresso in negozio",
-                        subtitle: this.store.booktableCapacity.toString() +
-                            " posti disponibili",
-                        store: store),
+                        subtitle: message,
+                        store: store,
+                        style: textStyle,
+                        bookable: bookable),
                     TopRoundedContainer(
                       color: Colors.transparent,
                       child: Padding(
                         padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.15,
-                            right: MediaQuery.of(context).size.width * 0.15,
+                            left: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.15,
+                            right: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.15,
                             bottom: (20 / 375.0) *
-                                MediaQuery.of(context).size.width,
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
                             top: (10 / 375.0) *
-                                MediaQuery.of(context).size.width),
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width),
                       ),
                     ),
                   ],

@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart' as Toast;
 
 import '../details/details_screen.dart';
+import '../preferences/preferences.dart';
 
 int idUser;
 
@@ -295,8 +296,8 @@ class BottomBar extends StatelessWidget {
                     highlightColor: Colors.pink,
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          //builder: (_) => Preferences(),
-                          ));
+                        builder: (_) => Preferences(),
+                      ));
                     },
                   ),
                   Text(Strings.preferedLabel)
