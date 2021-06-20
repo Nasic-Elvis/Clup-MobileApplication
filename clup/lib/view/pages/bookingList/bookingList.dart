@@ -9,9 +9,12 @@ import 'package:clup/view/pages/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart' as Toast;
 
 import '../details/details_screen.dart';
+
+int idUser;
 
 class BookingList extends StatefulWidget {
   const BookingList({Key key}) : super(key: key);
@@ -34,12 +37,31 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
     super.initState();
   }
 
+  Future<int> getSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    idUser = prefs.getInt('idUser');
+    print("ID " + idUser.toString());
+    return idUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Storico prenotazioni'),
-        backgroundColor: HomepageTheme.buildLightTheme().primaryColor,
+        backgroundColor: HomepageTheme
+            .buildLightTheme()
+            .primaryColor,
+        actions: [
+          FutureBuilder<int>(future: getSharedPreferences(),
+            builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+              return snapshot.hasData
+                  ? Container()
+                  : Container();
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -47,6 +69,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
             if (state is Logged) {
               return FutureBuilder(
                 //TODO: Aggiungere IdUser dalla fase di login.
+
                 future: _bookingRepository.getBookings(430),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {

@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String _setDate = "";
-String idUser = "";
+int idUser = 0;
 
 class DateTimePicker extends StatefulWidget {
   final Store store;
@@ -191,9 +191,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
                         text: "Prenota",
                         press: () async {
                           SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
+                              await SharedPreferences.getInstance();
                           bool ok = prefs.getBool('login');
-                          idUser = prefs.getString("idUser");
+                          idUser = prefs.getInt("idUser");
                           print(idUser);
                           if (prefs.getBool('login') == null ||
                               !prefs.getBool('login')) {
@@ -201,10 +201,8 @@ class _DateTimePickerState extends State<DateTimePicker> {
                           } else {
                             showDialog<String>(
                               context: context,
-                              builder: (BuildContext context) =>
-                                  AlertDialog(
-                                    title: const Text(
-                                        'Conferma di prenotazione'),
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Conferma di prenotazione'),
                                     content: const Text(
                                         'Sei sicuro di voler prenotare per il giorno selezionato?'),
                                 actions: <Widget>[

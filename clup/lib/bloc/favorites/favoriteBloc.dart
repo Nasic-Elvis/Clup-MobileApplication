@@ -39,10 +39,10 @@ class FavoriteBloc extends Bloc<FavoritesEvent, FavoriteState> {
     }
     if (event is AddFavorites) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String idUser = prefs.getString("idUser");
+      int idUser = prefs.getInt("idUser");
 
-      bool result = await _storeRepository.insertFavorites(
-          int.parse(idUser), event.idStore);
+      bool result =
+          await _storeRepository.insertFavorites(idUser, event.idStore);
       if (result) {
         _singleton.preferences.add(event.idStore);
         yield Favorite();
