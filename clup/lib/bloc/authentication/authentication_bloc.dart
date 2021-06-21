@@ -2,7 +2,9 @@ import 'package:clup/bloc/authentication/authentication_event.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/controller/repository/authenticationRepository.dart';
 import 'package:clup/model/user.dart';
+import 'package:clup/singletonPreferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -18,6 +20,15 @@ class AuthenticationBloc
       } else {
         yield Unlogged();
       }
+    }
+
+    if (event is Logout) {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.clear();
+      Singleton _singletonPreferences = Singleton();
+      _singletonPreferences.preferences = [];
+
+      yield Unlogged();
     }
   }
 }

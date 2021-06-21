@@ -1,6 +1,12 @@
+import 'package:clup/bloc/authentication/authentication_bloc.dart';
+import 'package:clup/bloc/authentication/authentication_event.dart';
+import 'package:clup/bloc/authentication/authentication_state.dart';
+import 'package:clup/singletonPreferences.dart';
 import 'package:clup/utils/values.dart';
+import 'package:clup/view/pages/settings/userInformation/userInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../../app_theme.dart';
@@ -15,73 +21,134 @@ class SettingScreen extends StatefulWidget {
 bool _flutter = false;
 
 class _SettingScreenState extends State<SettingScreen> {
+  _SettingScreenState();
   final ScrollController _scrollController = ScrollController();
+  Singleton _singleton = Singleton();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      child: Column(
-        children: <Widget>[
-          getAppBarUI(),
-          Expanded(
-              child: NestedScrollView(
-            controller: _scrollController,
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    return Column(
-                      children: <Widget>[],
+        body: SafeArea(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            //getAppBarUI(),
+            SizedBox(height: 12),
+            Expanded(
+                child: NestedScrollView(
+              controller: _scrollController,
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                      return Column(
+                        children: <Widget>[],
+                      );
+                    }, childCount: 1),
+                  ),
+                ];
+              },
+              body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                builder: (context, state) {
+                  if (state is Unlogged) {
+                    return SettingsList(
+                      //backgroundColor: Colors.white,
+                      sections: [
+                        SettingsSection(
+                          title: Strings.settingSection,
+                          tiles: [
+                            SettingsTile(
+                              title: 'Login',
+                              leading: Icon(Icons.account_circle),
+                              onPressed: (context) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => SignInScreen(),
+                                ));
+                              },
+                            ),
+                            SettingsTile(
+                              title: 'Lingua',
+                              subtitle: 'Italiano',
+                              leading: Icon(Icons.language),
+                              onPressed: (context) {
+                                //TODO: Implementare language_pickers
+                              },
+                            ),
+                            SettingsTile.switchTile(
+                              title: 'Dark Mode',
+                              subtitle: 'Passa alla Dark Mode',
+                              leading: Icon(Icons.nightlight_round),
+                              onToggle: (bool value) {
+                                setState(() {
+                                  _flutter = value;
+                                  AppTheme().switchTheme();
+                                });
+                              },
+                              switchValue: _flutter,
+                            ),
+                          ],
+                        )
+                      ],
                     );
-                  }, childCount: 1),
-                ),
-              ];
-            },
-            body: SettingsList(
-              backgroundColor: Colors.white,
-              sections: [
-                SettingsSection(
-                  title: Strings.settingSection,
-                  tiles: [
-                    SettingsTile(
-                      title: 'Lingua',
-                      subtitle: 'Italiano',
-                      leading: Icon(Icons.language),
-                      onPressed: (context) {
-                        //TODO: Implementare language_pickers
-                      },
-                    ),
-                    SettingsTile(
-                      title: 'Account personale',
-                      subtitle: '',
-                      leading: Icon(Icons.account_circle),
-                      onPressed: (context) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => SignInScreen(),
-                        ));
-                      },
-                    ),
-                    SettingsTile.switchTile(
-                      title: 'Dark Mode',
-                      subtitle: 'Passa alla Dark Mode',
-                      leading: Icon(Icons.nightlight_round),
-                      onToggle: (bool value) {
-                        setState(() {
-                          _flutter = value;
-                          AppTheme().switchTheme();
-                        });
-                      },
-                      switchValue: _flutter,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ))
-        ],
+                  }
+                  if (state is Logged) {
+                    return SettingsList(
+                      backgroundColor: Colors.white,
+                      sections: [
+                        SettingsSection(
+                          title: Strings.settingSection,
+                          tiles: [
+                            SettingsTile(
+                              title: 'Il Mio Account',
+                              leading: Icon(Icons.account_circle),
+                              onPressed: (context) async {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => UserInformation(
+                                        user: _singleton.user)));
+                              },
+                            ),
+                            SettingsTile(
+                              title: 'Lingua',
+                              subtitle: 'Italiano',
+                              leading: Icon(Icons.language),
+                              onPressed: (context) {
+                                //TODO: Implementare language_pickers
+                              },
+                            ),
+                            SettingsTile.switchTile(
+                              title: 'Dark Mode',
+                              subtitle: 'Passa alla Dark Mode',
+                              leading: Icon(Icons.nightlight_round),
+                              onToggle: (bool value) {
+                                setState(() {
+                                  _flutter = value;
+                                  AppTheme().switchTheme();
+                                });
+                              },
+                              switchValue: _flutter,
+                            ),
+                            SettingsTile(
+                              title: 'Logout',
+                              leading: Icon(Icons.logout),
+                              onPressed: (context) {
+                                BlocProvider.of<AuthenticationBloc>(context)
+                                    .add(Logout());
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => SignInScreen()));
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    );
+                  }
+                },
+              ),
+            ))
+          ],
+        ),
       ),
     ));
   }
@@ -122,7 +189,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
             ),
-            Expanded(
+            /*Expanded(
               child: Center(
                 child: Text(
                   'Customer Line Up',
@@ -132,7 +199,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ),
               ),
-            ),
+            ),*/
             Container(
               width: AppBar().preferredSize.height + 40,
               height: AppBar().preferredSize.height,

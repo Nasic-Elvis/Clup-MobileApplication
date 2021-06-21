@@ -3,7 +3,7 @@ import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/details/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:string_extensions/string_extensions.dart';
 
 bool isPressed = true;
 
@@ -104,7 +104,22 @@ class StoreFavoriteView extends StatelessWidget {
                                                   MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  store.address,
+                                                  "${store.city.capitalize()}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey
+                                                          .withOpacity(0.8)),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  "${store.address}",
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey
@@ -122,7 +137,7 @@ class StoreFavoriteView extends StatelessWidget {
                                                 ),
                                               ],
                                             ),
-                                            Padding(
+                                            /*Padding(
                                               padding:
                                                   const EdgeInsets.only(top: 4),
                                               child: Row(
@@ -141,7 +156,7 @@ class StoreFavoriteView extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                            ),
+                                            ),*/
                                           ],
                                         ),
                                       ),

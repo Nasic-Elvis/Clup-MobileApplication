@@ -37,3 +37,9 @@ class OtherActivityState extends CategoryState {
 
   OtherActivityState({@required this.stores});
 }
+
+class CityState extends CategoryState {
+  final List<Store> stores;
+
+  CityState({@required this.stores});
+}

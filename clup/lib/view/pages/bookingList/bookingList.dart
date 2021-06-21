@@ -50,15 +50,12 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text('Storico prenotazioni'),
-        backgroundColor: HomepageTheme
-            .buildLightTheme()
-            .primaryColor,
+        backgroundColor: HomepageTheme.buildLightTheme().primaryColor,
         actions: [
-          FutureBuilder<int>(future: getSharedPreferences(),
+          FutureBuilder<int>(
+            future: getSharedPreferences(),
             builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-              return snapshot.hasData
-                  ? Container()
-                  : Container();
+              return snapshot.hasData ? Container() : Container();
             },
           ),
         ],
@@ -70,7 +67,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
               return FutureBuilder(
                 //TODO: Aggiungere IdUser dalla fase di login.
 
-                future: _bookingRepository.getBookings(430),
+                future: _bookingRepository.getBookings(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(

@@ -90,11 +90,40 @@ class StoreRepository {
       return false;
   }
 
+  Future<List<Store>> storeInCity(String city) async {
+    List<Store> _storeList = [];
+    String rawStore = await api.storeInCity(city);
+    var storeJson = jsonDecode(rawStore);
+    if (storeJson is List) {
+      for (var s in storeJson) {
+        Store store = new Store(
+            s['idstore'],
+            s['name'],
+            s['city'],
+            s['bookableCapacity'],
+            s['capacity'],
+            s['imgUrl'],
+            s['iconUrl'],
+            s['address'],
+            s['rating'].toDouble(),
+            s['latitude'].toDouble(),
+            s['longitude'].toDouble(),
+            true,
+            s['telephoneNumber'],
+            s['category'],
+            false);
+
+        _storeList.add(store);
+      }
+    }
+    return _storeList;
+  }
+
   Future<List<Store>> getFavorites() async {
     List<Store> storeList = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String idUser = prefs.getString("idUser");
-    String rawStore = await api.getFavorites(idUser);
+    int idUser = prefs.getInt("idUser");
+    String rawStore = await api.getFavorites(idUser.toString());
     var storeJson = jsonDecode(rawStore);
     if (storeJson is List) {
       for (var s in storeJson) {

@@ -2,6 +2,8 @@ import 'package:clup/main.dart';
 import 'package:flutter/material.dart';
 
 class HomepageTheme {
+  final Color primaryColor = HexColor('#54D3C2');
+  final Color secondaryColor = HexColor('#337CA0');
   static TextTheme _buildTextTheme(TextTheme base) {
     const String fontName = 'WorkSans';
     return base.copyWith(

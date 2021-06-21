@@ -86,16 +86,91 @@ class _CategoryCardState extends State<CategoryCard> {
         width: getProportionateScreenWidth(65, context),
         child: Column(
           children: [
-            Container(
-                padding:
-                    EdgeInsets.all(getProportionateScreenWidth(15, context)),
-                height: getProportionateScreenWidth(55, context),
-                width: getProportionateScreenWidth(55, context),
-                decoration: BoxDecoration(
-                  color: HomepageTheme.buildLightTheme().primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(widget.icon)),
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is SupermarketState) {
+                  return Container(
+                      padding: EdgeInsets.all(
+                          getProportionateScreenWidth(15, context)),
+                      height: getProportionateScreenWidth(55, context),
+                      width: getProportionateScreenWidth(55, context),
+                      decoration: BoxDecoration(
+                        color: widget.text == "Supermercati"
+                            ? HomepageTheme().primaryColor
+                            : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(widget.icon));
+                }
+                if (state is OtherActivityState) {
+                  return Container(
+                      padding: EdgeInsets.all(
+                          getProportionateScreenWidth(15, context)),
+                      height: getProportionateScreenWidth(55, context),
+                      width: getProportionateScreenWidth(55, context),
+                      decoration: BoxDecoration(
+                        color: widget.text == "Attività"
+                            ? HomepageTheme().primaryColor
+                            : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(widget.icon));
+                }
+                if (state is ServicesState) {
+                  return Container(
+                      padding: EdgeInsets.all(
+                          getProportionateScreenWidth(15, context)),
+                      height: getProportionateScreenWidth(55, context),
+                      width: getProportionateScreenWidth(55, context),
+                      decoration: BoxDecoration(
+                        color: widget.text == "Servizi"
+                            ? HomepageTheme().primaryColor
+                            : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(widget.icon));
+                }
+                if (state is HealtCareState) {
+                  return Container(
+                      padding: EdgeInsets.all(
+                          getProportionateScreenWidth(15, context)),
+                      height: getProportionateScreenWidth(55, context),
+                      width: getProportionateScreenWidth(55, context),
+                      decoration: BoxDecoration(
+                        color: widget.text == "Sanità"
+                            ? HomepageTheme().primaryColor
+                            : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(widget.icon));
+                }
+                if (state is NoCategoryState) {
+                  return Container(
+                      padding: EdgeInsets.all(
+                          getProportionateScreenWidth(15, context)),
+                      height: getProportionateScreenWidth(55, context),
+                      width: getProportionateScreenWidth(55, context),
+                      decoration: BoxDecoration(
+                        color: widget.text == "Tutti"
+                            ? HomepageTheme().primaryColor
+                            : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(widget.icon));
+                } else {
+                  return Container(
+                      padding: EdgeInsets.all(
+                          getProportionateScreenWidth(15, context)),
+                      height: getProportionateScreenWidth(55, context),
+                      width: getProportionateScreenWidth(55, context),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(widget.icon));
+                }
+              },
+            ),
             SizedBox(height: 5),
             Text(
               widget.text,
