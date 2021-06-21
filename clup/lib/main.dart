@@ -8,6 +8,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'bloc/authentication/authentication_state.dart';
 import 'bloc/category/category_bloc.dart';
@@ -28,6 +30,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   Connectivity connectivity = Connectivity();
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -48,7 +51,17 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => AuthenticationBloc(Unlogged()))
         ],
         child: MaterialApp(
-          title: 'Clup',
+          localizationsDelegates: [
+            AppLocalizations.delegate, // Add this line
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en', ''), // English, no country code
+            const Locale('es', ''), // Spanish, no country code
+          ],
+          title: "clup",
           debugShowCheckedModeBanner: false,
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),

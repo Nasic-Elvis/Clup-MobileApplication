@@ -1,13 +1,10 @@
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/category/category_event.dart';
-import 'package:clup/bloc/category/category_state.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 class Categories extends StatelessWidget {
   SizeConfig sizeConfig = SizeConfig();
 
