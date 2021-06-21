@@ -1,0 +1,12 @@
+{
+	"booking_component_dateTimePicker_DataText": "Seleziona la data",
+	"booking_component_dateTimePicker_TimeText": "Seleziona l'orario",
+	"booking_component_dateTimePicker_alertDialog_Title": "Conferma di prenotazione",
+	"booking_component_dateTimePicker_alertDialog_content": "Sei sicuro di voler prenotare per il giorno selezionato?",
+	"booking_component_dateTimePicker_alertDialog_option_no": "No",
+	"booking_component_dateTimePicker_alertDialog_option_yes": "Si",
+	"booking_component_dateTimePicker_bookingOperation_error": "Errore durante la prenotazione. Riprovare",
+	"booking_component_dateTimePicker_bookingOperation_success": "Prenotazione effettuata con successo",
+	"booking_component_dateTimePicker_confirmButton_Text": "Prenota",
+	"booking_component_dateTimePicker_dataError": "Errore durante l'inserimento della data."
+}

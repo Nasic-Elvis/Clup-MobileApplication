@@ -17,6 +17,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../settings/settings.dart';
 import 'components/bottom_bar.dart';
@@ -145,7 +146,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                       .showSnackBar(SnackBar(
                                     backgroundColor: Colors.redAccent,
                                     content:
-                                        Text('Connessione Internet assente'),
+                                        Text("Connessione internet assente"),
                                     duration: Duration(milliseconds: 500),
                                   ));
                                 }
@@ -153,7 +154,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     backgroundColor: Colors.greenAccent,
-                                    content: Text('Online'),
+                                    content: Text("online"),
                                     duration: Duration(milliseconds: 500),
                                   ));
                                 }
@@ -202,7 +203,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                       children: [
                                         Center(
                                           child: Text(
-                                            'Connessione Internet Assente',
+                                            "Connessione internet assente",
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 letterSpacing: 1.2),

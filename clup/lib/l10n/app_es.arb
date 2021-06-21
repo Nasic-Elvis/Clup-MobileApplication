@@ -1,3 +1,12 @@
 {
-    "helloWorld": "Hola Mundo!"
+	"booking_component_dateTimePicker_DataText": "Seleccione la fecha",
+	"booking_component_dateTimePicker_TimeText": "Seleccione la hora",
+	"booking_component_dateTimePicker_alertDialog_Title": "Confirmación de reserva",
+	"booking_component_dateTimePicker_alertDialog_content": "¿Estás seguro de que deseas reservar para el día seleccionado?",
+	"booking_component_dateTimePicker_alertDialog_option_no": "No",
+	"booking_component_dateTimePicker_alertDialog_option_yes": "Sí",
+	"booking_component_dateTimePicker_bookingOperation_error": "Error durante la reserva. Intentar otra vez",
+	"booking_component_dateTimePicker_bookingOperation_success": "Reserva realizada con éxito",
+	"booking_component_dateTimePicker_confirmButton_Text": "libro",
+	"booking_component_dateTimePicker_dataError": "Error al ingresar la fecha."
 }

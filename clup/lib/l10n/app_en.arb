@@ -1,6 +1,12 @@
 {
-    "indicazioniStradali": "Directions",
-    "@helloWorld": {
-      "description": "Directions to the store"
-    }
+	"booking_component_dateTimePicker_DataText": "Select the date",
+	"booking_component_dateTimePicker_TimeText": "Select the time",
+	"booking_component_dateTimePicker_alertDialog_Title": "Booking Confirmation",
+	"booking_component_dateTimePicker_alertDialog_content": "Are you sure you want to book for the selected day?",
+	"booking_component_dateTimePicker_alertDialog_option_no": "No",
+	"booking_component_dateTimePicker_alertDialog_option_yes": "Yes",
+	"booking_component_dateTimePicker_bookingOperation_error": "Error during booking. Try again",
+	"booking_component_dateTimePicker_bookingOperation_success": "Reservation made successfully",
+	"booking_component_dateTimePicker_confirmButton_Text": "Book",
+	"booking_component_dateTimePicker_dataError": "Error while entering the date."
 }

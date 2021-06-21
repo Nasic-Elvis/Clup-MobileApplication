@@ -59,7 +59,9 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: [
             const Locale('en', ''), // English, no country code
-            const Locale('es', ''), // Spanish, no country code
+            const Locale('es', ''),
+            const Locale('it', ''), // Italian, no country code
+            const Locale('de', '')
           ],
           title: "clup",
           debugShowCheckedModeBanner: false,

@@ -9,4 +9,6 @@ class Strings {
   static const String index1 = "Index 1: Prenotazioni";
   static const String index2 = "Index 2: Impostazioni";
   static const String settingSection = "Generali";
+
+  static const String urlNoPreferences = "";
 }
