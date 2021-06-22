@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:beauty_navigation/beauty_navigation.dart';
+import 'package:clup/bloc/authentication/authentication_bloc.dart';
+import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/category/category_event.dart';
@@ -14,11 +17,14 @@ import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/view/pages/home/components/categories.dart';
 import 'package:clup/view/pages/home/components/store_list.dart';
 import 'package:clup/view/pages/preferences/preferences.dart';
+import 'package:clup/view/pages/settings/components/signin.dart';
+import 'package:clup/view/widget/bottomBar.dart';
+import 'package:clup/view/widget/bottom_navy_bar.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import '../settings/settings.dart';
 import 'components/bottom_bar.dart';
 
@@ -32,7 +38,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> with TickerProviderStateMixin {
-  int _currentTab = 0;
+  int _currentIndex = 0;
 
   TextEditingController _cityController = TextEditingController();
   CategoryBloc _categoryBloc;
@@ -90,17 +96,51 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: HomepageTheme.buildLightTheme(),
-      child: Container(
-        child: Scaffold(
-          extendBody: true,
-          resizeToAvoidBottomInset: false,
-          /*appBar: new PreferredSize(
-              child: GradientAppBar('Clup'),
-              preferredSize:
-                  new Size(MediaQuery.of(context).size.width, 150.0)),*/
-          body: SafeArea(
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: HomepageTheme().primaryColor,
+          title: Text(''),
+          actions: [
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                if (state is Unlogged) {
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => SignInPage()));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Icon(FontAwesomeIcons.solidUser,
+                            color: Colors.black),
+                      ));
+                }
+                if (state is Logged) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Row(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Icon(
+                              FontAwesomeIcons.solidUser,
+                              color: Colors.black,
+                            )),
+                        Text(
+                          'Benvenuto',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, color: Colors.black),
+                        )
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+        body: IndexedStack(index: _currentIndex, children: [
+          SafeArea(
             child: Stack(
               children: <Widget>[
                 InkWell(
@@ -111,153 +151,191 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                   onTap: () {
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
-                  child: Container(
-                    height: (MediaQuery.of(context).size.height / 8) * 7,
-                    child: Column(
-                      children: <Widget>[
-                        //getAppBarUI(),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(),
-                            child: NestedScrollView(
-                              controller: _scrollController,
-                              headerSliverBuilder: (BuildContext context,
-                                  bool innerBoxIsScrolled) {
-                                return <Widget>[
-                                  SliverList(
-                                    delegate: SliverChildBuilderDelegate(
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        height: 200,
-                                        child: Stack(
-                                          children: <Widget>[
-                                            getSearchBarUI(),
-                                            Positioned(
-                                                bottom: 0,
-                                                left: 12,
-                                                child: Categories()),
-                                          ],
-                                        ),
-                                      );
-                                    }, childCount: 1),
-                                  ),
-                                  SliverPersistentHeader(
-                                    pinned: true,
-                                    floating: true,
-                                    delegate: ContestTabHeader(
-                                      getFilterBarUI(),
-                                    ),
-                                  ),
-                                ];
-                              },
-                              body: Positioned(
-                                bottom: 40,
-                                child:
-                                    BlocConsumer<InternetCubit, InternetState>(
-                                  listener: (context, state) {
-                                    print(state);
-                                    if (state is InternetDisconnected) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        backgroundColor: Colors.redAccent,
-                                        content: Text(
-                                            'Connessione Internet assente'),
-                                        duration: Duration(milliseconds: 500),
-                                      ));
-                                    }
-                                    if (state is InternetConnected) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        backgroundColor: Colors.greenAccent,
-                                        content: Text('Online'),
-                                        duration: Duration(milliseconds: 500),
-                                      ));
-                                    }
-                                  },
-                                  builder: (context, internetState) {
-                                    return BlocBuilder<CategoryBloc,
-                                            CategoryState>(
-                                        builder: (context, state) {
-                                      if (internetState is InternetConnected) {
-                                        if (state is InitialState) {
-                                          BlocProvider.of<CategoryBloc>(context)
-                                              .add(NoSelected());
-                                        }
-                                        if (state is NoCategoryState) {
-                                          return StoresView(
-                                              store: state.stores,
-                                              animationController:
-                                                  animationController);
-                                        }
-                                        if (state is SupermarketState) {
-                                          return StoresView(
-                                              store: state.stores,
-                                              animationController:
-                                                  animationController);
-                                        }
-                                        if (state is ServicesState) {
-                                          return StoresView(
-                                              store: state.stores,
-                                              animationController:
-                                                  animationController);
-                                        }
-                                        if (state is HealtCareState) {
-                                          return StoresView(
-                                              store: state.stores,
-                                              animationController:
-                                                  animationController);
-                                        }
-                                        if (state is OtherActivityState) {
-                                          return StoresView(
-                                              store: state.stores,
-                                              animationController:
-                                                  animationController);
-                                        }
-                                        if (state is CityState) {
-                                          return StoresView(
-                                              store: state.stores,
-                                              animationController:
-                                                  animationController);
-                                        }
-                                      }
-                                      if (internetState
-                                          is InternetDisconnected) {
-                                        return Column(
-                                          children: [
-                                            Center(
-                                              child: Text(
-                                                'Connessione Internet Assente',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    letterSpacing: 1.2),
-                                              ),
-                                            ),
-                                            Container(
-                                                child: Image.asset(
-                                              'assets/images/noConnection.png',
-                                              fit: BoxFit.scaleDown,
-                                            )),
-                                          ],
-                                        );
-                                      }
-                                    });
-                                  },
+                  child: Column(
+                    children: <Widget>[
+                      //getAppBarUI(),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(),
+                          child: NestedScrollView(
+                            controller: _scrollController,
+                            headerSliverBuilder: (BuildContext context,
+                                bool innerBoxIsScrolled) {
+                              return <Widget>[
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      height: 200,
+                                      child: Stack(
+                                        children: <Widget>[
+                                          getSearchBarUI(),
+                                          Positioned(
+                                              bottom: 12,
+                                              left: 12,
+                                              child: Categories()),
+                                        ],
+                                      ),
+                                    );
+                                  }, childCount: 1),
                                 ),
-                              ),
+                                SliverPersistentHeader(
+                                  pinned: true,
+                                  floating: true,
+                                  delegate: ContestTabHeader(
+                                    getFilterBarUI(),
+                                  ),
+                                ),
+                              ];
+                            },
+                            body: BlocConsumer<InternetCubit, InternetState>(
+                              listener: (context, state) {
+                                print(state);
+                                if (state is InternetDisconnected) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.redAccent,
+                                    content:
+                                        Text('Connessione Internet assente'),
+                                    duration: Duration(milliseconds: 500),
+                                  ));
+                                }
+                                if (state is InternetConnected) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.greenAccent,
+                                    content: Text('Online'),
+                                    duration: Duration(milliseconds: 500),
+                                  ));
+                                }
+                              },
+                              builder: (context, internetState) {
+                                return BlocBuilder<CategoryBloc, CategoryState>(
+                                    builder: (context, state) {
+                                  if (internetState is InternetConnected) {
+                                    if (state is InitialState) {
+                                      BlocProvider.of<CategoryBloc>(context)
+                                          .add(SelectNearStore());
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    }
+
+                                    if (state is NearStoreState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is NoCategoryState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is SupermarketState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is ServicesState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is HealtCareState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is OtherActivityState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                    if (state is CityState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
+                                  }
+                                  if (internetState is InternetDisconnected) {
+                                    return Column(
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            'Connessione Internet Assente',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                letterSpacing: 1.2),
+                                          ),
+                                        ),
+                                        Container(
+                                            child: Image.asset(
+                                          'assets/images/noConnection.png',
+                                          fit: BoxFit.scaleDown,
+                                        )),
+                                      ],
+                                    );
+                                  }
+                                });
+                              },
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          bottomNavigationBar: BottomBar(),
-        ),
-      ),
-    );
+          Preferences(),
+          BookingList(),
+          SettingScreen(),
+        ]),
+        bottomNavigationBar: BeautyNavigation(
+          activeIconColor: Colors.black,
+          inactiveIconColor: Colors.white,
+          animationDuration: Duration(milliseconds: 500),
+          circleColor: Colors.white,
+          backgroundColor: HomepageTheme().primaryColor,
+          height: 77,
+          items: <Items>[
+            Items(
+              icon: Icon(FontAwesomeIcons.search, size: 22),
+              tabName: '',
+              onClick: () {
+                setState(() => _currentIndex = 0);
+              },
+            ),
+            Items(
+              icon: Icon(FontAwesomeIcons.solidHeart, size: 22),
+              tabName: '',
+              onClick: () {
+                setState(() => _currentIndex = 1);
+              },
+            ),
+            Items(
+              icon: Icon(FontAwesomeIcons.solidBookmark, size: 22),
+              tabName: '',
+              onClick: () {
+                setState(() => _currentIndex = 2);
+              },
+            ),
+            Items(
+              icon: Icon(FontAwesomeIcons.cog, size: 22),
+              tabName: '',
+              onClick: () {
+                setState(() => _currentIndex = 3);
+              },
+            )
+          ],
+        ));
   }
 
   Widget getSearchBarUI() {
@@ -332,9 +410,42 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Icon(FontAwesomeIcons.search,
-                      size: 20,
-                      color: HomepageTheme.buildLightTheme().backgroundColor),
+                      size: 20, color: Colors.black),
                 ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 12,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: HomepageTheme.buildLightTheme().primaryColor,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(38.0),
+              ),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    offset: const Offset(0, 2),
+                    blurRadius: 8.0),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(32.0),
+                ),
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  _cityController.text = "";
+                  BlocProvider.of<CategoryBloc>(context).add(NoSelected());
+                },
+                child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Icon(FontAwesomeIcons.times,
+                        size: 20, color: Colors.black)),
               ),
             ),
           ),

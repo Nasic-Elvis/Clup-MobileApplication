@@ -16,6 +16,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       yield NoCategoryState(stores: store);
     }
 
+    if (event is SelectNearStore) {
+      List<Store> store = await _storeRepository.getStoreNearPosition();
+
+      yield NearStoreState(stores: store);
+    }
+
     if (event is SelectSupermarket) {
       List<Store> store =
           await _storeRepository.getStoreByCategory("supermercato");

@@ -74,6 +74,7 @@ class _StoreListViewState extends State<StoreListView> {
                   widget.callback();
                 },
                 child: Container(
+                  height: 230,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                     boxShadow: <BoxShadow>[

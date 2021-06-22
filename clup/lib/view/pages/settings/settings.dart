@@ -27,8 +27,9 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
+    return /*Scaffold(
+        body:*/
+        SafeArea(
       child: Container(
         child: Column(
           children: <Widget>[
@@ -150,7 +151,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ],
         ),
       ),
-    ));
+    );
   }
 
   Widget getAppBarUI() {

@@ -45,9 +45,38 @@ class StoreRepository {
           false);
       storeList.add(store);
 
-      //if (await checkPosition(store.latitude, store.longitude)) {
-      //  storeList.add(store);
-      // }
+      /*if (await checkPosition(store.latitude, store.longitude)) {
+        storeList.add(store);
+      }*/
+    }
+    return storeList;
+  }
+
+  Future<List<Store>> getStoreNearPosition() async {
+    List<Store> storeList = [];
+    String rawStore = await api.getStore();
+    var storeJson = jsonDecode(rawStore);
+    for (var s in storeJson) {
+      Store store = new Store(
+          s['idstore'],
+          s['name'],
+          s['city'],
+          s['bookableCapacity'],
+          s['capacity'],
+          s['imgUrl'],
+          s['iconUrl'],
+          s['address'],
+          s['rating'].toDouble(),
+          s['latitude'].toDouble(),
+          s['longitude'].toDouble(),
+          true,
+          s['telephoneNumber'],
+          s['category'],
+          false);
+
+      if (await checkPosition(store.latitude, store.longitude)) {
+        storeList.add(store);
+      }
     }
     return storeList;
   }
@@ -151,7 +180,7 @@ class StoreRepository {
   }
 
   Future<bool> deleteFavorite(idUser, idStore) async {
-    String rawResult = await api.deleteFavorite(idUser, idStore);
+    String rawResult = await api.deleteFavorite(idUser.toString(), idStore);
     var resultJson = jsonDecode(rawResult);
     if (resultJson.values.elementAt(0) == "OK") {
       return true;

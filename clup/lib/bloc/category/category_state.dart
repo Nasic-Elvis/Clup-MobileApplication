@@ -8,6 +8,12 @@ abstract class CategoryState {}
 
 class InitialState extends CategoryState {}
 
+class NearStoreState extends CategoryState {
+  final List<Store> stores;
+
+  NearStoreState({@required this.stores});
+}
+
 class NoCategoryState extends CategoryState {
   final List<Store> stores;
 

@@ -4,6 +4,8 @@ abstract class CategoryEvent {}
 
 class NoSelected extends CategoryEvent {}
 
+class SelectNearStore extends CategoryEvent {}
+
 class SelectSupermarket extends CategoryEvent {}
 
 class SelectHealtCare extends CategoryEvent {}

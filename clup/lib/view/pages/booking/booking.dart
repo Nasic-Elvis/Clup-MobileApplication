@@ -3,8 +3,9 @@ import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/booking/components/dateTimePicker.dart';
 import 'package:clup/view/pages/details/components/app_bar.dart';
 import 'package:clup/view/pages/details/components/body.dart';
+import 'package:clup/view/widget/bottomBar.dart';
+import 'package:clup/view/widget/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-
 
 class BookingPage extends StatefulWidget {
   static String routeName = "/booking";
@@ -13,24 +14,25 @@ class BookingPage extends StatefulWidget {
   _BookingPage createState() => _BookingPage();
 }
 
-class _BookingPage extends State<BookingPage>
-    with TickerProviderStateMixin {
+class _BookingPage extends State<BookingPage> with TickerProviderStateMixin {
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final BookingDetailsArguments agrs =
         ModalRoute.of(context).settings.arguments;
     print(agrs.booking.day);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: CustomAppBar(rating: agrs.store.rating),
-      body: DateTimePicker(agrs.store),
-    );
+    return /*Scaffold(*/
+        //backgroundColor: Colors.white,
+        //appBar: CustomAppBar(rating: agrs.store.rating),
+        /*body:*/ DateTimePicker(agrs.store);
+    //bottomNavigationBar: BottomBarDef(),
+    //);
   }
 }
 

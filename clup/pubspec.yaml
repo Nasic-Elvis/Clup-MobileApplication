@@ -45,7 +45,8 @@ dependencies:
   fluttertoast: ^8.0.7
   toast: ^0.1.5
   string_extensions: 
-  curved_navigation_bar: ^1.0.1
+  bottom_navy_bar: ^6.0.0
+  beauty_navigation :
 
 
 dev_dependencies:
