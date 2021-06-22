@@ -1,3 +1,4 @@
+import 'package:beauty_navigation/beauty_navigation.dart';
 import 'package:clup/bloc/authentication/authentication_bloc.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/controller/repository/storeRepository.dart';
@@ -7,8 +8,10 @@ import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/view/pages/home/components/bottom_bar.dart';
 import 'package:clup/view/pages/preferences/storePref.dart';
 import 'package:clup/view/pages/settings/settings.dart';
+import 'package:clup/view/widget/bottomBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../home/homepage.dart';
 
@@ -34,167 +37,103 @@ class _PreferencesState extends State<Preferences>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Preferiti'),
-        backgroundColor: HomepageTheme.buildLightTheme().primaryColor,
-      ),
-      body: SafeArea(
-        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            if (state is Logged) {
-              return FutureBuilder(
-                future: _storeRepository.getFavorites(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.data.length == 0) {
-                    return Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: Center(
-                        child: Text(
-                          'Non hai ancora salvato nessun negozio nei preferiti!',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return StoresPrefList(
-                        store: snapshot.data,
-                        animationController: _animationController);
-                  }
-                },
-              );
-            }
-            if (state is Unlogged) {
-              return Center(
-                child: Column(
-                  children: [
-                    Container(
-                        child: Image.asset(
-                      'assets/images/NoPreferences.png',
-                      fit: BoxFit.scaleDown,
-                    )),
-                    Center(
+    return /*Scaffold(
+      body:*/
+        SafeArea(
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          if (state is Logged) {
+            return FutureBuilder(
+              future: _storeRepository.getFavorites(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.data.length == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Center(
                       child: Text(
-                        'Effettua il login per vedere i preferiti',
-                        style: TextStyle(
-                            fontSize: 16,
-                            letterSpacing: 1.2,
-                            fontWeight: FontWeight.bold),
+                        'Non hai ancora salvato nessun negozio nei preferiti!',
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
-                  ],
-                ),
-              );
-            }
-          },
-        ),
+                  );
+                } else {
+                  return StoresPrefList(
+                      store: snapshot.data,
+                      animationController: _animationController);
+                }
+              },
+            );
+          }
+          if (state is Unlogged) {
+            return Center(
+              child: Column(
+                children: [
+                  Container(
+                      child: Image.asset(
+                    'assets/images/NoPreferences.png',
+                    fit: BoxFit.scaleDown,
+                  )),
+                  Center(
+                    child: Text(
+                      'Effettua il login per vedere i preferiti',
+                      style: TextStyle(
+                          fontSize: 14,
+                          letterSpacing: 1.2,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
-      bottomNavigationBar: BottomBar(),
-    );
-  }
-}
-
-class BottomBar extends StatelessWidget {
-  const BottomBar({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: (MediaQuery.of(context).size.height * 0.10).toDouble(),
-      child: Stack(children: <Widget>[
-        Positioned(
-          bottom: 0,
-          child: CustomPaint(
-            size: Size(
-                MediaQuery.of(context).size.width,
-                (MediaQuery.of(context).size.height * 0.10)
-                    .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-            painter: RPSCustomPainter(),
+      /*),
+      bottomNavigationBar: BeautyNavigation(
+        activeIconColor: Colors.black,
+        inactiveIconColor: Colors.white,
+        animationDuration: Duration(milliseconds: 500),
+        circleColor: Colors.white,
+        backgroundColor: HomepageTheme().primaryColor,
+        height: 77,
+        items: <Items>[
+          Items(
+            icon: Icon(FontAwesomeIcons.search, size: 22),
+            tabName: '',
+            onClick: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => HomePage()));
+            },
           ),
-        ),
-        Positioned(
-          bottom: 10,
-          left: 12,
-          right: 12,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  new IconButton(
-                    icon: Icon(Icons.search),
-                    highlightColor: Colors.pink,
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => HomePage(),
-                      ));
-                    },
-                  ),
-                  Text(Strings.exploreLabel)
-                ],
-              ),
-              SizedBox(
-                width: 20.0,
-              ),
-              Column(
-                children: [
-                  new IconButton(
-                    icon: Icon(Icons.favorite),
-                    highlightColor: Colors.pink,
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => Preferences(),
-                      ));
-                    },
-                  ),
-                  Text(Strings.preferedLabel)
-                ],
-              ),
-              SizedBox(
-                width: 20.0,
-              ),
-              Column(
-                children: [
-                  new IconButton(
-                    icon: Icon(Icons.bookmark),
-                    highlightColor: Colors.pink,
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => BookingList(),
-                      ));
-                    },
-                  ),
-                  Text(Strings.bookingsLabel)
-                ],
-              ),
-              SizedBox(
-                width: 20.0,
-              ),
-              Column(
-                children: [
-                  new IconButton(
-                    icon: Icon(Icons.settings),
-                    highlightColor: Colors.pink,
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => SettingScreen(),
-                      ));
-                    },
-                  ),
-                  Text(Strings.settingSection)
-                ],
-              )
-            ],
+          Items(
+            icon: Icon(FontAwesomeIcons.solidHeart, size: 22),
+            tabName: '',
+            onClick: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => Preferences()));
+            },
           ),
-        )
-      ]),
+          Items(
+            icon: Icon(FontAwesomeIcons.solidBookmark, size: 22),
+            tabName: '',
+            onClick: () {
+              print('Adjust');
+            },
+          ),
+          Items(
+            icon: Icon(FontAwesomeIcons.cog, size: 22),
+            tabName: '',
+            onClick: () {
+              print('Cake');
+            },
+          )
+        ],
+      ),*/
     );
   }
 }

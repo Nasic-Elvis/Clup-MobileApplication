@@ -16,6 +16,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       yield NoCategoryState(stores: store);
     }
 
+    if (event is SelectNearStore) {
+      List<Store> store = await _storeRepository.getStoreNearPosition();
+
+      yield NearStoreState(stores: store);
+    }
+
     if (event is SelectSupermarket) {
       List<Store> store =
           await _storeRepository.getStoreByCategory("supermercato");
@@ -25,17 +31,23 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     if (event is SelectHealtCare) {
       List<Store> store = await _storeRepository.getStoreByCategory("sanità");
 
-      yield SupermarketState(stores: store);
+      yield HealtCareState(stores: store);
     }
     if (event is SelectServices) {
       List<Store> store = await _storeRepository.getStoreByCategory("servizio");
 
-      yield SupermarketState(stores: store);
+      yield ServicesState(stores: store);
     }
     if (event is SelectOtherActivity) {
       List<Store> store = await _storeRepository.getStoreByCategory("attività");
 
-      yield SupermarketState(stores: store);
+      yield OtherActivityState(stores: store);
+    }
+
+    if (event is SelectCity) {
+      List<Store> store = await _storeRepository.storeInCity(event.city);
+
+      yield CityState(stores: store);
     }
     //throw UnimplementedError();
   }

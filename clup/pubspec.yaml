@@ -48,6 +48,10 @@ dependencies:
   toast: ^0.1.5
   googleapis: ^3.0.0
   googleapis_auth: ^1.1.0
+  string_extensions: 
+  bottom_navy_bar: ^6.0.0
+  beauty_navigation :
+
 
 dev_dependencies:
   flutter_test:

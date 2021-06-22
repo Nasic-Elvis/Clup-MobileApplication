@@ -47,9 +47,38 @@ class StoreRepository {
           false);
       storeList.add(store);
 
-      //if (await checkPosition(store.latitude, store.longitude)) {
-      //  storeList.add(store);
-      // }
+      /*if (await checkPosition(store.latitude, store.longitude)) {
+        storeList.add(store);
+      }*/
+    }
+    return storeList;
+  }
+
+  Future<List<Store>> getStoreNearPosition() async {
+    List<Store> storeList = [];
+    String rawStore = await api.getStore();
+    var storeJson = jsonDecode(rawStore);
+    for (var s in storeJson) {
+      Store store = new Store(
+          s['idstore'],
+          s['name'],
+          s['city'],
+          s['bookableCapacity'],
+          s['capacity'],
+          s['imgUrl'],
+          s['iconUrl'],
+          s['address'],
+          s['rating'].toDouble(),
+          s['latitude'].toDouble(),
+          s['longitude'].toDouble(),
+          true,
+          s['telephoneNumber'],
+          s['category'],
+          false);
+
+      if (await checkPosition(store.latitude, store.longitude)) {
+        storeList.add(store);
+      }
     }
     return storeList;
   }
@@ -90,6 +119,35 @@ class StoreRepository {
       return true;
     } else
       return false;
+  }
+
+  Future<List<Store>> storeInCity(String city) async {
+    List<Store> _storeList = [];
+    String rawStore = await api.storeInCity(city);
+    var storeJson = jsonDecode(rawStore);
+    if (storeJson is List) {
+      for (var s in storeJson) {
+        Store store = new Store(
+            s['idstore'],
+            s['name'],
+            s['city'],
+            s['bookableCapacity'],
+            s['capacity'],
+            s['imgUrl'],
+            s['iconUrl'],
+            s['address'],
+            s['rating'].toDouble(),
+            s['latitude'].toDouble(),
+            s['longitude'].toDouble(),
+            true,
+            s['telephoneNumber'],
+            s['category'],
+            false);
+
+        _storeList.add(store);
+      }
+    }
+    return _storeList;
   }
 
   Future<List<Store>> getFavorites() async {

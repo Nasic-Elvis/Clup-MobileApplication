@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:clup/controller/api/authenticationController.dart';
 import 'package:clup/model/user.dart';
+import 'package:clup/singletonPreferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
@@ -22,9 +23,21 @@ class AuthRepository {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('email', user.email.toString());
       prefs.setString('name', user.name.toString());
+      prefs.setString('surname', user.surname.toString());
       prefs.setInt('idUser', user.idUser);
-
+      prefs.setString('birthdayDate', user.birthdayDate.toString());
+      prefs.setString('telephoneNumber', user.telephoneNumber.toString());
       prefs.setBool('login', true);
+      Singleton singleton = Singleton();
+      singleton.user = User(
+          user.idUser,
+          user.name,
+          user.surname,
+          user.birthdayDate,
+          user.telephoneNumber,
+          user.email,
+          user.username,
+          user.password);
     }
 
     return user;

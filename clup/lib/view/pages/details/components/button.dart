@@ -1,3 +1,4 @@
+import 'package:clup/homepage_theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../homepage_theme.dart';
@@ -15,10 +16,10 @@ class DefaultButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: (28/ 375.0)* MediaQuery.of(context).size.height,
+      height: (28 / 375.0) * MediaQuery.of(context).size.height,
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: HomepageTheme.buildLightTheme().primaryColor,
+        color: HomepageTheme().primaryColor,
         onPressed: press,
         child: Text(
           text,

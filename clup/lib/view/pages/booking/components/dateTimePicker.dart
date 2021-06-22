@@ -98,225 +98,212 @@ class _DateTimePickerState extends State<DateTimePicker> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     dateTime = DateFormat.yMd().format(DateTime.now());
-    return ListView(
-      children: [
+    return SafeArea(
+      child: ListView(children: [
         TopRoundedContainer(
-          color: HomepageTheme.buildLightTheme().primaryColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                  child: Image.network(
-                store.imageUrl,
-                scale: 0.7,
-              )),
-              Center(
-                child: Text("\n" + store.city + ", " + store.address + "\n",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              ),
-              TopRoundedContainer(
-                color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                        AppLocalizations
-                            .of(context)
-                            .booking_component_dateTimePicker_DataText,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
-                    InkWell(
-                      onTap: () {
-                        _selectDate(context);
-                      },
-                      child: Container(
-                        width: _width / 2,
-                        height: _height / 15,
-                        margin: EdgeInsets.only(top: 10),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(color: Colors.grey[200]),
-                        child: TextFormField(
-                          style: TextStyle(fontSize: 24),
-                          textAlign: TextAlign.center,
-                          enabled: false,
-                          keyboardType: TextInputType.text,
-                          controller: _dateController,
-                          onSaved: (String val) {
-                            _setDate = val;
-                          },
-                          decoration: InputDecoration(
-                              disabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide.none),
-                              // labelText: 'Time',
-                              contentPadding: EdgeInsets.only(top: 0.0)),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      height: 20,
-                      color: Colors.transparent,
-                    ),
-                    Text(AppLocalizations
-                        .of(context)
-                        .booking_component_dateTimePicker_TimeText,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
-                    InkWell(
-                      onTap: () {
-                        _selectTime(context);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(top: 10),
-                        width: _width / 2,
-                        height: _height / 15,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(color: Colors.grey[200]),
-                        child: TextFormField(
-                          style: TextStyle(fontSize: 24),
-                          textAlign: TextAlign.center,
-                          onSaved: (String val) {
-                            _setTime = val;
-                          },
-                          enabled: false,
-                          keyboardType: TextInputType.text,
-                          controller: _timeController,
-                          decoration: InputDecoration(
-                              disabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide.none),
-                              // labelText: 'Time',
-                              contentPadding: EdgeInsets.all(5)),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      height: 30,
-                      color: Colors.transparent,
-                    ),
-                    Container(
-                      height: 50,
-                      width: 300,
-                      child: DefaultButton(
-                        text: AppLocalizations
-                            .of(context)
-                            .booking_component_dateTimePicker_confirmButton_Text,
-                        press: () async {
-                          SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                          bool ok = prefs.getBool('login');
-                          idUser = prefs.getInt("idUser");
-                          print(idUser);
-                          if (prefs.getBool('login') == null ||
-                              !prefs.getBool('login')) {
-                            print("NO");
-                          } else {
-                            bool okCheck =
-                            checkDateTime(_setDate, _timeController.text);
-                            if (!okCheck) {
-                              Fluttertoast.showToast(
-                                  msg: AppLocalizations
-                                      .of(context)
-                                      .booking_component_dateTimePicker_dataError,
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.SNACKBAR,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.black,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            } else
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    AlertDialog(
-                                      title: Text(AppLocalizations
-                                          .of(context)
-                                          .booking_component_dateTimePicker_alertDialog_Title),
-                                      content: Text(
-                                          AppLocalizations
-                                              .of(context)
-                                              .booking_component_dateTimePicker_alertDialog_content),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () async {
-                                            statusCode = await storeApi.booking(
-                                                _setDate,
-                                                _timeController.text,
-                                                idUser.toString(),
-                                                store.idStore);
-                                            if (statusCode == 200) {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                  AppLocalizations
-                                                      .of(context)
-                                                      .booking_component_dateTimePicker_bookingOperation_success,
-                                                  toastLength: Toast
-                                                      .LENGTH_SHORT,
-                                                  gravity: ToastGravity
-                                                      .SNACKBAR,
-                                                  timeInSecForIosWeb: 1,
-                                                  backgroundColor: Colors.black,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0);
-                                            } else {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                  AppLocalizations
-                                                      .of(context)
-                                                      .booking_component_dateTimePicker_bookingOperation_error,
-                                                  toastLength: Toast
-                                                      .LENGTH_SHORT,
-                                                  gravity: ToastGravity
-                                                      .SNACKBAR,
-                                                  timeInSecForIosWeb: 1,
-                                                  backgroundColor: Colors.black,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0);
-                                            }
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BookingList()),
-                                                    (Route<dynamic> route) =>
-                                                false);
-                                          },
-                                          child: Text(AppLocalizations
-                                              .of(context)
-                                              .booking_component_dateTimePicker_alertDialog_option_yes,
-                                              style:
-                                              TextStyle(color: Colors.green)),
-                                        ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(
-                                                context, AppLocalizations
-                                                  .of(context)
-                                                  .booking_component_dateTimePicker_alertDialog_option_no,),
-                                          child: Text(
-                                            AppLocalizations
-                                                .of(context)
-                                                .booking_component_dateTimePicker_alertDialog_option_no,
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                              );
-                          }
-                        },
-                      ),
-                    ),
-                    Divider(
-                      height: 30,
-                      color: Colors.transparent,
-                    )
-                  ],
+            color: HomepageTheme.buildLightTheme().primaryColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                    child: Image.network(
+                  store.imageUrl,
+                  scale: 0.7,
+                )),
+                Center(
+                  child: Text("\n" + store.city + ", " + store.address + "\n",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 ),
-              ),
-            ],
-          ),
-        )
-      ],
+                TopRoundedContainer(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                          AppLocalizations.of(context)
+                              .booking_component_dateTimePicker_DataText,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
+                      InkWell(
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                        child: Container(
+                          width: _width / 2,
+                          height: _height / 15,
+                          margin: EdgeInsets.only(top: 10),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(color: Colors.grey[200]),
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 24),
+                            textAlign: TextAlign.center,
+                            enabled: false,
+                            keyboardType: TextInputType.text,
+                            controller: _dateController,
+                            onSaved: (String val) {
+                              _setDate = val;
+                            },
+                            decoration: InputDecoration(
+                                disabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                // labelText: 'Time',
+                                contentPadding: EdgeInsets.only(top: 0.0)),
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        height: 20,
+                        color: Colors.transparent,
+                      ),
+                      Text(
+                          AppLocalizations.of(context)
+                              .booking_component_dateTimePicker_TimeText,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
+                      InkWell(
+                        onTap: () {
+                          _selectTime(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 10),
+                          width: _width / 2,
+                          height: _height / 15,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(color: Colors.grey[200]),
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 24),
+                            textAlign: TextAlign.center,
+                            onSaved: (String val) {
+                              _setTime = val;
+                            },
+                            enabled: false,
+                            keyboardType: TextInputType.text,
+                            controller: _timeController,
+                            decoration: InputDecoration(
+                                disabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                // labelText: 'Time',
+                                contentPadding: EdgeInsets.all(5)),
+                          ),
+                        ),
+                      ),
+                      Divider(
+                        height: 30,
+                        color: Colors.transparent,
+                      ),
+                      Container(
+                        height: 50,
+                        width: 300,
+                        child: DefaultButton(
+                          text: AppLocalizations.of(context)
+                              .booking_component_dateTimePicker_confirmButton_Text,
+                          press: () async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            bool ok = prefs.getBool('login');
+                            idUser = prefs.getInt("idUser");
+                            print(idUser);
+                            if (prefs.getBool('login') == null ||
+                                !prefs.getBool('login')) {
+                              print("NO");
+                            } else {
+                              bool okCheck =
+                                  checkDateTime(_setDate, _timeController.text);
+                              if (!okCheck) {
+                                Fluttertoast.showToast(
+                                    msg: AppLocalizations.of(context)
+                                        .booking_component_dateTimePicker_dataError,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.SNACKBAR,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.black,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: Text(AppLocalizations.of(context)
+                                        .booking_component_dateTimePicker_alertDialog_Title),
+                                    content: Text(AppLocalizations.of(context)
+                                        .booking_component_dateTimePicker_alertDialog_content),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () async {
+                                          statusCode = await storeApi.booking(
+                                              _setDate,
+                                              _timeController.text,
+                                              idUser.toString(),
+                                              store.idStore);
+                                          if (statusCode == 200) {
+                                            Fluttertoast.showToast(
+                                                msg: AppLocalizations.of(
+                                                        context)
+                                                    .booking_component_dateTimePicker_bookingOperation_success,
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.SNACKBAR,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.black,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg: AppLocalizations.of(
+                                                        context)
+                                                    .booking_component_dateTimePicker_bookingOperation_error,
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.SNACKBAR,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.black,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
+                                          }
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              BookingList()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        },
+                                        child: Text(
+                                            AppLocalizations.of(context)
+                                                .booking_component_dateTimePicker_alertDialog_option_yes,
+                                            style:
+                                                TextStyle(color: Colors.green)),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(
+                                          context,
+                                          AppLocalizations.of(context)
+                                              .booking_component_dateTimePicker_alertDialog_option_no,
+                                        ),
+                                        child: Text(
+                                          AppLocalizations.of(context)
+                                              .booking_component_dateTimePicker_alertDialog_option_no,
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                            }
+                          },
+                        ),
+                      ),
+                      Divider(
+                        height: 30,
+                        color: Colors.transparent,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ))
+      ]),
     );
   }
 }

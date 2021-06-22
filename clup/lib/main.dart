@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:clup/app_theme.dart';
 import 'package:clup/bloc/authentication/authentication_bloc.dart';
+import 'package:clup/bloc/bottom_bar/page_cubit.dart';
 import 'package:clup/bloc/favorites/favoritesStates.dart';
 import 'package:clup/utils/routes.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'bloc/authentication/authentication_state.dart';
+import 'bloc/bottom_bar/page_state.dart';
 import 'bloc/category/category_bloc.dart';
 import 'bloc/category/category_state.dart';
 import 'bloc/favorites/favoriteBloc.dart';
@@ -48,7 +50,8 @@ class MyApp extends StatelessWidget {
               create: (context) => InternetCubit(connectivity: connectivity)),
           BlocProvider(create: (context) => CategoryBloc(InitialState())),
           BlocProvider(create: (context) => FavoriteBloc(InitFavorites())),
-          BlocProvider(create: (context) => AuthenticationBloc(Unlogged()))
+          BlocProvider(create: (context) => AuthenticationBloc(Unlogged())),
+          BlocProvider(create: (context) => PageCubit(HomeState())),
         ],
         child: MaterialApp(
           localizationsDelegates: [

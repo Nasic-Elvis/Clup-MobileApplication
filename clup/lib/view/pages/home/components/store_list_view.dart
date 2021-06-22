@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:string_extensions/string_extensions.dart';
 
 bool isPressed = true;
 
@@ -74,6 +74,7 @@ class _StoreListViewState extends State<StoreListView> {
                   widget.callback();
                 },
                 child: Container(
+                  height: 230,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                     boxShadow: <BoxShadow>[
@@ -139,7 +140,22 @@ class _StoreListViewState extends State<StoreListView> {
                                                   MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  widget.store.address,
+                                                  "${widget.store.city.capitalize()}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey
+                                                          .withOpacity(0.8)),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  "${widget.store.address}",
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey
@@ -157,7 +173,7 @@ class _StoreListViewState extends State<StoreListView> {
                                                 ),
                                               ],
                                             ),
-                                            Padding(
+                                            /*Padding(
                                               padding:
                                                   const EdgeInsets.only(top: 4),
                                               child: Row(
@@ -176,7 +192,7 @@ class _StoreListViewState extends State<StoreListView> {
                                                   ),
                                                 ],
                                               ),
-                                            ),
+                                            ),*/
                                           ],
                                         ),
                                       ),

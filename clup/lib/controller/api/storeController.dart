@@ -71,6 +71,19 @@ class StoreApi {
     }
   }
 
+  Future<String> storeInCity(String city) async {
+    var uri = Uri.parse(Address.storeInCity);
+    print(uri.toString());
+    var client = http.Client();
+    try {
+      var uriResponse = await client.post(uri, body: {"city": city});
+      print(uriResponse.body);
+      return uriResponse.body;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future<String> addFavorites(int idUser, int idStore) async {
     var uri = Uri.parse(Address.insertFavorites);
     print(uri.toString());

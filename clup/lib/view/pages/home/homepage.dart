@@ -1,5 +1,9 @@
 import 'dart:ui';
 
+import 'package:beauty_navigation/beauty_navigation.dart';
+import 'package:clup/bloc/authentication/authentication_bloc.dart';
+import 'package:clup/bloc/authentication/authentication_state.dart';
+import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/category/category_event.dart';
 import 'package:clup/bloc/category/category_state.dart';
@@ -13,12 +17,16 @@ import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/view/pages/home/components/categories.dart';
 import 'package:clup/view/pages/home/components/store_list.dart';
 import 'package:clup/view/pages/preferences/preferences.dart';
+import 'package:clup/view/pages/settings/components/signin.dart';
+import 'package:clup/view/widget/bottomBar.dart';
+import 'package:clup/view/widget/bottom_navy_bar.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import '../settings/settings.dart';
 import 'components/bottom_bar.dart';
 
@@ -32,6 +40,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> with TickerProviderStateMixin {
+  int _currentIndex = 0;
+
+  TextEditingController _cityController = TextEditingController();
   CategoryBloc _categoryBloc;
   Connectivity connectivity;
   _HomePage();
@@ -87,32 +98,67 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return /* MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (context) => InternetCubit(connectivity: connectivity)),
-          BlocProvider(create: (context) => CategoryBloc(InitialState())),
-        ],
-        child: */
-        Theme(
-      data: HomepageTheme.buildLightTheme(),
-      child: Container(
-        child: Scaffold(
-            body: SafeArea(
-              child: Stack(
-                children: <Widget>[
-                  InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                    },
-                    child: Column(
-                      children: <Widget>[
-                        //getAppBarUI(),
-                        Expanded(
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: HomepageTheme().primaryColor,
+          title: Text(''),
+          actions: [
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                if (state is Unlogged) {
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => SignInPage()));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Icon(FontAwesomeIcons.solidUser,
+                            color: Colors.black),
+                      ));
+                }
+                if (state is Logged) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Row(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Icon(
+                              FontAwesomeIcons.solidUser,
+                              color: Colors.black,
+                            )),
+                        Text(
+                          'Benvenuto',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, color: Colors.black),
+                        )
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+        body: IndexedStack(index: _currentIndex, children: [
+          SafeArea(
+            child: Stack(
+              children: <Widget>[
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  child: Column(
+                    children: <Widget>[
+                      //getAppBarUI(),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(),
                           child: NestedScrollView(
                             controller: _scrollController,
                             headerSliverBuilder: (BuildContext context,
@@ -121,11 +167,17 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate(
                                       (BuildContext context, int index) {
-                                    return Column(
-                                      children: <Widget>[
-                                        getSearchBarUI(),
-                                        Categories(),
-                                      ],
+                                    return Container(
+                                      height: 200,
+                                      child: Stack(
+                                        children: <Widget>[
+                                          getSearchBarUI(),
+                                          Positioned(
+                                              bottom: 12,
+                                              left: 12,
+                                              child: Categories()),
+                                        ],
+                                      ),
                                     );
                                   }, childCount: 1),
                                 ),
@@ -165,7 +217,16 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                   if (internetState is InternetConnected) {
                                     if (state is InitialState) {
                                       BlocProvider.of<CategoryBloc>(context)
-                                          .add(NoSelected());
+                                          .add(SelectNearStore());
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    }
+
+                                    if (state is NearStoreState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
                                     }
                                     if (state is NoCategoryState) {
                                       return StoresView(
@@ -197,6 +258,12 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                           animationController:
                                               animationController);
                                     }
+                                    if (state is CityState) {
+                                      return StoresView(
+                                          store: state.stores,
+                                          animationController:
+                                              animationController);
+                                    }
                                   }
                                   if (internetState is InternetDisconnected) {
                                     return Column(
@@ -218,105 +285,59 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                     );
                                   }
                                 });
-
-                                /*if (state is InternetConnected) {
-                                    return Container(
-                                      color: HomepageTheme.buildLightTheme()
-                                          .backgroundColor,
-                                      child: FutureBuilder(
-                                        future: _storeRepository.getStore(),
-                                        builder:
-                                            (context, AsyncSnapshot snapshot) {
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
-                                          } else {
-                                            return ListView.builder(
-                                              itemCount: snapshot.data.length,
-                                              padding:
-                                                  const EdgeInsets.only(top: 8),
-                                              scrollDirection: Axis.vertical,
-                                              itemBuilder: (BuildContext context,
-                                                  int index) {
-                                                final int count =
-                                                    snapshot.data.length > 10
-                                                        ? 10
-                                                        : storeList.length;
-                                                final Animation<
-                                                    double> animation = Tween<
-                                                            double>(
-                                                        begin: 0.0, end: 1.0)
-                                                    .animate(CurvedAnimation(
-                                                        parent:
-                                                            animationController,
-                                                        curve: Interval(
-                                                            (1 / count) * index,
-                                                            1.0,
-                                                            curve: Curves
-                                                                .fastOutSlowIn)));
-                                                animationController.forward();
-                                                return StoreListView(
-                                                  callback: () {},
-                                                  store: snapshot.data
-                                                      .elementAt(index),
-                                                  animation: animation,
-                                                  animationController:
-                                                      animationController,
-                                                );
-                                              },
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    );*/
                               },
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            bottomNavigationBar:
-                BottomBar() /*BottomNavigationBar(
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    label: Values.Strings.exploreLabel,
-                    backgroundColor: Color(0xFF337CA0),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite),
-                    label: Values.Strings.preferedLabel,
-                    backgroundColor: Color(0xFF337CA0),
-                  ),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.bookmark),
-                      label: Values.Strings.bookingsLabel,
-                      backgroundColor: Color(0xFF337CA0)),
-                  BottomNavigationBarItem(
-                    icon: IconButton(
-                      icon: Icon(Icons.settings),
-                      onPressed: () {
-
-
-
-                      },
-                    ),
-                    label: Values.Strings.settingsLabel,
-                    backgroundColor: Colors.greenAccent,
-                  ),
-                ],
-                currentIndex: _selectedIndex,
-                selectedItemColor: Colors.black,
-                onTap: _onItemTapped,
-              ),*/
+          ),
+          Preferences(),
+          BookingList(),
+          SettingScreen(),
+        ]),
+        bottomNavigationBar: BeautyNavigation(
+          activeIconColor: Colors.black,
+          inactiveIconColor: Colors.white,
+          animationDuration: Duration(milliseconds: 500),
+          circleColor: Colors.white,
+          backgroundColor: HomepageTheme().primaryColor,
+          height: 77,
+          items: <Items>[
+            Items(
+              icon: Icon(FontAwesomeIcons.search, size: 22),
+              tabName: '',
+              onClick: () {
+                setState(() => _currentIndex = 0);
+              },
             ),
-      ),
-    );
+            Items(
+              icon: Icon(FontAwesomeIcons.solidHeart, size: 22),
+              tabName: '',
+              onClick: () {
+                setState(() => _currentIndex = 1);
+              },
+            ),
+            Items(
+              icon: Icon(FontAwesomeIcons.solidBookmark, size: 22),
+              tabName: '',
+              onClick: () {
+                setState(() => _currentIndex = 2);
+              },
+            ),
+            Items(
+              icon: Icon(FontAwesomeIcons.cog, size: 22),
+              tabName: '',
+              onClick: () {
+                setState(() => _currentIndex = 3);
+              },
+            )
+          ],
+        ));
   }
 
   Widget getSearchBarUI() {
@@ -344,6 +365,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                   padding: const EdgeInsets.only(
                       left: 16, right: 16, top: 4, bottom: 4),
                   child: TextField(
+                    controller: _cityController,
                     onChanged: (String txt) {},
                     style: const TextStyle(
                       fontSize: 18,
@@ -379,13 +401,53 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                 ),
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
+                  if (_cityController.text == "" &&
+                      _cityController.text.length < 3) {
+                    _cityController.text = "Inserisci una città valida";
+                  } else {
+                    BlocProvider.of<CategoryBloc>(context).add(SelectCity(
+                        city: _cityController.text.trim().toLowerCase()));
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Icon(FontAwesomeIcons.search,
-                      size: 20,
-                      color: HomepageTheme.buildLightTheme().backgroundColor),
+                      size: 20, color: Colors.black),
                 ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 12,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: HomepageTheme.buildLightTheme().primaryColor,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(38.0),
+              ),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    offset: const Offset(0, 2),
+                    blurRadius: 8.0),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(32.0),
+                ),
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  _cityController.text = "";
+                  BlocProvider.of<CategoryBloc>(context).add(NoSelected());
+                },
+                child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Icon(FontAwesomeIcons.times,
+                        size: 20, color: Colors.black)),
               ),
             ),
           ),

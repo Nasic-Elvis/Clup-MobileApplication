@@ -22,6 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0"
+  beauty_navigation:
+    dependency: "direct main"
+    description:
+      name: beauty_navigation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   bloc:
     dependency: transitive
     description:
@@ -36,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bottom_navy_bar:
+    dependency: "direct main"
+    description:
+      name: bottom_navy_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.0"
   characters:
     dependency: transitive
     description:
@@ -488,6 +502,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  string_extensions:
+    dependency: "direct main"
+    description:
+      name: string_extensions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4"
   string_scanner:
     dependency: transitive
     description:

@@ -48,175 +48,168 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return /*Scaffold(
       appBar: AppBar(
         title: Text('Storico prenotazioni'),
-        backgroundColor: HomepageTheme
-            .buildLightTheme()
-            .primaryColor,
+        backgroundColor: HomepageTheme.buildLightTheme().primaryColor,
         actions: [
-          FutureBuilder<int>(future: getSharedPreferences(),
+          FutureBuilder<int>(
+            future: getSharedPreferences(),
             builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-              return snapshot.hasData
-                  ? Container()
-                  : Container();
+              return snapshot.hasData ? Container() : Container();
             },
           ),
         ],
       ),
-      body: SafeArea(
-        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            if (state is Logged) {
-              return FutureBuilder(
-                //TODO: Aggiungere IdUser dalla fase di login.
+      body: */
+        SafeArea(
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          if (state is Logged) {
+            return FutureBuilder(
+              //TODO: Aggiungere IdUser dalla fase di login.
 
-                future: _bookingRepository.getBookings(430),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  print(snapshot.data.length);
-                  if (snapshot.data.length == 0) {
-                    return Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: Center(
-                          child: Container(
-                        child: Column(
-                          children: [
-                            Text(
-                              'Non hai ancora alcuna prenotazione!',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Divider(height: 30, color: Colors.transparent),
-                            Image.asset(
-                              "assets/images/reservation.png",
-                            ),
-                          ],
-                        ),
-                      )),
-                    );
-                  } else {
-                    return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            List<String> elements =
-                                getDateToList(snapshot.data[index].date);
-                            print(snapshot.data[0].store.address);
-                            return Center(
-                              child: Card(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    new ListTile(
-                                      leading: Image.network(
-                                          snapshot.data[index].store.imageUrl,
-                                          fit: BoxFit.fill),
-                                      title: Text(
-                                        elements[0] +
-                                            " " +
-                                            elements[1] +
-                                            " " +
-                                            elements[2],
-                                        style: new TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Text(snapshot
-                                              .data[index].store.name +
-                                          ", " +
-                                          snapshot.data[index].store.address),
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        FlatButton(
-                                          child: Text(
-                                            "DETTAGLI NEGOZIO",
-                                            style:
-                                                TextStyle(color: Colors.green),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                              context,
-                                              DetailsScreen.routeName,
-                                              arguments:
-                                                  ProductDetailsArguments(
-                                                      store: snapshot
-                                                          .data[index].store),
-                                            );
-                                          },
-                                        ),
-                                        FlatButton(
-                                          child: Text(
-                                            "ELIMINA",
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                          onPressed: () async {
-                                            int result = await _bookingApi
-                                                .deleteBooking(snapshot
-                                                    .data[index].idBooking);
-                                            if (result == 200) {
-                                              Toast.Toast.show(
-                                                  "Cancellazione effettuata con successo",
-                                                  context,
-                                                  duration:
-                                                      Toast.Toast.LENGTH_LONG,
-                                                  gravity: Toast.Toast.BOTTOM);
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          super.widget));
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ));
-                  }
-                },
-              );
-            }
-            if (state is Unlogged) {
-              return Center(
-                child: Column(
-                  children: [
-                    Container(
-                        child: Image.asset(
-                      'assets/images/NoPreferences.png',
-                      fit: BoxFit.scaleDown,
+              future: _bookingRepository.getBookings(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                print(snapshot.data.length);
+                if (snapshot.data.length == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Center(
+                        child: Container(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Non hai ancora alcuna prenotazione!',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Divider(height: 30, color: Colors.transparent),
+                          Image.asset(
+                            "assets/images/reservation.png",
+                          ),
+                        ],
+                      ),
                     )),
-                    Center(
+                  );
+                } else {
+                  return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          List<String> elements =
+                              getDateToList(snapshot.data[index].date);
+                          print(snapshot.data[0].store.address);
+                          return Center(
+                            child: Card(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new ListTile(
+                                    leading: Image.network(
+                                        snapshot.data[index].store.imageUrl,
+                                        fit: BoxFit.fill),
+                                    title: Text(
+                                      elements[0] +
+                                          " " +
+                                          elements[1] +
+                                          " " +
+                                          elements[2],
+                                      style: new TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                        snapshot.data[index].store.name +
+                                            ", " +
+                                            snapshot.data[index].store.address),
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      FlatButton(
+                                        child: Text(
+                                          "DETTAGLI NEGOZIO",
+                                          style: TextStyle(color: Colors.green),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            DetailsScreen.routeName,
+                                            arguments: ProductDetailsArguments(
+                                                store:
+                                                    snapshot.data[index].store),
+                                          );
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child: Text(
+                                          "ELIMINA",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                        onPressed: () async {
+                                          int result = await _bookingApi
+                                              .deleteBooking(snapshot
+                                                  .data[index].idBooking);
+                                          if (result == 200) {
+                                            Toast.Toast.show(
+                                                "Cancellazione effettuata con successo",
+                                                context,
+                                                duration:
+                                                    Toast.Toast.LENGTH_LONG,
+                                                gravity: Toast.Toast.BOTTOM);
+                                            setState(() {});
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ));
+                }
+              },
+            );
+          }
+          if (state is Unlogged) {
+            return Center(
+              child: Column(
+                children: [
+                  Container(
+                      child: Image.asset(
+                    'assets/images/NoPreferences.png',
+                    fit: BoxFit.scaleDown,
+                  )),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                       child: Text(
                         'Effettua il login per vedere le prenotazioni',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             letterSpacing: 1.2,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ],
-                ),
-              );
-            }
-          },
-        ),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
-      bottomNavigationBar: BottomBar(),
+      /*),
+      bottomNavigationBar: BottomBar(),*/
     );
   }
 

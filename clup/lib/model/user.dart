@@ -2,7 +2,7 @@ class User {
   int idUser;
   String name;
   String surname;
-  DateTime birthdayDate;
+  String birthdayDate;
   String telephoneNumber;
   String email;
   String username;
