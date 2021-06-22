@@ -7,7 +7,6 @@ import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/category/category_event.dart';
 import 'package:clup/bloc/category/category_state.dart';
-import 'package:clup/bloc/favorites/favoritesStates.dart';
 import 'package:clup/bloc/internet/internet_cubit.dart';
 import 'package:clup/bloc/internet/internet_state.dart';
 import 'package:clup/controller/repository/storeRepository.dart';
@@ -18,17 +17,12 @@ import 'package:clup/view/pages/home/components/categories.dart';
 import 'package:clup/view/pages/home/components/store_list.dart';
 import 'package:clup/view/pages/preferences/preferences.dart';
 import 'package:clup/view/pages/settings/components/signin.dart';
-import 'package:clup/view/widget/bottomBar.dart';
-import 'package:clup/view/widget/bottom_navy_bar.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import '../settings/settings.dart';
-import 'components/bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
   static String routeName = "/home";
@@ -100,8 +94,20 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: HomepageTheme().primaryColor,
-          title: Text(''),
+          title: Text(
+              _currentIndex == 0
+                  ? 'Customer Line Up'
+                  : _currentIndex == 1
+                      ? 'Preferiti'
+                      : _currentIndex == 2
+                          ? 'Prenotazioni'
+                          : 'Impostazioni',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600)),
           actions: [
             BlocBuilder<AuthenticationBloc, AuthenticationState>(
               builder: (context, state) {
@@ -131,7 +137,9 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                         Text(
                           'Benvenuto',
                           style: TextStyle(
-                              fontWeight: FontWeight.w600, color: Colors.black),
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                              fontSize: 16),
                         )
                       ],
                     ),
@@ -223,34 +231,139 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                     }
 
                                     if (state is NearStoreState) {
-                                      return StoresView(
-                                          store: state.stores,
-                                          animationController:
-                                              animationController);
+                                      if (state.stores.isNotEmpty) {
+                                        return StoresView(
+                                            store: state.stores,
+                                            animationController:
+                                                animationController);
+                                      } else {
+                                        return Center(
+                                          child: Column(
+                                            children: [
+                                              Icon(FontAwesomeIcons.search,
+                                                  size: 28,
+                                                  color: Colors.black),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                'Non sono presenti negozi nella tua zona',
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.8),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
                                     }
                                     if (state is NoCategoryState) {
-                                      return StoresView(
-                                          store: state.stores,
-                                          animationController:
-                                              animationController);
+                                      if (state.stores.isNotEmpty) {
+                                        return StoresView(
+                                            store: state.stores,
+                                            animationController:
+                                                animationController);
+                                      } else {
+                                        return Center(
+                                          child: Column(
+                                            children: [
+                                              Icon(FontAwesomeIcons.search,
+                                                  size: 28,
+                                                  color: Colors.black),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                'Non sono presenti negozi',
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.8),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
                                     }
                                     if (state is SupermarketState) {
-                                      return StoresView(
-                                          store: state.stores,
-                                          animationController:
-                                              animationController);
+                                      if (state.stores.isNotEmpty) {
+                                        return StoresView(
+                                            store: state.stores,
+                                            animationController:
+                                                animationController);
+                                      } else {
+                                        return Center(
+                                          child: Column(
+                                            children: [
+                                              Icon(FontAwesomeIcons.search,
+                                                  size: 28,
+                                                  color: Colors.black),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                'Non sono presenti supermercati nella tua zona',
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.8),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
                                     }
                                     if (state is ServicesState) {
-                                      return StoresView(
-                                          store: state.stores,
-                                          animationController:
-                                              animationController);
+                                      if (state.stores.isNotEmpty) {
+                                        return StoresView(
+                                            store: state.stores,
+                                            animationController:
+                                                animationController);
+                                      } else {
+                                        return Center(
+                                          child: Column(
+                                            children: [
+                                              Icon(FontAwesomeIcons.search,
+                                                  size: 28,
+                                                  color: Colors.black),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                'Non sono presenti servizi nella tua zona',
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.8),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
                                     }
                                     if (state is HealtCareState) {
-                                      return StoresView(
-                                          store: state.stores,
-                                          animationController:
-                                              animationController);
+                                      if (state.stores.isNotEmpty) {
+                                        return StoresView(
+                                            store: state.stores,
+                                            animationController:
+                                                animationController);
+                                      } else {
+                                        return Center(
+                                          child: Column(
+                                            children: [
+                                              Icon(FontAwesomeIcons.search,
+                                                  size: 28,
+                                                  color: Colors.black),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                'Non sono presenti strutture sanitarie nella tua zona',
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.8),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
                                     }
                                     if (state is OtherActivityState) {
                                       return StoresView(
@@ -259,10 +372,31 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                               animationController);
                                     }
                                     if (state is CityState) {
-                                      return StoresView(
-                                          store: state.stores,
-                                          animationController:
-                                              animationController);
+                                      if (state.stores.isNotEmpty) {
+                                        return StoresView(
+                                            store: state.stores,
+                                            animationController:
+                                                animationController);
+                                      } else {
+                                        return Center(
+                                          child: Column(
+                                            children: [
+                                              Icon(FontAwesomeIcons.search,
+                                                  size: 28,
+                                                  color: Colors.black),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                'Non sono presenti negozi nella città scelta',
+                                                style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.8),
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
                                     }
                                   }
                                   if (internetState is InternetDisconnected) {
@@ -441,8 +575,10 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                 ),
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  _cityController.text = "";
-                  BlocProvider.of<CategoryBloc>(context).add(NoSelected());
+                  if (_cityController.text != "") {
+                    _cityController.text = "";
+                    BlocProvider.of<CategoryBloc>(context).add(NoSelected());
+                  }
                 },
                 child: Padding(
                     padding: const EdgeInsets.all(16.0),

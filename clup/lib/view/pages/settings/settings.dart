@@ -136,8 +136,10 @@ class _SettingScreenState extends State<SettingScreen> {
                               onPressed: (context) {
                                 BlocProvider.of<AuthenticationBloc>(context)
                                     .add(Logout());
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => SignInScreen()));
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => SignInScreen()),
+                                    (Route<dynamic> route) => false);
                               },
                             )
                           ],

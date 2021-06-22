@@ -9,7 +9,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-
+import 'package:string_extensions/string_extensions.dart';
 import '../../../widget/maps.dart';
 import 'contact_card.dart';
 
@@ -76,7 +76,12 @@ class Body extends StatelessWidget {
                 )),
               ),
               Center(
-                child: Text("\n" + store.city + ", " + store.address + "\n",
+                child: Text(
+                    "\n" +
+                        store.city.capitalize() +
+                        ", " +
+                        store.address +
+                        "\n",
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               ),
@@ -111,24 +116,12 @@ class Body extends StatelessWidget {
                       color: Colors.transparent,
                       child: Padding(
                         padding: EdgeInsets.only(
-                            left: MediaQuery
-                                .of(context)
-                                .size
-                                .width * 0.15,
-                            right: MediaQuery
-                                .of(context)
-                                .size
-                                .width * 0.15,
+                            left: MediaQuery.of(context).size.width * 0.15,
+                            right: MediaQuery.of(context).size.width * 0.15,
                             bottom: (20 / 375.0) *
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                MediaQuery.of(context).size.width,
                             top: (10 / 375.0) *
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width),
+                                MediaQuery.of(context).size.width),
                       ),
                     ),
                   ],
