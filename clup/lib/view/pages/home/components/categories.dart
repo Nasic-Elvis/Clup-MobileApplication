@@ -6,6 +6,10 @@ import 'package:clup/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:clup/utils/values.dart' as values;
+
+import '../../../../utils/values.dart';
 
 class Categories extends StatelessWidget {
   SizeConfig sizeConfig = SizeConfig();
@@ -13,58 +17,15 @@ class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
-      {"icon": FontAwesomeIcons.home, "text": "Tutti"},
-      {"icon": FontAwesomeIcons.building, "text": "Attività"},
-      {"icon": FontAwesomeIcons.shoppingCart, "text": "Supermercati"},
-      //{"icon": FontAwesomeIcons.heartbeat, "text": "Sanità"},
-      {"icon": FontAwesomeIcons.wpforms, "text": "Servizi"},
-      {"icon": FontAwesomeIcons.locationArrow, "text": "Posizione"}
-      /*{"icon": "assets/icons/Game Icon.svg", "text": "Game"},
-      {"icon": "assets/icons/Gift Icon.svg", "text": "Daily Gift"},
-      {"icon": "assets/icons/Discover.svg", "text": "More"},*/
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.home, values.Strings.home_components_categories_text: AppLocalizations.of(context).homepage_categories_all},
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.building, values.Strings.home_components_categories_text: AppLocalizations.of(context).homepage_categories_activity},
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.shoppingCart, values.Strings.home_components_categories_text: AppLocalizations.of(context).homepage_categories_markets},
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.wpforms, values.Strings.home_components_categories_text: AppLocalizations.of(context).homepage_categories_services},
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.locationArrow, values.Strings.home_components_categories_text: AppLocalizations.of(context).homepage_categories_position}
     ];
     return Padding(
       padding: EdgeInsets.all(getProportionateScreenWidth(12, context)),
       child:
-          /*Container(
-          width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 6,
-              itemBuilder: (context, index) {
-                return CategoryCard(
-                  icon: categories[index]["icon"],
-                  text: categories[index]["text"],
-                  press: () {
-                    switch (categories[index]["text"]) {
-                      case 'Tutti':
-                        BlocProvider.of<CategoryBloc>(context)
-                            .add(NoSelected());
-                        break;
-                      case 'Attività':
-                        BlocProvider.of<CategoryBloc>(context)
-                            .add(SelectOtherActivity());
-                        break;
-                      case 'Supermercati':
-                        BlocProvider.of<CategoryBloc>(context)
-                            .add(SelectSupermarket());
-                        break;
-                      case 'Sanità':
-                        BlocProvider.of<CategoryBloc>(context)
-                            .add(SelectHealtCare());
-                        break;
-                      case 'Servizi':
-                        BlocProvider.of<CategoryBloc>(context)
-                            .add(SelectServices());
-                        break;
-                      case 'Posizione':
-                        BlocProvider.of<CategoryBloc>(context)
-                            .add(SelectNearStore());
-                    }
-                  },
-                );
-              }),
-        )*/
           SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -73,30 +34,32 @@ class Categories extends StatelessWidget {
           children: List.generate(
             categories.length,
             (index) => CategoryCard(
-              icon: categories[index]["icon"],
-              text: categories[index]["text"],
+              icon: categories[index][values.Strings.home_components_categories_icon],
+              text: categories[index][values.Strings.home_components_categories_text],
               press: () {
-                switch (categories[index]["text"]) {
-                  case 'Tutti':
+
+                var homepage_categories_all;
+                switch (categories[index][values.Strings.home_components_categories_text]) {
+                  case "Categorie":
                     BlocProvider.of<CategoryBloc>(context).add(NoSelected());
                     break;
-                  case 'Attività':
+                  case "Attività":
                     BlocProvider.of<CategoryBloc>(context)
                         .add(SelectOtherActivity());
                     break;
-                  case 'Supermercati':
+                  case "Supermercati":
                     BlocProvider.of<CategoryBloc>(context)
                         .add(SelectSupermarket());
                     break;
-                  case 'Sanità':
+                  case "Salute":
                     BlocProvider.of<CategoryBloc>(context)
                         .add(SelectHealtCare());
                     break;
-                  case 'Servizi':
+                  case "Servizi":
                     BlocProvider.of<CategoryBloc>(context)
                         .add(SelectServices());
                     break;
-                  case 'Posizione':
+                  case "Posizione":
                     BlocProvider.of<CategoryBloc>(context)
                         .add(SelectNearStore());
                 }
@@ -143,7 +106,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       height: getProportionateScreenWidth(55, context),
                       width: getProportionateScreenWidth(55, context),
                       decoration: BoxDecoration(
-                        color: widget.text == "Supermercati"
+                        color: widget.text == AppLocalizations.of(context).homepage_categories_markets
                             ? HomepageTheme().primaryColor
                             : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
@@ -157,7 +120,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       height: getProportionateScreenWidth(55, context),
                       width: getProportionateScreenWidth(55, context),
                       decoration: BoxDecoration(
-                        color: widget.text == "Attività"
+                        color: widget.text == AppLocalizations.of(context).homepage_categories_activity
                             ? HomepageTheme().primaryColor
                             : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
@@ -171,7 +134,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       height: getProportionateScreenWidth(55, context),
                       width: getProportionateScreenWidth(55, context),
                       decoration: BoxDecoration(
-                        color: widget.text == "Servizi"
+                        color: widget.text == AppLocalizations.of(context).homepage_categories_services
                             ? HomepageTheme().primaryColor
                             : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
@@ -185,7 +148,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       height: getProportionateScreenWidth(55, context),
                       width: getProportionateScreenWidth(55, context),
                       decoration: BoxDecoration(
-                        color: widget.text == "Sanità"
+                        color: widget.text == AppLocalizations.of(context).homepage_categories_health
                             ? HomepageTheme().primaryColor
                             : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
@@ -199,7 +162,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       height: getProportionateScreenWidth(55, context),
                       width: getProportionateScreenWidth(55, context),
                       decoration: BoxDecoration(
-                        color: widget.text == "Tutti"
+                        color: widget.text == AppLocalizations.of(context).homepage_categories_all
                             ? HomepageTheme().primaryColor
                             : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),
@@ -213,7 +176,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       height: getProportionateScreenWidth(55, context),
                       width: getProportionateScreenWidth(55, context),
                       decoration: BoxDecoration(
-                        color: widget.text == "Posizione"
+                        color: widget.text == AppLocalizations.of(context).homepage_categories_position
                             ? HomepageTheme().primaryColor
                             : Colors.grey[300],
                         borderRadius: BorderRadius.circular(10),

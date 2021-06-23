@@ -2,6 +2,8 @@ import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/details/components/body.dart';
 import 'package:flutter/material.dart';
 
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'components/app_bar.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -25,7 +27,8 @@ class _DetailsScreen extends State<DetailsScreen>
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(name: "Dettagli negozio"),
+      appBar: CustomAppBar(name:
+      AppLocalizations.of(context).details_home),
       body: Body(store: agrs.store),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:clup/utils/values.dart' as Values;
 
 class CustomAppBar extends PreferredSize {
   final String name;
@@ -29,7 +30,7 @@ class CustomAppBar extends PreferredSize {
                 onPressed: () => Navigator.pop(context),
                 child:
                 SvgPicture.asset(
-                  "assets/icons/Back ICon.svg",
+                  Values.Path.backButton,
                   height: 20,
                 ),
                   ),
@@ -51,7 +52,6 @@ class CustomAppBar extends PreferredSize {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  //SvgPicture.asset("assets/icons/Star Icon.svg", height: 20),
                 ],
               ),
             )

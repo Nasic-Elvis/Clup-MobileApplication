@@ -5,6 +5,9 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:clup/utils/values.dart' as Values;
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../settings/components/signin.dart';
 import 'button.dart';
@@ -73,12 +76,13 @@ class RealTime extends PreferredSize {
                   child: Column(
                     children: [
                       DefaultButton(
-                        text: "Prenota",
+                        text:
+                        AppLocalizations.of(context).details_realtime_card_btn_text,
                         press: () async {
                           if (bookable) {
                             SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-                            int idUser = prefs.getInt("idUser");
+                            int idUser = prefs.getInt(Values.Strings.sharedPreferences_idUser);
                             print(idUser);
                             if (idUser == null || idUser <= 0) {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -86,20 +90,19 @@ class RealTime extends PreferredSize {
                               ));
                             } else {
                               Booking booking = new Booking(
-                                  139, null, "10:20", "Lunedì", store, null);
+                                  null, null, null, null, store, null);
                               Navigator.pushNamed(
                                 context,
                                 BookingPage.routeName,
                                 arguments: BookingDetailsArguments(
                                     booking: booking, store: store),
                               );
-                              print("OK");
                             }
                           }
                           else {
                             Fluttertoast.showToast(
                                 msg:
-                                "Non ci sono posti disponibili. Ci dispiace!",
+                                AppLocalizations.of(context).details_body_full,
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.SNACKBAR,
                                 timeInSecForIosWeb: 1,

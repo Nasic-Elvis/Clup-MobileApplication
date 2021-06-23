@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_extensions/string_extensions.dart';
+import 'package:clup/utils/values.dart' as Values;
 
 import '../../../../homepage_theme.dart';
 
@@ -215,12 +216,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
                             press: () async {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
-                              bool ok = prefs.getBool('login');
-                              idUser = prefs.getInt("idUser");
+                              bool ok = prefs.getBool(Values.Strings.sharedPreferences_login_bool);
+                              idUser = prefs.getInt(Values.Strings.sharedPreferences_idUser);
                               print(idUser);
-                              if (prefs.getBool('login') == null ||
-                                  !prefs.getBool('login')) {
-                                print("NO");
+                              if (prefs.getBool(Values.Strings.sharedPreferences_login_bool) == null ||
+                                  !prefs.getBool(Values.Strings.sharedPreferences_login_bool)) {
                               } else {
                                 bool okCheck = checkDateTime(
                                     _setDate, _timeController.text);
@@ -327,7 +327,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
 }
 
 bool checkDateTime(String date, String time) {
-  DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(date);
+  DateTime tempDate = new DateFormat(Values.Pattern.dataMySql).parse(date);
   var timeSplitter = time.split(":");
   DateTime finalDate = new DateTime(tempDate.year, tempDate.month, tempDate.day,
       int.parse(timeSplitter[0]), int.parse(timeSplitter[1]));

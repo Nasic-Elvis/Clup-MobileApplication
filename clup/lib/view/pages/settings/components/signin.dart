@@ -3,6 +3,7 @@ import 'package:clup/bloc/authentication/authentication_event.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/favorites/favoriteBloc.dart';
+import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/bloc/favorites/favoritesEvents.dart';
 import 'package:clup/controller/repository/authenticationRepository.dart';
 import 'package:clup/homepage_theme.dart';
@@ -14,7 +15,7 @@ import 'package:clup/view/widget/custom_shape.dart';
 import 'package:clup/view/widget/responsive_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'signup.dart';
 
 class SignInPage extends StatelessWidget {
@@ -121,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ? _height / 30
                   : (_medium ? _height / 25 : _height / 20)),
           child: Image.asset(
-            'assets/images/login.png',
+            Values.Path.login,
             height: _height / 3.5,
             width: _width / 3.5,
           ),
@@ -136,7 +137,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Row(
         children: <Widget>[
           Text(
-            "Benvenuto",
+            AppLocalizations.of(context).signin_title,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: _large ? 60 : (_medium ? 50 : 40),
@@ -153,7 +154,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Row(
         children: <Widget>[
           Text(
-            "Effettua subito il login",
+            AppLocalizations.of(context).signin_subtitle,
             style: TextStyle(
               fontWeight: FontWeight.w200,
               fontSize: _large ? 20 : (_medium ? 17.5 : 15),
@@ -186,7 +187,8 @@ class _SignInScreenState extends State<SignInScreen> {
       keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email,
-      hint: "Email",
+      hint:       AppLocalizations.of(context).signin_components_email
+      ,
     );
   }
 
@@ -196,7 +198,8 @@ class _SignInScreenState extends State<SignInScreen> {
       textEditingController: passwordController,
       icon: Icons.lock,
       obscureText: true,
-      hint: "Password",
+      hint:       AppLocalizations.of(context).signin_components_password
+      ,
     );
   }
 
@@ -207,7 +210,7 @@ class _SignInScreenState extends State<SignInScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Password dimenticata?",
+            AppLocalizations.of(context).signin_components_forgot_pwd,
             style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: _large ? 14 : (_medium ? 12 : 10)),
@@ -217,10 +220,9 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           GestureDetector(
             onTap: () {
-              print("Routing");
             },
             child: Text(
-              "Recupera",
+              AppLocalizations.of(context).signin_components_get_pwd,
               style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: HomepageTheme.buildLightTheme().primaryColor),
@@ -236,9 +238,8 @@ class _SignInScreenState extends State<SignInScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        print("Routing to your account");
         Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Login Successful')));
+            .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).signin_login_success)));
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
@@ -265,7 +266,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             padding: const EdgeInsets.all(12.0),
-            child: Text('LOG IN',
+            child: Text(AppLocalizations.of(context).settings_login,
                 style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
           ),
         ),
@@ -302,7 +303,7 @@ class _SignInScreenState extends State<SignInScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Non sei ancora registrato?",
+            AppLocalizations.of(context).signin_notRegitered,
             style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: _large ? 14 : (_medium ? 12 : 10)),
@@ -315,10 +316,9 @@ class _SignInScreenState extends State<SignInScreen> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => SignUpScreen(),
               ));
-              print("Routing to Sign up screen");
             },
             child: Text(
-              "Registrati",
+              AppLocalizations.of(context).signin_signup,
               style: TextStyle(
                   fontWeight: FontWeight.w800,
                   color: HomepageTheme.buildLightTheme().primaryColor,

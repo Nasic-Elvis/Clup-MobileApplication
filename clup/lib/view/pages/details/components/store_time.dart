@@ -1,6 +1,11 @@
+
+
 import 'package:clup/model/time.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:clup/utils/values.dart' as Values;
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
 
@@ -14,7 +19,7 @@ class StoreTime extends PreferredSize {
   StoreTime({@required this.title, this.subtitle, this.description, this.time});
 
   bool isNumeric(String string) {
-    final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+    var numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
 
     return numericRegex.hasMatch(string);
   }
@@ -53,18 +58,19 @@ class StoreTime extends PreferredSize {
       print(second);
       print(first);
       if (now.isAfter(first) && now.isBefore(second)) {
-        statoNegozio = "ORA APERTO";
+        statoNegozio =
+            Values.Strings.nowOpen;
         open = true;
         textStyle = TextStyle(
             fontWeight: FontWeight.bold, fontSize: 18, color: Colors.green);
       } else {
-        statoNegozio = "ORA CHIUSO";
+        statoNegozio = Values.Strings.nowClosed;
         open = false;
         textStyle = TextStyle(
             fontWeight: FontWeight.bold, fontSize: 18, color: Colors.red);
       }
     } else {
-      statoNegozio = "ORA CHIUSO";
+      statoNegozio = Values.Strings.nowClosed;
       open = false;
       textStyle = TextStyle(
           fontWeight: FontWeight.bold, fontSize: 18, color: Colors.red);
@@ -74,6 +80,10 @@ class StoreTime extends PreferredSize {
   @override
   Widget build(BuildContext context) {
     checkDateTime(this.subtitle);
+    if(statoNegozio == Values.Strings.nowClosed)
+      statoNegozio = AppLocalizations.of(context).store_time_now_closed.toString().toUpperCase();
+      else
+        statoNegozio = AppLocalizations.of(context).store_time_now_open.toString().toUpperCase();
 
     return SafeArea(
         child: Column(
@@ -115,7 +125,7 @@ class StoreTime extends PreferredSize {
                       ),
                       child: Column(children: [
                         Text(
-                          "Orari di apertura del negozio",
+                          AppLocalizations.of(context).store_time,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -164,7 +174,7 @@ class StoreTime extends PreferredSize {
                                 );
                               }
                               if (snapshot.hasError) {
-                                return Text("ERROR");
+                                return Text(Values.Strings.errorString);
                               }
                               return Center(child: CircularProgressIndicator());
                             }),

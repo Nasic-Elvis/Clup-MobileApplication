@@ -5,6 +5,8 @@ import 'package:clup/bloc/favorites/favoritesEvents.dart';
 import 'package:clup/bloc/favorites/favoritesStates.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
+import 'package:clup/utils/values.dart' as values;
+
 import 'package:clup/singletonPreferences.dart';
 import 'package:clup/view/pages/details/details_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_extensions/string_extensions.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 bool isPressed = true;
 
@@ -43,7 +47,7 @@ class _StoreListViewState extends State<StoreListView> {
   void initState() {
     getSharedPreferences();
     if (prefs != null) {
-      if (prefs.getString("idUser") != null) {
+      if (prefs.getString(values.Strings.sharedPreferences_idUser) != null) {
         BlocProvider.of<FavoriteBloc>(context).add(GetFavorites());
       }
     }
@@ -173,26 +177,6 @@ class _StoreListViewState extends State<StoreListView> {
                                                 ),
                                               ],
                                             ),
-                                            /*Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 4),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  SmoothStarRating(
-                                                    allowHalfRating: true,
-                                                    starCount: 5,
-                                                    rating: widget.store.rating,
-                                                    size: 20,
-                                                    color: HomepageTheme
-                                                            .buildLightTheme()
-                                                        .primaryColor,
-                                                    borderColor: HomepageTheme
-                                                            .buildLightTheme()
-                                                        .primaryColor,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),*/
                                           ],
                                         ),
                                       ),
@@ -208,7 +192,7 @@ class _StoreListViewState extends State<StoreListView> {
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          '${widget.store.booktableCapacity} posti',
+                                          '${widget.store.booktableCapacity} '  + AppLocalizations.of(context).homepage_store_list_view_free,
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,

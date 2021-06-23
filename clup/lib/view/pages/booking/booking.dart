@@ -6,7 +6,7 @@ import 'package:clup/view/pages/details/components/body.dart';
 import 'package:clup/view/widget/bottomBar.dart';
 import 'package:clup/view/widget/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class BookingPage extends StatefulWidget {
   static String routeName = "/booking";
 
@@ -27,12 +27,12 @@ class _BookingPage extends State<BookingPage> with TickerProviderStateMixin {
     final BookingDetailsArguments agrs =
         ModalRoute.of(context).settings.arguments;
     print(agrs.booking.day);
-    return /*Scaffold(*/
-        //backgroundColor: Colors.white,
-        //appBar: CustomAppBar(rating: agrs.store.rating),
-        /*body:*/ DateTimePicker(agrs.store);
+    return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: CustomAppBar(name: AppLocalizations.of(context).booking_title),
+        body: DateTimePicker(agrs.store),
     //bottomNavigationBar: BottomBarDef(),
-    //);
+    );
   }
 }
 

@@ -2,12 +2,15 @@ import 'package:clup/bloc/authentication/authentication_bloc.dart';
 import 'package:clup/bloc/authentication/authentication_event.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/singletonPreferences.dart';
-import 'package:clup/utils/values.dart';
+import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/view/pages/settings/userInformation/userInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:settings_ui/settings_ui.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import '../../../app_theme.dart';
 import '../../../homepage_theme.dart';
@@ -58,10 +61,10 @@ class _SettingScreenState extends State<SettingScreen> {
                       //backgroundColor: Colors.white,
                       sections: [
                         SettingsSection(
-                          title: Strings.settingSection,
+                          title: AppLocalizations.of(context).settings_title,
                           tiles: [
                             SettingsTile(
-                              title: 'Login',
+                              title: AppLocalizations.of(context).settings_login,
                               leading: Icon(Icons.account_circle),
                               onPressed: (context) {
                                 Navigator.of(context).push(MaterialPageRoute(
@@ -70,16 +73,16 @@ class _SettingScreenState extends State<SettingScreen> {
                               },
                             ),
                             SettingsTile(
-                              title: 'Lingua',
-                              subtitle: 'Italiano',
+                              title: AppLocalizations.of(context).settings_language,
+                              subtitle: Values.Language.defaultLanguage,
                               leading: Icon(Icons.language),
                               onPressed: (context) {
                                 //TODO: Implementare language_pickers
                               },
                             ),
                             SettingsTile.switchTile(
-                              title: 'Dark Mode',
-                              subtitle: 'Passa alla Dark Mode',
+                              title: AppLocalizations.of(context).settings_darkMode,
+                              subtitle: AppLocalizations.of(context).settings_darkMode_description,
                               leading: Icon(Icons.nightlight_round),
                               onToggle: (bool value) {
                                 setState(() {
@@ -99,10 +102,10 @@ class _SettingScreenState extends State<SettingScreen> {
                       backgroundColor: Colors.white,
                       sections: [
                         SettingsSection(
-                          title: Strings.settingSection,
+                          title: AppLocalizations.of(context).settings_title,
                           tiles: [
                             SettingsTile(
-                              title: 'Il Mio Account',
+                              title: AppLocalizations.of(context).settings_account,
                               leading: Icon(Icons.account_circle),
                               onPressed: (context) async {
                                 Navigator.of(context).push(MaterialPageRoute(
@@ -111,16 +114,16 @@ class _SettingScreenState extends State<SettingScreen> {
                               },
                             ),
                             SettingsTile(
-                              title: 'Lingua',
-                              subtitle: 'Italiano',
+                              title:  AppLocalizations.of(context).settings_language,
+                              subtitle:  Values.Language.defaultLanguage,
                               leading: Icon(Icons.language),
                               onPressed: (context) {
                                 //TODO: Implementare language_pickers
                               },
                             ),
                             SettingsTile.switchTile(
-                              title: 'Dark Mode',
-                              subtitle: 'Passa alla Dark Mode',
+                              title:  AppLocalizations.of(context).settings_darkMode,
+                              subtitle: AppLocalizations.of(context).settings_darkMode_description,
                               leading: Icon(Icons.nightlight_round),
                               onToggle: (bool value) {
                                 setState(() {
@@ -131,7 +134,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               switchValue: _flutter,
                             ),
                             SettingsTile(
-                              title: 'Logout',
+                              title: AppLocalizations.of(context).settings_logout,
                               leading: Icon(Icons.logout),
                               onPressed: (context) {
                                 BlocProvider.of<AuthenticationBloc>(context)

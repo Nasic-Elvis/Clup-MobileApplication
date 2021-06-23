@@ -2,6 +2,9 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import '../../../widget/maps.dart';
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
 
@@ -62,7 +65,7 @@ class ContactTime extends PreferredSize {
                   child: Column(
                     children: [
                       Text(
-                        "Indicazioni stradali",
+                        AppLocalizations.of(context).details_street_card,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,

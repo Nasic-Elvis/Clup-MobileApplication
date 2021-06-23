@@ -11,7 +11,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart' as Toast;
+import 'package:clup/utils/values.dart' as Values;
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../details/details_screen.dart';
 import '../preferences/preferences.dart';
 
@@ -41,27 +43,13 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
   Future<int> getSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    idUser = prefs.getInt('idUser');
-    print("ID " + idUser.toString());
+    idUser = prefs.getInt(Values.Strings.sharedPreferences_idUser);
     return idUser;
   }
 
   @override
   Widget build(BuildContext context) {
-    return /*Scaffold(
-      appBar: AppBar(
-        title: Text('Storico prenotazioni'),
-        backgroundColor: HomepageTheme.buildLightTheme().primaryColor,
-        actions: [
-          FutureBuilder<int>(
-            future: getSharedPreferences(),
-            builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-              return snapshot.hasData ? Container() : Container();
-            },
-          ),
-        ],
-      ),
-      body: */
+    return
         SafeArea(
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
@@ -85,13 +73,13 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           Text(
-                            'Non hai ancora alcuna prenotazione!',
+                            AppLocalizations.of(context).bookingList_noBooking,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Divider(height: 30, color: Colors.transparent),
                           Image.asset(
-                            "assets/images/reservation.png",
+                            Values.Path.reservation,
                           ),
                         ],
                       ),
@@ -136,7 +124,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                                     children: <Widget>[
                                       FlatButton(
                                         child: Text(
-                                          "DETTAGLI NEGOZIO",
+                                          AppLocalizations.of(context).bookingList_noBooking.toString().toUpperCase(),
                                           style: TextStyle(color: Colors.green),
                                         ),
                                         onPressed: () {
@@ -151,7 +139,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                                       ),
                                       FlatButton(
                                         child: Text(
-                                          "ELIMINA",
+                                          AppLocalizations.of(context).bookingList_delete_text.toString().toUpperCase(),
                                           style: TextStyle(color: Colors.red),
                                         ),
                                         onPressed: () async {
@@ -160,7 +148,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                                                   .data[index].idBooking);
                                           if (result == 200) {
                                             Toast.Toast.show(
-                                                "Cancellazione effettuata con successo",
+                                                AppLocalizations.of(context).bookingList_delete.toString(),
                                                 context,
                                                 duration:
                                                     Toast.Toast.LENGTH_LONG,
@@ -187,14 +175,14 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                 children: [
                   Container(
                       child: Image.asset(
-                    'assets/images/NoPreferences.png',
+                    Values.Strings.urlNoPreferences,
                     fit: BoxFit.scaleDown,
                   )),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                       child: Text(
-                        'Effettua il login per vedere le prenotazioni',
+                        AppLocalizations.of(context).details_login_reservation,
                         style: TextStyle(
                             fontSize: 14,
                             letterSpacing: 1.2,
@@ -214,7 +202,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
   }
 
   getDateToList(bookingDate) {
-    DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(bookingDate);
+    DateTime tempDate = new DateFormat(Values.Pattern.dataMySql).parse(bookingDate);
     print(tempDate);
     String dateToList = tempDate.day.toString();
     int monthToList = tempDate.month;
@@ -254,7 +242,6 @@ class BottomBar extends StatelessWidget {
           child: CustomPaint(
             size: Size(MediaQuery.of(context).size.width,
                 (MediaQuery.of(context).size.height * 0.10).toDouble()),
-            //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
             painter: RPSCustomPainter(),
           ),
         ),

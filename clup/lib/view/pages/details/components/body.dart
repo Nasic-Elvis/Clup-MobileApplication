@@ -12,6 +12,11 @@ import 'package:flutter/painting.dart';
 import 'package:string_extensions/string_extensions.dart';
 import '../../../widget/maps.dart';
 import 'contact_card.dart';
+import 'package:clup/utils/values.dart' as Values;
+
+
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 StoreRepository _storeRepository = StoreRepository();
 String from;
@@ -46,12 +51,13 @@ class Body extends StatelessWidget {
       to = elements[day - 1].to;
       timeOfStore = from.toString() + " - " + to.toString();
       if (store.booktableCapacity > 0) {
-        message = store.booktableCapacity.toString() + " posti disponibili";
+        message = store.booktableCapacity.toString() + Values.Strings.space +
+            AppLocalizations.of(context).details_body_free;
         textStyle =
             new TextStyle(color: Colors.green, fontWeight: FontWeight.bold);
         bookable = true;
       } else {
-        message = "Non ci sono posti disponibili.";
+        message = AppLocalizations.of(context).details_body_full;
         textStyle =
             new TextStyle(color: Colors.green, fontWeight: FontWeight.bold);
         bookable = false;
@@ -94,12 +100,12 @@ class Body extends StatelessWidget {
                       color: Colors.transparent,
                     ),
                     StoreTime(
-                        title: "ORA APERTO",
+                        title: AppLocalizations.of(context).details_body_now_open.toString().toUpperCase(),
                         subtitle: timeOfStore,
-                        description: "Orari apertura del negozio",
+                        description: AppLocalizations.of(context).details_body_now_open_description,
                         time: storeTime),
                     ContactTime(
-                        title: "Informazioni",
+                        title: AppLocalizations.of(context).details_information,
                         subtitle: store.telephoneNumber,
                         map: MapScreen(
                             lat: store.latitude,
@@ -107,7 +113,7 @@ class Body extends StatelessWidget {
                             address: store.address,
                             city: store.name)),
                     RealTime(
-                        title: "Ingresso in negozio",
+                        title: AppLocalizations.of(context).details_enter_card,
                         subtitle: message,
                         store: store,
                         style: textStyle,

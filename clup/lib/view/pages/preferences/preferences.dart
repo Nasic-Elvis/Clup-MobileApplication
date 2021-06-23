@@ -6,12 +6,15 @@ import 'package:clup/homepage_theme.dart';
 import 'package:clup/utils/values.dart';
 import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/view/pages/home/components/bottom_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:clup/view/pages/preferences/storePref.dart';
 import 'package:clup/view/pages/settings/settings.dart';
 import 'package:clup/view/widget/bottomBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:clup/utils/values.dart' as Values;
 
 import '../home/homepage.dart';
 
@@ -56,7 +59,7 @@ class _PreferencesState extends State<Preferences>
                     padding: const EdgeInsets.all(40.0),
                     child: Center(
                       child: Text(
-                        'Non hai ancora salvato nessun negozio nei preferiti!',
+                        AppLocalizations.of(context).preferences_noSelected,
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -75,12 +78,12 @@ class _PreferencesState extends State<Preferences>
                 children: [
                   Container(
                       child: Image.asset(
-                    'assets/images/NoPreferences.png',
+                    Values.Path.noPreferences,
                     fit: BoxFit.scaleDown,
                   )),
                   Center(
                     child: Text(
-                      'Effettua il login per vedere i preferiti',
+                      AppLocalizations.of(context).preferences_login_error_description,
                       style: TextStyle(
                           fontSize: 14,
                           letterSpacing: 1.2,
@@ -93,47 +96,6 @@ class _PreferencesState extends State<Preferences>
           }
         },
       ),
-      /*),
-      bottomNavigationBar: BeautyNavigation(
-        activeIconColor: Colors.black,
-        inactiveIconColor: Colors.white,
-        animationDuration: Duration(milliseconds: 500),
-        circleColor: Colors.white,
-        backgroundColor: HomepageTheme().primaryColor,
-        height: 77,
-        items: <Items>[
-          Items(
-            icon: Icon(FontAwesomeIcons.search, size: 22),
-            tabName: '',
-            onClick: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => HomePage()));
-            },
-          ),
-          Items(
-            icon: Icon(FontAwesomeIcons.solidHeart, size: 22),
-            tabName: '',
-            onClick: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => Preferences()));
-            },
-          ),
-          Items(
-            icon: Icon(FontAwesomeIcons.solidBookmark, size: 22),
-            tabName: '',
-            onClick: () {
-              print('Adjust');
-            },
-          ),
-          Items(
-            icon: Icon(FontAwesomeIcons.cog, size: 22),
-            tabName: '',
-            onClick: () {
-              print('Cake');
-            },
-          )
-        ],
-      ),*/
     );
   }
 }

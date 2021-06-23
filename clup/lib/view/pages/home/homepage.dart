@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:clup/utils/values.dart' as values;
+
 import 'package:beauty_navigation/beauty_navigation.dart';
 import 'package:clup/bloc/authentication/authentication_bloc.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
@@ -98,12 +101,13 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
           backgroundColor: HomepageTheme().primaryColor,
           title: Text(
               _currentIndex == 0
-                  ? 'Customer Line Up'
+                  ? AppLocalizations.of(context)
+              .homepage_appBar_text_title
                   : _currentIndex == 1
-                      ? 'Preferiti'
+                      ? AppLocalizations.of(context).homepage_appBar_text_preferences
                       : _currentIndex == 2
-                          ? 'Prenotazioni'
-                          : 'Impostazioni',
+                          ? AppLocalizations.of(context).homepage_appBar_text_booking
+                          : AppLocalizations.of(context).homepage_appBar_text_settings,
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -135,7 +139,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                               color: Colors.black,
                             )),
                         Text(
-                          'Benvenuto',
+                          AppLocalizations.of(context).homepage_appBar_message,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Colors.black,
@@ -206,7 +210,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                       .showSnackBar(SnackBar(
                                     backgroundColor: Colors.redAccent,
                                     content:
-                                        Text("Connessione internet assente"),
+                                        Text(AppLocalizations.of(context).homepage_connection_error),
                                     duration: Duration(milliseconds: 500),
                                   ));
                                 }
@@ -214,7 +218,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     backgroundColor: Colors.greenAccent,
-                                    content: Text("online"),
+                                    content: Text(AppLocalizations.of(context).homepage_connection_success),
                                     duration: Duration(milliseconds: 500),
                                   ));
                                 }
@@ -245,7 +249,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                                   color: Colors.black),
                                               SizedBox(height: 16),
                                               Text(
-                                                'Non sono presenti negozi nella tua zona',
+                                                AppLocalizations.of(context).homepage_noStore_zona,
                                                 style: TextStyle(
                                                     color: Colors.black
                                                         .withOpacity(0.8),
@@ -272,7 +276,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                                   color: Colors.black),
                                               SizedBox(height: 16),
                                               Text(
-                                                'Non sono presenti negozi',
+                                                AppLocalizations.of(context).homepage_noStore_category,
                                                 style: TextStyle(
                                                     color: Colors.black
                                                         .withOpacity(0.8),
@@ -299,7 +303,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                                   color: Colors.black),
                                               SizedBox(height: 16),
                                               Text(
-                                                'Non sono presenti supermercati nella tua zona',
+                                                AppLocalizations.of(context).homepage_noStore_category_markets,
                                                 style: TextStyle(
                                                     color: Colors.black
                                                         .withOpacity(0.8),
@@ -326,7 +330,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                                   color: Colors.black),
                                               SizedBox(height: 16),
                                               Text(
-                                                'Non sono presenti servizi nella tua zona',
+                                                AppLocalizations.of(context).homepage_noStore_category_services,
                                                 style: TextStyle(
                                                     color: Colors.black
                                                         .withOpacity(0.8),
@@ -353,7 +357,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                                   color: Colors.black),
                                               SizedBox(height: 16),
                                               Text(
-                                                'Non sono presenti strutture sanitarie nella tua zona',
+                                                AppLocalizations.of(context).homepage_noStore_category_health,
                                                 style: TextStyle(
                                                     color: Colors.black
                                                         .withOpacity(0.8),
@@ -386,7 +390,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                                   color: Colors.black),
                                               SizedBox(height: 16),
                                               Text(
-                                                'Non sono presenti negozi nella città scelta',
+                                                AppLocalizations.of(context).homepage_noStore_city,
                                                 style: TextStyle(
                                                     color: Colors.black
                                                         .withOpacity(0.8),
@@ -404,7 +408,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                       children: [
                                         Center(
                                           child: Text(
-                                            "Connessione internet assente",
+                                            AppLocalizations.of(context).homepage_connection_error,
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 letterSpacing: 1.2),
@@ -535,9 +539,9 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                 ),
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  if (_cityController.text == "" &&
+                  if (_cityController.text == values.Strings.empty &&
                       _cityController.text.length < 3) {
-                    _cityController.text = "Inserisci una città valida";
+                    _cityController.text =  AppLocalizations.of(context).homepage_city_error;
                   } else {
                     BlocProvider.of<CategoryBloc>(context).add(SelectCity(
                         city: _cityController.text.trim().toLowerCase()));
@@ -575,8 +579,8 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                 ),
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  if (_cityController.text != "") {
-                    _cityController.text = "";
+                  if (_cityController.text != values.Strings.empty) {
+                    _cityController.text = values.Strings.empty;
                     BlocProvider.of<CategoryBloc>(context).add(NoSelected());
                   }
                 },
@@ -729,13 +733,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
             ),
             Expanded(
               child: Center(
-                child: Text(""
-                    /*user != null
-                      ? '${Values.Strings.title}, ${user.name}'
-                      : 'Customer Line Up',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,*/
+                child: Text(values.Strings.empty
                     ),
               ),
             ),

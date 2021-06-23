@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'signin.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -135,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       textEditingController: nameController,
       icon: Icons.person,
-      hint: "Nome",
+      hint: AppLocalizations.of(context).signup_name,
     );
   }
 
@@ -144,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       textEditingController: surnameController,
       icon: Icons.person,
-      hint: "Cognome",
+      hint: AppLocalizations.of(context).signup_surname,
     );
   }
 
@@ -153,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email,
-      hint: "Email",
+      hint: AppLocalizations.of(context).signup_email,
     );
   }
 
@@ -162,7 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.number,
       textEditingController: numberController,
       icon: Icons.phone,
-      hint: "Numero di telefono",
+      hint: AppLocalizations.of(context).signup_phoneNumber,
     );
   }
 
@@ -172,7 +172,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       textEditingController: passwordController,
       obscureText: true,
       icon: Icons.lock,
-      hint: "Password",
+      hint: AppLocalizations.of(context).signup_password,
     );
   }
 
@@ -181,7 +181,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        print("Routing to your account");
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
@@ -201,7 +200,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           padding: const EdgeInsets.all(12.0),
           child: Text(
-            'REGISTRATI',
+            AppLocalizations.of(context).signup_btnText,
             style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
           ),
         ),
@@ -229,12 +228,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
-            "Accedi con un social media",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: _large ? 12 : (_medium ? 11 : 10)),
-          ),
         ],
       ),
     );
@@ -246,24 +239,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          CircleAvatar(
-            radius: 15,
-            backgroundImage: AssetImage("assets/images/googlelogo.png"),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          CircleAvatar(
-            radius: 15,
-            backgroundImage: AssetImage("assets/images/fblogo.jpg"),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          CircleAvatar(
-            radius: 15,
-            backgroundImage: AssetImage("assets/images/twitterlogo.jpg"),
-          ),
         ],
       ),
     );
@@ -276,7 +251,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Sei già registrato?",
+            AppLocalizations.of(context).signup_registered,
             style: TextStyle(fontWeight: FontWeight.w400),
           ),
           SizedBox(
@@ -287,10 +262,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => SignInPage(),
               ));
-              print("Routing to Sign up screen");
             },
             child: Text(
-              "Log In",
+
+              AppLocalizations.of(context).signup_registered_btn,
               style: TextStyle(
                   fontWeight: FontWeight.w800,
                   color: HomepageTheme.buildLightTheme().primaryColor,
