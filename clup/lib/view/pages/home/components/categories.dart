@@ -23,6 +23,14 @@ class Categories extends StatelessWidget {
       {values.Strings.home_components_categories_icon: FontAwesomeIcons.wpforms, values.Strings.home_components_categories_text: AppLocalizations.of(context).homepage_categories_services},
       {values.Strings.home_components_categories_icon: FontAwesomeIcons.locationArrow, values.Strings.home_components_categories_text: AppLocalizations.of(context).homepage_categories_position}
     ];
+
+    List<Map<String, dynamic>> categoriesNotTRANSLATED = [
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.home, values.Strings.home_components_categories_text: "Categorie"},
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.building, values.Strings.home_components_categories_text: "Attività"},
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.shoppingCart, values.Strings.home_components_categories_text: "Supermercati"},
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.wpforms, values.Strings.home_components_categories_text: "Servizi"},
+      {values.Strings.home_components_categories_icon: FontAwesomeIcons.locationArrow, values.Strings.home_components_categories_text: "Posizione"}
+    ];
     return Padding(
       padding: EdgeInsets.all(getProportionateScreenWidth(12, context)),
       child:
@@ -39,7 +47,7 @@ class Categories extends StatelessWidget {
               press: () {
 
                 var homepage_categories_all;
-                switch (categories[index][values.Strings.home_components_categories_text]) {
+                switch (categoriesNotTRANSLATED[index][values.Strings.home_components_categories_text]) {
                   case "Categorie":
                     BlocProvider.of<CategoryBloc>(context).add(NoSelected());
                     break;
