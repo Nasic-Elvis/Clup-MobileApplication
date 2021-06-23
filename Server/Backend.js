@@ -6,10 +6,10 @@ const { response } = require('express');
 const app = express();
 
 var connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'admin',
-    database : 'clup_engsw2020',
+    host     : 'clup.cmovt6wpgxzq.eu-west-3.rds.amazonaws.com',
+    user     : 'clup',
+    password : 'password',
+    database : 'clup_engsw2021',
     timezone : "+00:00",
     multipleStatements: true
 });
@@ -25,7 +25,7 @@ connection.connect(function(err) {
 app.use(bodyParser.json());
 
 app.get('/getStores', function(request, response){
-    connection.query('SELECT * FROM Store', function(error, results, fields){
+    connection.query('SELECT * FROM store', function(error, results, fields){
         if(error){
             throw error;
         }
@@ -85,7 +85,7 @@ app.post('/getBookings', function(request, response){
     var idUser = request.body.idUser;
     console.log(idUser);
     if(idUser)
-{    connection.query('SELECT * FROM clup_engsw2020.store INNER JOIN booking ON store.idStore = booking.idStore WHERE idUser = ? AND deleted = 0', [idUser], function(error, results, fields){
+{    connection.query('SELECT * FROM clup_engsw2021.store INNER JOIN booking ON store.idStore = booking.idStore WHERE idUser = ? AND deleted = 0', [idUser], function(error, results, fields){
         if(error){
             throw error;
         }
