@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:clup/controller/api/authenticationController.dart';
 import 'package:clup/model/user.dart';
-import 'package:clup/singletonPreferences.dart';
+import 'package:clup/utils/singletonPreferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
@@ -21,6 +21,7 @@ class AuthRepository {
           userJson['username'].toString(),
           userJson['password'].toString());
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('password', user.password.toString());
       prefs.setString('email', user.email.toString());
       prefs.setString('name', user.name.toString());
       prefs.setString('surname', user.surname.toString());
@@ -41,6 +42,18 @@ class AuthRepository {
     }
 
     return user;
+  }
+
+  static Future<bool> forgotPassword(
+      String username, String password, String confirmedPassword) async {
+    String rawResult =
+        await AuthApi.forgotPassword(username, password, confirmedPassword);
+    var resultJson = jsonDecode(rawResult);
+    if (resultJson['result'] == 'OK') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   static Future<bool> signUp(String name, String surname, String email,

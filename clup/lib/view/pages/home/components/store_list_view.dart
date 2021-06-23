@@ -7,7 +7,7 @@ import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/utils/values.dart' as values;
 
-import 'package:clup/singletonPreferences.dart';
+import 'package:clup/utils/singletonPreferences.dart';
 import 'package:clup/view/pages/details/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +15,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 bool isPressed = true;
 
@@ -192,7 +191,9 @@ class _StoreListViewState extends State<StoreListView> {
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          '${widget.store.booktableCapacity} '  + AppLocalizations.of(context).homepage_store_list_view_free,
+                                          '${widget.store.booktableCapacity} ' +
+                                              AppLocalizations.of(context)
+                                                  .homepage_store_list_view_free,
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,

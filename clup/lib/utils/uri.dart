@@ -1,6 +1,6 @@
 class Address {
   //URI localhost 10.0.2.2
-  String _uriConnection = "10.0.2.2:3000";
+  String _uriConnection = "192.168.1.9:3000";
   String _uriProtocol = "http://";
   static String getStore;
   static String signIn;
@@ -14,6 +14,8 @@ class Address {
   static String getBookings;
   static String deleteBooking;
   static String storeInCity;
+  String getUserInformation;
+  static String forgotPassword;
 
   Address() {
     getStore = _uriProtocol + _uriConnection + '/getStores';
@@ -28,5 +30,7 @@ class Address {
     getBookings = _uriProtocol + _uriConnection + '/getBookings';
     deleteBooking = _uriProtocol + _uriConnection + '/deleteBookings';
     storeInCity = _uriProtocol + _uriConnection + '/storeInCity';
+    getUserInformation = _uriProtocol + _uriConnection + '/getUserInformation';
+    forgotPassword = _uriProtocol + _uriConnection + '/forgotPassword';
   }
 }

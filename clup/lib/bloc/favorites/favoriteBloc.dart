@@ -5,7 +5,7 @@ import 'package:clup/model/store.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../singletonPreferences.dart';
+import '../../utils/singletonPreferences.dart';
 
 class FavoriteBloc extends Bloc<FavoritesEvent, FavoriteState> {
   StoreRepository _storeRepository = StoreRepository();

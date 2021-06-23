@@ -2,13 +2,13 @@ import 'package:clup/bloc/authentication/authentication_event.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/controller/repository/authenticationRepository.dart';
 import 'package:clup/model/user.dart';
-import 'package:clup/singletonPreferences.dart';
+import 'package:clup/utils/singletonPreferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc(Unlogged initialState) : super(initialState);
+  AuthenticationBloc(AuthenticationState initialState) : super(initialState);
 
   @override
   Stream<AuthenticationState> mapEventToState(

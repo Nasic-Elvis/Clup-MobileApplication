@@ -1,5 +1,6 @@
 import 'package:clup/controller/repository/authenticationRepository.dart';
 import 'package:clup/homepage_theme.dart';
+import 'package:clup/utils/validator.dart';
 import 'package:clup/view/widget/custom_shape.dart';
 import 'package:clup/view/widget/customappbar.dart';
 import 'package:clup/view/widget/responsive_ui.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'signin.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -27,6 +29,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController numberController = new TextEditingController();
+  Validator validator = Validator();
+  String _errorText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +53,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 clipShape(),
                 form(),
                 SizedBox(
-                  height: _height / 35,
-                ),
+                    height: _height / 15,
+                    child: _errorText != ""
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(_errorText,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w600)))
+                        : SizedBox()),
                 button(),
                 //infoTextRow(),
                 //socialIconsRow(),
@@ -180,8 +192,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () {
-      },
+      onPressed: () {},
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: GestureDetector(
@@ -206,6 +217,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         onTap: () async {
           bool result;
+          String validEmail = validator.validateEmail(emailController.text);
+          String validPassword =
+              validator.validatePasswordLength(passwordController.text);
+          String validname = validator.validateName(nameController.text);
+          String validsurname = validator.validateName(surnameController.text);
+          if (validname == null) {
+            if (validsurname == null) {
+              if (validEmail == null) {
+                if (validPassword == null) {
+                  result = await AuthRepository.signUp(
+                      nameController.text.trim(),
+                      surnameController.text.trim(),
+                      emailController.text.trim(),
+                      numberController.text.trim(),
+                      passwordController.text.trim());
+                  if (result == true) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => SignInScreen()));
+                  }
+                  if (result == false) {
+                    setState(() => _errorText = "Operazione non riuscita");
+                  }
+                } else {
+                  setState(() => _errorText = validsurname);
+                }
+              } else {
+                setState(() => _errorText = validname);
+              }
+            } else {
+              setState(() => _errorText = validPassword);
+            }
+          } else {
+            setState(() => _errorText = validEmail);
+          }
           result = await AuthRepository.signUp(
               nameController.text.trim(),
               surnameController.text.trim(),
@@ -227,8 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       margin: EdgeInsets.only(top: _height / 40.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-        ],
+        children: <Widget>[],
       ),
     );
   }
@@ -238,8 +282,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       margin: EdgeInsets.only(top: _height / 80.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-        ],
+        children: <Widget>[],
       ),
     );
   }
@@ -264,7 +307,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ));
             },
             child: Text(
-
               AppLocalizations.of(context).signup_registered_btn,
               style: TextStyle(
                   fontWeight: FontWeight.w800,

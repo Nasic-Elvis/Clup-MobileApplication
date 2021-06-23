@@ -49,14 +49,11 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return
-        SafeArea(
+    return SafeArea(
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is Logged) {
             return FutureBuilder(
-              //TODO: Aggiungere IdUser dalla fase di login.
-
               future: _bookingRepository.getBookings(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -64,7 +61,6 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                     child: CircularProgressIndicator(),
                   );
                 }
-                print(snapshot.data.length);
                 if (snapshot.data.length == 0) {
                   return Padding(
                     padding: const EdgeInsets.all(40.0),
@@ -79,7 +75,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                           ),
                           Divider(height: 30, color: Colors.transparent),
                           Image.asset(
-                            Values.Path.reservation,
+                            Values.Path.empty,
                           ),
                         ],
                       ),
@@ -124,7 +120,10 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                                     children: <Widget>[
                                       FlatButton(
                                         child: Text(
-                                          AppLocalizations.of(context).bookingList_noBooking.toString().toUpperCase(),
+                                          AppLocalizations.of(context)
+                                              .bookingList_details
+                                              .toString()
+                                              .toUpperCase(),
                                           style: TextStyle(color: Colors.green),
                                         ),
                                         onPressed: () {
@@ -139,7 +138,10 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                                       ),
                                       FlatButton(
                                         child: Text(
-                                          AppLocalizations.of(context).bookingList_delete_text.toString().toUpperCase(),
+                                          AppLocalizations.of(context)
+                                              .bookingList_delete_text
+                                              .toString()
+                                              .toUpperCase(),
                                           style: TextStyle(color: Colors.red),
                                         ),
                                         onPressed: () async {
@@ -148,7 +150,9 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                                                   .data[index].idBooking);
                                           if (result == 200) {
                                             Toast.Toast.show(
-                                                AppLocalizations.of(context).bookingList_delete.toString(),
+                                                AppLocalizations.of(context)
+                                                    .bookingList_delete
+                                                    .toString(),
                                                 context,
                                                 duration:
                                                     Toast.Toast.LENGTH_LONG,
@@ -175,7 +179,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                 children: [
                   Container(
                       child: Image.asset(
-                    Values.Strings.urlNoPreferences,
+                    Values.Path.noPreferences,
                     fit: BoxFit.scaleDown,
                   )),
                   Center(
@@ -202,7 +206,8 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
   }
 
   getDateToList(bookingDate) {
-    DateTime tempDate = new DateFormat(Values.Pattern.dataMySql).parse(bookingDate);
+    DateTime tempDate =
+        new DateFormat(Values.Pattern.dataMySql).parse(bookingDate);
     print(tempDate);
     String dateToList = tempDate.day.toString();
     int monthToList = tempDate.month;

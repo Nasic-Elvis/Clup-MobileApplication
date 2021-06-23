@@ -10,6 +10,7 @@ import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/user.dart';
 import 'package:clup/utils/validator.dart';
 import 'package:clup/view/pages/home/homepage.dart';
+import 'package:clup/view/pages/settings/components/forgotPassword.dart';
 import 'package:clup/view/widget//textformfield.dart';
 import 'package:clup/view/widget/custom_shape.dart';
 import 'package:clup/view/widget/responsive_ui.dart';
@@ -38,6 +39,7 @@ class _SignInScreenState extends State<SignInScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+  String _errorText = "";
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> _key = GlobalKey();
@@ -63,7 +65,17 @@ class _SignInScreenState extends State<SignInScreen> {
               signInTextRow(),
               form(),
               forgetPassTextRow(),
-              SizedBox(height: _height / 12),
+              SizedBox(
+                  height: _height / 12,
+                  child: _errorText != ""
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(_errorText,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w600)))
+                      : SizedBox()),
               button(),
               signUpTextRow(),
             ],
@@ -187,8 +199,7 @@ class _SignInScreenState extends State<SignInScreen> {
       keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email,
-      hint:       AppLocalizations.of(context).signin_components_email
-      ,
+      hint: AppLocalizations.of(context).signin_components_email,
     );
   }
 
@@ -198,8 +209,7 @@ class _SignInScreenState extends State<SignInScreen> {
       textEditingController: passwordController,
       icon: Icons.lock,
       obscureText: true,
-      hint:       AppLocalizations.of(context).signin_components_password
-      ,
+      hint: AppLocalizations.of(context).signin_components_password,
     );
   }
 
@@ -220,6 +230,8 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           GestureDetector(
             onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => ForgotPassword()));
             },
             child: Text(
               AppLocalizations.of(context).signin_components_get_pwd,
@@ -238,8 +250,8 @@ class _SignInScreenState extends State<SignInScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).signin_login_success)));
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context).signin_login_success)));
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
@@ -248,8 +260,9 @@ class _SignInScreenState extends State<SignInScreen> {
           listener: (context, state) {
             if (state is Logged) {
               BlocProvider.of<FavoriteBloc>(context).add(GetFavorites());
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => HomePage()));
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                  (Route<dynamic> route) => false);
             }
           },
           child: Container(
@@ -272,25 +285,18 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         onTap: () {
           String validEmail = validator.validateEmail(emailController.text);
-          print(validEmail);
           String validPassword =
               validator.validatePasswordLength(passwordController.text);
-          validPassword = null;
-          User user;
           if (validEmail == null) {
             if (validPassword == null) {
               BlocProvider.of<AuthenticationBloc>(context)
                   .add(Login(emailController.text, passwordController.text));
-              //user = await AuthRepository.signIn(
-              //emailController.text, passwordController.text);
+            } else {
+              setState(() => _errorText = validPassword);
             }
+          } else {
+            setState(() => _errorText = validEmail);
           }
-          /*if (user != null) {
-            BlocProvider.of<FavoriteBloc>(context).add(GetFavorites());
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => HomePage(user: user),
-            ));
-          }*/
         },
       ),
     );

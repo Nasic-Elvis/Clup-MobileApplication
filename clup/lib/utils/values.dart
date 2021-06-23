@@ -23,22 +23,22 @@ class Strings {
   static const String urlNoPreferences = "";
 }
 
-class Path{
+class Path {
   static const String noPreferences = "assets/images/NoPreferences.png";
   static const String login = 'assets/images/login.png';
-  static const String backButton =  "assets/icons/Back ICon.svg";
-  static const String reservation =  "assets/images/reservation.png";
-
+  static const String backButton = "assets/icons/Back ICon.svg";
+  static const String reservation = "assets/images/reservation.png";
+  static const String empty = "assets/images/list_empty.png";
 }
 
-class Pattern{
+class Pattern {
   static String dataMySql = "yyyy-MM-dd";
 }
 
-class Language{
+class Language {
   static const String defaultLanguage = "Italiano";
 }
 
-class Regex{
+class Regex {
   var numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
 }

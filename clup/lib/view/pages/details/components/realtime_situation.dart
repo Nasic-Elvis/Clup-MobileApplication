@@ -76,13 +76,14 @@ class RealTime extends PreferredSize {
                   child: Column(
                     children: [
                       DefaultButton(
-                        text:
-                        AppLocalizations.of(context).details_realtime_card_btn_text,
+                        text: AppLocalizations.of(context)
+                            .details_realtime_card_btn_text,
                         press: () async {
                           if (bookable) {
                             SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                            int idUser = prefs.getInt(Values.Strings.sharedPreferences_idUser);
+                                await SharedPreferences.getInstance();
+                            int idUser = prefs.getInt(
+                                Values.Strings.sharedPreferences_idUser);
                             print(idUser);
                             if (idUser == null || idUser <= 0) {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -98,11 +99,10 @@ class RealTime extends PreferredSize {
                                     booking: booking, store: store),
                               );
                             }
-                          }
-                          else {
+                          } else {
                             Fluttertoast.showToast(
-                                msg:
-                                AppLocalizations.of(context).details_body_full,
+                                msg: AppLocalizations.of(context)
+                                    .details_body_full,
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.SNACKBAR,
                                 timeInSecForIosWeb: 1,

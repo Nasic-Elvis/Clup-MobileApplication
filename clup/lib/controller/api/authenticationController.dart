@@ -2,7 +2,7 @@ import 'package:clup/utils/uri.dart';
 import 'package:http/http.dart' as http;
 
 class AuthApi {
-  Address address = new Address();
+  Address _address = new Address();
   static Future<String> signIn(String username, String pwd) async {
     var uri = Uri.parse(Address.signIn);
     print(uri.toString());
@@ -29,6 +29,23 @@ class AuthApi {
         'email': email,
         'telephoneNumber': telephoneNumber,
         'password': password
+      });
+      print(uriResponse.body);
+      return uriResponse.body;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  static Future<String> forgotPassword(
+      String username, String password, String confirmedPassword) async {
+    var uri = Uri.parse(Address.forgotPassword);
+    var client = http.Client();
+    try {
+      var uriResponse = await client.post(uri, body: {
+        "email": username,
+        "password": password,
+        "confirmedPassword": confirmedPassword
       });
       print(uriResponse.body);
       return uriResponse.body;

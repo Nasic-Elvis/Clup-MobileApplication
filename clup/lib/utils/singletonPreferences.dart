@@ -1,4 +1,4 @@
-import 'model/user.dart';
+import '../model/user.dart';
 
 class Singleton {
   Singleton._privateConstructor();

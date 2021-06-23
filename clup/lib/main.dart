@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:clup/app_theme.dart';
 import 'package:clup/bloc/authentication/authentication_bloc.dart';
+import 'package:clup/bloc/authentication/authentication_event.dart';
 import 'package:clup/bloc/bottom_bar/page_cubit.dart';
 import 'package:clup/bloc/favorites/favoritesStates.dart';
 import 'package:clup/utils/routes.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/authentication/authentication_state.dart';
 import 'bloc/bottom_bar/page_state.dart';
@@ -33,6 +35,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   Connectivity connectivity = Connectivity();
 
+  Future<bool> checkUserLogged(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getInt("idUser") != null) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -44,37 +54,105 @@ class MyApp extends StatelessWidget {
       systemNavigationBarDividerColor: Colors.grey,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (context) => InternetCubit(connectivity: connectivity)),
-          BlocProvider(create: (context) => CategoryBloc(InitialState())),
-          BlocProvider(create: (context) => FavoriteBloc(InitFavorites())),
-          BlocProvider(create: (context) => AuthenticationBloc(Unlogged())),
-          BlocProvider(create: (context) => PageCubit(HomeState())),
-        ],
-        child: MaterialApp(
-          localizationsDelegates: [
-            AppLocalizations.delegate, // Add this line
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: [
-            const Locale('en', ''), // English, no country code
-            const Locale('es', ''),
-            const Locale('it', ''), // Italian, no country code
-            const Locale('de', '')
-          ],
-          title: "clup",
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
-          themeMode: _appTheme.currentTheme(),
-          initialRoute: HomePage.routeName,
-          routes: routes,
-          //home: MapScreen(lat: 9.84738992, long: -13.48293, address: "CIAO", city: "CONAD", ),
-        ));
+    return FutureBuilder<bool>(
+        future: checkUserLogged(context),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              {
+                if (snapshot.data == true) {
+                  return MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                            create: (context) =>
+                                InternetCubit(connectivity: connectivity)),
+                        BlocProvider(
+                            create: (context) => CategoryBloc(InitialState())),
+                        BlocProvider(
+                            create: (context) => FavoriteBloc(InitFavorites())),
+                        BlocProvider(
+                            create: (context) => AuthenticationBloc(Logged())),
+                        BlocProvider(
+                            create: (context) => PageCubit(HomeState())),
+                      ],
+                      child: MaterialApp(
+                        localizationsDelegates: [
+                          AppLocalizations.delegate, // Add this line
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                        ],
+                        supportedLocales: [
+                          const Locale('en', ''), // English, no country code
+                          const Locale('es', ''),
+                          const Locale('it', ''), // Italian, no country code
+                          const Locale('de', '')
+                        ],
+                        title: "clup",
+                        debugShowCheckedModeBanner: false,
+                        theme: ThemeData.light(),
+                        darkTheme: ThemeData.dark(),
+                        themeMode: _appTheme.currentTheme(),
+                        initialRoute: HomePage.routeName,
+                        routes: routes,
+                        //home: MapScreen(lat: 9.84738992, long: -13.48293, address: "CIAO", city: "CONAD", ),
+                      ));
+                }
+                if (snapshot.data == false) {
+                  return MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                            create: (context) =>
+                                InternetCubit(connectivity: connectivity)),
+                        BlocProvider(
+                            create: (context) => CategoryBloc(InitialState())),
+                        BlocProvider(
+                            create: (context) => FavoriteBloc(InitFavorites())),
+                        BlocProvider(
+                            create: (context) =>
+                                AuthenticationBloc(Unlogged())),
+                        BlocProvider(
+                            create: (context) => PageCubit(HomeState())),
+                      ],
+                      child: MaterialApp(
+                        localizationsDelegates: [
+                          AppLocalizations.delegate, // Add this line
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                        ],
+                        supportedLocales: [
+                          const Locale('en', ''), // English, no country code
+                          const Locale('es', ''),
+                          const Locale('it', ''), // Italian, no country code
+                          const Locale('de', '')
+                        ],
+                        title: "clup",
+                        debugShowCheckedModeBanner: false,
+                        theme: ThemeData.light(),
+                        darkTheme: ThemeData.dark(),
+                        themeMode: _appTheme.currentTheme(),
+                        initialRoute: HomePage.routeName,
+                        routes: routes,
+                        //home: MapScreen(lat: 9.84738992, long: -13.48293, address: "CIAO", city: "CONAD", ),
+                      ));
+                }
+                break;
+              }
+            case ConnectionState.waiting:
+              {
+                return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    home: Scaffold(
+                        body: Center(child: CircularProgressIndicator())));
+              }
+
+            default:
+              {
+                return Container();
+              }
+          }
+        });
   }
 }
 

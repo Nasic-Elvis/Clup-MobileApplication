@@ -58,9 +58,20 @@ class _PreferencesState extends State<Preferences>
                   return Padding(
                     padding: const EdgeInsets.all(40.0),
                     child: Center(
-                      child: Text(
-                        AppLocalizations.of(context).preferences_noSelected,
-                        style: TextStyle(fontSize: 16),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Text(
+                                AppLocalizations.of(context)
+                                    .preferences_noSelected,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                            Divider(height: 30, color: Colors.transparent),
+                            Image.asset(
+                              Values.Path.empty,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -83,7 +94,8 @@ class _PreferencesState extends State<Preferences>
                   )),
                   Center(
                     child: Text(
-                      AppLocalizations.of(context).preferences_login_error_description,
+                      AppLocalizations.of(context)
+                          .preferences_login_error_description,
                       style: TextStyle(
                           fontSize: 14,
                           letterSpacing: 1.2,

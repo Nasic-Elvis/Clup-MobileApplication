@@ -8,7 +8,7 @@ const app = express();
 var connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    password : '@Gug4ueik.nasic',
+    password : 'admin',
     database : 'clup_engsw2020',
     timezone : "+00:00",
     multipleStatements: true
@@ -39,6 +39,26 @@ app.get('/getStores', function(request, response){
         }
         response.end();
     });
+});
+
+app.post('/getUserInformation', function(request, response){
+    var idUser = request.body.idUser;
+    console.log(idUser);
+    if(idUser)
+{    connection.query('SELECT * FROM user WHERE idUser = ?', [idUser], function(error, results, fields){
+        if(error){
+            throw error;
+        }
+        
+        console.log(results);
+        if(results){
+            response.json(results);
+        }
+        else{
+            response.json({result:'KO'});
+        }
+        response.end();
+    });}
 });
 
 app.post('/deleteBookings', function(request, response){
@@ -145,7 +165,7 @@ app.post('/storeInCity', function(req,res)
             console.log(result);
 
             if(result.length > 0){
-                res.json({result: 'OK', name: result.name, id: result.id, capacity: result.capacity});
+                res.json(result);
             }
             else{
                 res.json({result:'KO'});
@@ -293,7 +313,28 @@ app.post('/storeByCategory', (req,res) => {
     }
  })
 
- 
+ app.post('/forgotPassword', function(request, response){
+    var email = request.body.email;
+    var password = request.body.password;
+    var confirmed_password = request.body.confirmedPassword;
+
+    if((email && password && confirmed_password) && password == confirmed_password)
+        {
+            connection.query("UPDATE User SET Password = ? WHERE Email = email ",
+            [password], function(error, results, fields){
+                if(error){
+                    throw error;
+                }
+                console.log(results);
+                response.json({result: "OK"});
+                response.end();
+            })
+        }
+        else{
+            response.json({result: "KO"});
+            response.end();
+        }
+}); 
 
 
  app.post('/booking', (req,res) => {
