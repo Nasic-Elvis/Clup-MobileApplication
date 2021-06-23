@@ -493,7 +493,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
               },
             ),
             Items(
-              icon: Icon(FontAwesomeIcons.cog, size: 22),
+              icon: Icon(FontAwesomeIcons.solidUser, size: 22),
               tabName: '',
               onClick: () {
                 setState(() => _currentIndex = 3);

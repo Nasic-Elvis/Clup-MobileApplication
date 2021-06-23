@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:clup/controller/api/storeController.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/bookingList/bookingList.dart';
@@ -7,16 +9,22 @@ import 'package:clup/view/pages/home/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:googleapis_auth/auth.dart';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:clup/utils/values.dart' as Values;
-
+import "package:googleapis_auth/auth_io.dart";
+import 'package:googleapis/calendar/v3.dart' hide Colors;
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../homepage_theme.dart';
+import 'package:clup/view/pages/booking/components/CalenderClient.dart';
 
 String _setDate = "";
 int idUser = 0;
 
+const _scopes = const [CalendarApi.calendarScope];
 class DateTimePicker extends StatefulWidget {
   final Store store;
 
@@ -41,6 +49,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   String _hour, _minute, _time;
 
   String dateTime;
+
 
   DateTime selectedDate = DateTime.now();
 
@@ -264,6 +273,20 @@ class _DateTimePickerState extends State<DateTimePicker> {
                                                   backgroundColor: Colors.black,
                                                   textColor: Colors.white,
                                                   fontSize: 16.0);
+
+                                              CalendarClient calendarClient = CalendarClient();
+                                              var splittedDate = _setDate.split("-");
+                                              var splittedTime = _timeController.text.split(":");
+
+                                              DateTime startTime = DateTime(int.parse(splittedDate[0]), int.parse(splittedDate[1]), int.parse(splittedDate[2]),
+                                                  int.parse(splittedTime[0]), int.parse(splittedTime[1]));
+                                              DateTime endTime = startTime.add(Duration(hours: 2));
+                                              calendarClient.insert(
+                                                store.name,
+                                                startTime,
+                                                endTime,
+                                              );
+
                                             } else {
                                               Fluttertoast.showToast(
                                                   msg: AppLocalizations.of(
@@ -325,6 +348,9 @@ class _DateTimePickerState extends State<DateTimePicker> {
     );
   }
 }
+
+
+
 
 bool checkDateTime(String date, String time) {
   DateTime tempDate = new DateFormat(Values.Pattern.dataMySql).parse(date);
