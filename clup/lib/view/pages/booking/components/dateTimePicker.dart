@@ -1,25 +1,19 @@
-import 'dart:io';
-
 import 'package:clup/controller/api/storeController.dart';
 import 'package:clup/model/store.dart';
-import 'package:clup/view/pages/bookingList/bookingList.dart';
+import 'package:clup/utils/values.dart' as Values;
+import 'package:clup/view/pages/booking/components/CalenderClient.dart';
 import 'package:clup/view/pages/details/components/button.dart';
 import 'package:clup/view/pages/details/components/top_rounded_container.dart';
 import 'package:clup/view/pages/home/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:googleapis_auth/auth.dart';
-import 'package:googleapis_auth/auth_io.dart';
+import 'package:googleapis/calendar/v3.dart' hide Colors;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_extensions/string_extensions.dart';
-import 'package:clup/utils/values.dart' as Values;
-import "package:googleapis_auth/auth_io.dart";
-import 'package:googleapis/calendar/v3.dart' hide Colors;
-import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../homepage_theme.dart';
-import 'package:clup/view/pages/booking/components/CalenderClient.dart';
 
 String _setDate = "";
 int idUser = 0;
@@ -114,7 +108,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
       body: SafeArea(
         child: ListView(children: [
           TopRoundedContainer(
-              color: HomepageTheme.buildLightTheme().primaryColor,
+              color: HomepageTheme().primaryColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

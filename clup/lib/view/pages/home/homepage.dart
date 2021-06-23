@@ -1,13 +1,9 @@
 import 'dart:ui';
 
-import 'package:clup/bloc/authentication/authentication_event.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:clup/utils/values.dart' as values;
-
 import 'package:beauty_navigation/beauty_navigation.dart';
 import 'package:clup/bloc/authentication/authentication_bloc.dart';
+import 'package:clup/bloc/authentication/authentication_event.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
-import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/bloc/category/category_bloc.dart';
 import 'package:clup/bloc/category/category_event.dart';
 import 'package:clup/bloc/category/category_state.dart';
@@ -16,7 +12,9 @@ import 'package:clup/bloc/internet/internet_state.dart';
 import 'package:clup/controller/repository/storeRepository.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
+import 'package:clup/utils/values.dart' as values;
 import 'package:clup/utils/values.dart' as Values;
+import 'package:clup/view/pages/bookingList/bookingList.dart';
 import 'package:clup/view/pages/home/components/categories.dart';
 import 'package:clup/view/pages/home/components/store_list.dart';
 import 'package:clup/view/pages/preferences/preferences.dart';
@@ -24,9 +22,10 @@ import 'package:clup/view/pages/settings/components/signin.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../settings/settings.dart';
 
 class HomePage extends StatefulWidget {
@@ -131,6 +130,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                   fontWeight: FontWeight.w600)),
           actions: [
             BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              // ignore: missing_return
               builder: (context, state) {
                 if (state is Unlogged) {
                   return GestureDetector(
@@ -243,6 +243,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                               },
                               builder: (context, internetState) {
                                 return BlocBuilder<CategoryBloc, CategoryState>(
+                                  // ignore: missing_return
                                     builder: (context, state) {
                                   if (internetState is InternetConnected) {
                                     if (state is InitialState) {
@@ -441,7 +442,7 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                                         ),
                                         Container(
                                             child: Image.asset(
-                                          'assets/images/noConnection.png',
+                                              Values.Path.noConnection,
                                           fit: BoxFit.scaleDown,
                                         )),
                                       ],
@@ -536,7 +537,9 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
                     cursorColor: HomepageTheme.buildLightTheme().primaryColor,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Piacenza...',
+                      hintText: AppLocalizations
+                          .of(context)
+                          .homepage_hintText,
                     ),
                   ),
                 ),

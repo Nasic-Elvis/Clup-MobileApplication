@@ -75,5 +75,6 @@
 	"bookingList_noBooking": "Non hai ancora prenotazioni!",
 	"details_login_reservation": "Effettua il login per vedere le prenotazioni",
 	"booking_title": "Prenotazione",
-	"bookingList_delete_text": "Elimina"
+	"bookingList_delete_text": "Elimina",
+	"homepage_hintText": "Città"
 }

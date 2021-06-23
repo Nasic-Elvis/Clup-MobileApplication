@@ -1,15 +1,15 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
-import "package:googleapis_auth/auth_io.dart";
+import 'package:clup/utils/values.dart' as Values;
 import 'package:googleapis/calendar/v3.dart';
+import "package:googleapis_auth/auth_io.dart";
 import 'package:url_launcher/url_launcher.dart';
 
 class CalendarClient {
   static const _scopes = const [CalendarApi.calendarScope];
 
   insert(title, startTime, endTime) {
-    var _clientID = new ClientId("580616573692-ho7m2iup7tppt3j32i7fslvd2ddheqhc.apps.googleusercontent.com", "");
+    var _clientID = new ClientId(Values.ClientId.client, "");
     clientViaUserConsent(_clientID, _scopes, prompt).then((AuthClient client) {
       var calendar = CalendarApi(client);
       calendar.calendarList.list().then((value) => print("VAL________$value"));
@@ -21,11 +21,11 @@ class CalendarClient {
 
       EventDateTime start = new EventDateTime();
       start.dateTime = startTime;
-      start.timeZone = "GMT+05:00";
+      start.timeZone = Values.ClientId.timeZone;
       event.start = start;
 
       EventDateTime end = new EventDateTime();
-      end.timeZone = "GMT+05:00";
+      end.timeZone = Values.ClientId.timeZone;
       end.dateTime = endTime;
       event.end = end;
       try {

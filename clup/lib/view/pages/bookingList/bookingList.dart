@@ -2,18 +2,17 @@ import 'package:clup/bloc/authentication/authentication_bloc.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
 import 'package:clup/controller/api/bookingController.dart';
 import 'package:clup/controller/repository/bookingRespository.dart';
-import 'package:clup/homepage_theme.dart';
 import 'package:clup/utils/values.dart';
+import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/view/pages/home/components/bottom_bar.dart';
 import 'package:clup/view/pages/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart' as Toast;
-import 'package:clup/utils/values.dart' as Values;
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../details/details_screen.dart';
 import '../preferences/preferences.dart';
 
@@ -104,6 +103,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                                           " " +
                                           elements[1] +
                                           " " +
+                                          // ignore: missing_return
                                           elements[2],
                                       style: new TextStyle(
                                           fontSize: 16,
@@ -164,6 +164,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                                     ],
                                   )
                                 ],
+                                // ignore: missing_return
                               ),
                             ),
                           );
@@ -196,6 +197,7 @@ class _BookingList extends State<BookingList> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+              // ignore: missing_return
             );
           }
         },

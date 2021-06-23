@@ -2,6 +2,7 @@ import 'package:clup/controller/repository/storeRepository.dart';
 import 'package:clup/homepage_theme.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/model/time.dart';
+import 'package:clup/utils/values.dart' as Values;
 import 'package:clup/view/pages/details/components/realtime_situation.dart';
 import 'package:clup/view/pages/details/components/store_time.dart';
 import 'package:clup/view/pages/details/components/top_rounded_container.dart';
@@ -9,19 +10,15 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:string_extensions/string_extensions.dart';
+
 import '../../../widget/maps.dart';
 import 'contact_card.dart';
-import 'package:clup/utils/values.dart' as Values;
-
-
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 StoreRepository _storeRepository = StoreRepository();
 String from;
 String to;
-String timeOfStore;
 String status;
 bool bookable;
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
@@ -41,28 +38,8 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<List<Time>> storeTime = getTime(store.idStore);
-    storeTime.whenComplete(() => print("OK"));
+    String timeOfStore;
 
-    storeTime.then((value) {
-      var elements = value.asMap();
-      int day = DateTime.now().weekday;
-      from = elements[day - 1].from;
-      to = elements[day - 1].to;
-      timeOfStore = from.toString() + " - " + to.toString();
-      if (store.booktableCapacity > 0) {
-        message = store.booktableCapacity.toString() + Values.Strings.space +
-            AppLocalizations.of(context).details_body_free;
-        textStyle =
-            new TextStyle(color: Colors.green, fontWeight: FontWeight.bold);
-        bookable = true;
-      } else {
-        message = AppLocalizations.of(context).details_body_full;
-        textStyle =
-            new TextStyle(color: Colors.green, fontWeight: FontWeight.bold);
-        bookable = false;
-      }
-    });
     return ListView(
       children: [
         TopRoundedContainer(
@@ -99,13 +76,61 @@ class Body extends StatelessWidget {
                       height: 10,
                       color: Colors.transparent,
                     ),
-                    StoreTime(
-                        title: AppLocalizations.of(context).details_body_now_open.toString().toUpperCase(),
-                        subtitle: timeOfStore,
-                        description: AppLocalizations.of(context).details_body_now_open_description,
-                        time: storeTime),
+                    FutureBuilder(
+                        future: getTime(this.store.idStore),
+                        initialData: [],
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData || snapshot.data.isEmpty)
+                            return Center(
+                                child: CircularProgressIndicator()); //CIRCULAR INDICATOR
+                          else {
+                            var elements = snapshot.data.asMap();
+                            print(elements);
+                            int day = DateTime
+                                .now()
+                                .weekday;
+                            from = elements[day - 1].from;
+                            to = elements[day - 1].to;
+                            timeOfStore =
+                                from.toString() + " - " + to.toString();
+                            if (store.booktableCapacity > 0) {
+                              message = store.booktableCapacity.toString() +
+                                  Values.Strings.space +
+                                  AppLocalizations
+                                      .of(context)
+                                      .details_body_free;
+                              textStyle =
+                              new TextStyle(color: Colors.green,
+                                  fontWeight: FontWeight.bold);
+                              bookable = true;
+                            } else {
+                              message = AppLocalizations
+                                  .of(context)
+                                  .details_body_full;
+                              textStyle =
+                              new TextStyle(color: Colors.green,
+                                  fontWeight: FontWeight.bold);
+                              bookable = false;
+                            }
+                            return StoreTime(
+                                title: AppLocalizations
+                                    .of(context)
+                                    .details_body_now_open
+                                    .toString()
+                                    .toUpperCase(),
+                                subtitle: timeOfStore,
+                                description: AppLocalizations
+                                    .of(context)
+                                    .details_body_now_open_description,
+                                time: getTime(this.store.idStore));
+                          }
+                        }),
+
+
                     ContactTime(
-                        title: AppLocalizations.of(context).details_information,
+                        title: AppLocalizations
+                            .of(context)
+                            .details_information,
                         subtitle: store.telephoneNumber,
                         map: MapScreen(
                             lat: store.latitude,

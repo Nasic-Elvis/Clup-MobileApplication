@@ -7,11 +7,9 @@ import 'package:clup/view/pages/settings/userInformation/userInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../../app_theme.dart';
 import '../../../homepage_theme.dart';
 import 'components/signin.dart';
 
@@ -43,23 +41,18 @@ class _SettingScreenState extends State<SettingScreen> {
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                      return Column(
-                        children: <Widget>[],
-                      );
-                    }, childCount: 1),
-                  ),
                 ];
               },
               body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                // ignore: missing_return
                 builder: (context, state) {
+                  // ignore: missing_return
                   if (state is Unlogged) {
                     return SettingsList(
-                      //backgroundColor: Colors.white,
+                      backgroundColor: Colors.white,
                       sections: [
                         SettingsSection(
+                          // ignore: missing_return
                           title: AppLocalizations.of(context).settings_title,
                           tiles: [
                             SettingsTile(
@@ -78,23 +71,9 @@ class _SettingScreenState extends State<SettingScreen> {
                               subtitle: Values.Language.defaultLanguage,
                               leading: Icon(Icons.language),
                               onPressed: (context) {
-                                //TODO: Implementare language_pickers
                               },
                             ),
-                            SettingsTile.switchTile(
-                              title: AppLocalizations.of(context)
-                                  .settings_darkMode,
-                              subtitle: AppLocalizations.of(context)
-                                  .settings_darkMode_description,
-                              leading: Icon(Icons.nightlight_round),
-                              onToggle: (bool value) {
-                                setState(() {
-                                  _flutter = value;
-                                  AppTheme().switchTheme();
-                                });
-                              },
-                              switchValue: _flutter,
-                            ),
+
                           ],
                         )
                       ],
@@ -115,6 +94,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) => UserInformation()));
                               },
+                              // ignore: missing_return
                             ),
                             SettingsTile(
                               title: AppLocalizations.of(context)
@@ -123,23 +103,11 @@ class _SettingScreenState extends State<SettingScreen> {
                               leading: Icon(Icons.language),
                               onPressed: (context) {},
                             ),
-                            SettingsTile.switchTile(
-                              title: AppLocalizations.of(context)
-                                  .settings_darkMode,
-                              subtitle: AppLocalizations.of(context)
-                                  .settings_darkMode_description,
-                              leading: Icon(Icons.nightlight_round),
-                              onToggle: (bool value) {
-                                setState(() {
-                                  _flutter = value;
-                                  AppTheme().switchTheme();
-                                });
-                              },
-                              switchValue: _flutter,
-                            ),
+
                             SettingsTile(
                               title:
                                   AppLocalizations.of(context).settings_logout,
+                              // ignore: missing_return
                               leading: Icon(Icons.logout),
                               onPressed: (context) {
                                 BlocProvider.of<AuthenticationBloc>(context)

@@ -29,6 +29,7 @@ class Path {
   static const String backButton = "assets/icons/Back ICon.svg";
   static const String reservation = "assets/images/reservation.png";
   static const String empty = "assets/images/list_empty.png";
+  static const String noConnection = "assets/images/noConnection.png";
 }
 
 class Pattern {
@@ -41,4 +42,10 @@ class Language {
 
 class Regex {
   var numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+}
+
+class ClientId {
+  static const String client =
+      "580616573692-ho7m2iup7tppt3j32i7fslvd2ddheqhc.apps.googleusercontent.com";
+  static const String timeZone = "GMT+05:00";
 }

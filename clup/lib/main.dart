@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:clup/app_theme.dart';
 import 'package:clup/bloc/authentication/authentication_bloc.dart';
-import 'package:clup/bloc/authentication/authentication_event.dart';
 import 'package:clup/bloc/bottom_bar/page_cubit.dart';
 import 'package:clup/bloc/favorites/favoritesStates.dart';
 import 'package:clup/utils/routes.dart';
@@ -56,6 +55,7 @@ class MyApp extends StatelessWidget {
     ));
     return FutureBuilder<bool>(
         future: checkUserLogged(context),
+        // ignore: missing_return
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
@@ -131,10 +131,10 @@ class MyApp extends StatelessWidget {
                         debugShowCheckedModeBanner: false,
                         theme: ThemeData.light(),
                         darkTheme: ThemeData.dark(),
+                        // ignore: missing_return
                         themeMode: _appTheme.currentTheme(),
                         initialRoute: HomePage.routeName,
                         routes: routes,
-                        //home: MapScreen(lat: 9.84738992, long: -13.48293, address: "CIAO", city: "CONAD", ),
                       ));
                 }
                 break;

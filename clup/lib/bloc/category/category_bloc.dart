@@ -24,22 +24,22 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
     if (event is SelectSupermarket) {
       List<Store> store =
-          await _storeRepository.getStoreByCategory("supermercato");
+          await _storeRepository.getStoreByCategory("Supermercati");
 
       yield SupermarketState(stores: store);
     }
     if (event is SelectHealtCare) {
-      List<Store> store = await _storeRepository.getStoreByCategory("sanità");
+      List<Store> store = await _storeRepository.getStoreByCategory("Salute");
 
       yield HealtCareState(stores: store);
     }
     if (event is SelectServices) {
-      List<Store> store = await _storeRepository.getStoreByCategory("servizio");
+      List<Store> store = await _storeRepository.getStoreByCategory("Servizi");
 
       yield ServicesState(stores: store);
     }
     if (event is SelectOtherActivity) {
-      List<Store> store = await _storeRepository.getStoreByCategory("attività");
+      List<Store> store = await _storeRepository.getStoreByCategory("Attività");
 
       yield OtherActivityState(stores: store);
     }

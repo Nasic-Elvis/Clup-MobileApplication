@@ -1,10 +1,9 @@
 import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/details/components/body.dart';
 import 'package:flutter/material.dart';
-
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'components/app_bar.dart';
+
+import '../../../homepage_theme.dart';
 
 class DetailsScreen extends StatefulWidget {
   static String routeName = "/details";
@@ -26,9 +25,15 @@ class _DetailsScreen extends State<DetailsScreen>
     final ProductDetailsArguments agrs =
         ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: CustomAppBar(name:
-      AppLocalizations.of(context).details_home),
+      appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: HomepageTheme().primaryColor,
+          title: Text(AppLocalizations.of(context).details_home,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600))),
+      backgroundColor: HomepageTheme().primaryColor,
       body: Body(store: agrs.store),
     );
   }

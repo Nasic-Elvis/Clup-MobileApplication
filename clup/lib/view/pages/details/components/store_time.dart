@@ -1,10 +1,9 @@
 
 
 import 'package:clup/model/time.dart';
+import 'package:clup/utils/values.dart' as Values;
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
-import 'package:clup/utils/values.dart' as Values;
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();

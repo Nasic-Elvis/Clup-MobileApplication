@@ -1,12 +1,11 @@
 import 'package:clup/model/booking.dart';
 import 'package:clup/model/store.dart';
 import 'package:clup/view/pages/booking/components/dateTimePicker.dart';
-import 'package:clup/view/pages/details/components/app_bar.dart';
-import 'package:clup/view/pages/details/components/body.dart';
-import 'package:clup/view/widget/bottomBar.dart';
-import 'package:clup/view/widget/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../homepage_theme.dart';
+
 class BookingPage extends StatefulWidget {
   static String routeName = "/booking";
 
@@ -16,6 +15,7 @@ class BookingPage extends StatefulWidget {
 
 class _BookingPage extends State<BookingPage> with TickerProviderStateMixin {
   int _selectedIndex = 0;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -28,10 +28,17 @@ class _BookingPage extends State<BookingPage> with TickerProviderStateMixin {
         ModalRoute.of(context).settings.arguments;
     print(agrs.booking.day);
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: CustomAppBar(name: AppLocalizations.of(context).booking_title),
-        body: DateTimePicker(agrs.store),
-    //bottomNavigationBar: BottomBarDef(),
+      appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: HomepageTheme().primaryColor,
+          title: Text(AppLocalizations.of(context).booking_title,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600))),
+      backgroundColor: HomepageTheme().primaryColor,
+      body: DateTimePicker(agrs.store),
+      //bottomNavigationBar: BottomBarDef(),
     );
   }
 }

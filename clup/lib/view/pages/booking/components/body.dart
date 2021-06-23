@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
+import '../../../../homepage_theme.dart';
+
 StoreRepository _storeRepository = StoreRepository();
 
 final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
@@ -34,7 +36,7 @@ class Body extends StatelessWidget {
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               ),
               TopRoundedContainer(
-                color: Colors.white,
+                color: HomepageTheme().primaryColor,
                 child: Column(
                   children: [
                     Divider(
