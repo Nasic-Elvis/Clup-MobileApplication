@@ -204,13 +204,21 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Widget passwordTextFormField() {
+    /*TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      controller: passwordController,
+      decoration: InputDecoration(
+          hintText: AppLocalizations.of(context).signin_components_password,
+          icon: Icon(Icons.lock)),
+      obscureText: true,*/
     return CustomTextField(
       keyboardType: TextInputType.emailAddress,
       textEditingController: passwordController,
       icon: Icons.lock,
-      obscureText: true,
       hint: AppLocalizations.of(context).signin_components_password,
+      obscureText: true,
     );
+    //initialValue: ,
   }
 
   Widget forgetPassTextRow() {
