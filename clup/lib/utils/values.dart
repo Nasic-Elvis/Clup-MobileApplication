@@ -21,6 +21,11 @@ class Strings {
   static const String nowClosed = "ORA CHIUSO";
 
   static const String urlNoPreferences = "";
+
+  static const String italian = "Italiano";
+  static const String english = "English";
+  static const String spanish = "Español";
+  static const String german = "Deutsch";
 }
 
 class Path {

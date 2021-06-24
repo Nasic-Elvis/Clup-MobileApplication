@@ -193,6 +193,8 @@ class StoreRepository {
   static Future<bool> checkPosition(
       double storeLatitude, double storeLongitude) async {
     var position = await Geolocator.getCurrentPosition();
+    print(position.latitude);
+    print(position.longitude);
     var distance = Geolocator.distanceBetween(
         position.latitude, position.longitude, storeLatitude, storeLongitude);
 

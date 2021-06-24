@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:clup/bloc/authentication/authentication_bloc.dart';
 import 'package:clup/bloc/authentication/authentication_event.dart';
 import 'package:clup/bloc/authentication/authentication_state.dart';
@@ -22,11 +24,21 @@ bool _flutter = false;
 
 class _SettingScreenState extends State<SettingScreen> {
   _SettingScreenState();
+
   final ScrollController _scrollController = ScrollController();
   Singleton _singleton = Singleton();
 
   @override
   Widget build(BuildContext context) {
+    final String defaultLocale = Platform.localeName;
+    String languageCode = Platform.localeName.split('_')[0];
+    String countryCode = Platform.localeName.split('_')[1];
+    String languageString = "";
+
+    if (languageCode == "en") languageString = Values.Strings.english;
+    if (languageCode == "it") languageString = Values.Strings.italian;
+    if (languageCode == "de") languageString = Values.Strings.german;
+    if (languageCode == "es") languageString = Values.Strings.spanish;
     return /*Scaffold(
         body:*/
         SafeArea(
@@ -38,98 +50,98 @@ class _SettingScreenState extends State<SettingScreen> {
             Expanded(
                 child: NestedScrollView(
               controller: _scrollController,
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                ];
-              },
-              body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                // ignore: missing_return
-                builder: (context, state) {
-                  // ignore: missing_return
-                  if (state is Unlogged) {
-                    return SettingsList(
-                      backgroundColor: Colors.white,
-                      sections: [
-                        SettingsSection(
-                          // ignore: missing_return
-                          title: AppLocalizations.of(context).settings_title,
-                          tiles: [
-                            SettingsTile(
-                              title:
-                                  AppLocalizations.of(context).settings_login,
-                              leading: Icon(Icons.account_circle),
-                              onPressed: (context) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => SignInScreen(),
-                                ));
-                              },
-                            ),
-                            SettingsTile(
-                              title: AppLocalizations.of(context)
-                                  .settings_language,
-                              subtitle: Values.Language.defaultLanguage,
-                              leading: Icon(Icons.language),
-                              onPressed: (context) {
-                              },
-                            ),
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                      ];
+                    },
+                    body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                      // ignore: missing_return
+                      builder: (context, state) {
+                        // ignore: missing_return
+                        if (state is Unlogged) {
+                          return SettingsList(
+                            backgroundColor: Colors.white,
+                            sections: [
+                              SettingsSection(
+                                // ignore: missing_return
+                                title: AppLocalizations.of(context).settings_title,
+                                tiles: [
+                                  SettingsTile(
+                                    title:
+                                    AppLocalizations.of(context).settings_login,
+                                    leading: Icon(Icons.account_circle),
+                                    onPressed: (context) {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (_) => SignInScreen(),
+                                      ));
+                                    },
+                                  ),
+                                  SettingsTile(
+                                    title: AppLocalizations
+                                        .of(context)
+                                        .settings_language,
+                                    subtitle: languageString,
+                                    leading: Icon(Icons.language),
+                                    onPressed: (context) {},
+                                  ),
 
-                          ],
-                        )
-                      ],
-                    );
-                  }
-                  if (state is Logged) {
-                    return SettingsList(
-                      backgroundColor: Colors.white,
-                      sections: [
-                        SettingsSection(
-                          title: AppLocalizations.of(context).settings_title,
-                          tiles: [
-                            SettingsTile(
-                              title:
-                                  AppLocalizations.of(context).settings_account,
-                              leading: Icon(Icons.account_circle),
-                              onPressed: (context) async {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => UserInformation()));
-                              },
-                              // ignore: missing_return
-                            ),
-                            SettingsTile(
-                              title: AppLocalizations.of(context)
-                                  .settings_language,
-                              subtitle: Values.Language.defaultLanguage,
-                              leading: Icon(Icons.language),
-                              onPressed: (context) {},
-                            ),
+                                ],
+                              )
+                            ],
+                          );
+                        }
+                        if (state is Logged) {
+                          return SettingsList(
+                            backgroundColor: Colors.white,
+                            sections: [
+                              SettingsSection(
+                                title: AppLocalizations.of(context).settings_title,
+                                tiles: [
+                                  SettingsTile(
+                                    title:
+                                    AppLocalizations.of(context).settings_account,
+                                    leading: Icon(Icons.account_circle),
+                                    onPressed: (context) async {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (_) => UserInformation()));
+                                    },
+                                    // ignore: missing_return
+                                  ),
+                                  SettingsTile(
+                                    title: AppLocalizations.of(context)
+                                        .settings_language,
+                                    subtitle: Values.Language.defaultLanguage,
+                                    leading: Icon(Icons.language),
+                                    onPressed: (context) {},
+                                  ),
 
-                            SettingsTile(
-                              title:
-                                  AppLocalizations.of(context).settings_logout,
-                              // ignore: missing_return
-                              leading: Icon(Icons.logout),
-                              onPressed: (context) {
-                                BlocProvider.of<AuthenticationBloc>(context)
-                                    .add(Logout());
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => SignInScreen()),
-                                    (Route<dynamic> route) => false);
-                              },
-                            )
-                          ],
-                        )
-                      ],
-                    );
-                  }
-                },
-              ),
-            ))
-          ],
+                                  SettingsTile(
+                                    title:
+                                    AppLocalizations.of(context).settings_logout,
+                                    // ignore: missing_return
+                                    leading: Icon(Icons.logout),
+                                    onPressed: (context) {
+                                      BlocProvider.of<AuthenticationBloc>(context)
+                                          .add(Logout());
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) => SignInScreen()),
+                                              (Route<dynamic> route) => false);
+                                    },
+                                  )
+                                ],
+                              )
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ))
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 
   Widget getAppBarUI() {
