@@ -39,6 +39,19 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String timeOfStore;
+    if (store.booktableCapacity > 0) {
+      message = store.booktableCapacity.toString() +
+          Values.Strings.space +
+          AppLocalizations.of(context).details_body_free;
+      textStyle =
+          new TextStyle(color: Colors.green, fontWeight: FontWeight.bold);
+      bookable = true;
+    } else {
+      message = AppLocalizations.of(context).details_body_full;
+      textStyle =
+          new TextStyle(color: Colors.green, fontWeight: FontWeight.bold);
+      bookable = false;
+    }
 
     return ListView(
       children: [
@@ -93,25 +106,6 @@ class Body extends StatelessWidget {
                             to = elements[day - 1].to;
                             timeOfStore =
                                 from.toString() + " - " + to.toString();
-                            if (store.booktableCapacity > 0) {
-                              message = store.booktableCapacity.toString() +
-                                  Values.Strings.space +
-                                  AppLocalizations
-                                      .of(context)
-                                      .details_body_free;
-                              textStyle =
-                              new TextStyle(color: Colors.green,
-                                  fontWeight: FontWeight.bold);
-                              bookable = true;
-                            } else {
-                              message = AppLocalizations
-                                  .of(context)
-                                  .details_body_full;
-                              textStyle =
-                              new TextStyle(color: Colors.green,
-                                  fontWeight: FontWeight.bold);
-                              bookable = false;
-                            }
                             return StoreTime(
                                 title: AppLocalizations
                                     .of(context)
